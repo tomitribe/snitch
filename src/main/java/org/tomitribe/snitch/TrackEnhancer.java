@@ -20,11 +20,11 @@ import java.io.InputStream;
 /**
  * @version $Revision$ $Date$
  */
-public class Enhancer extends ClassAdapter implements Opcodes {
+public class TrackEnhancer extends ClassAdapter implements Opcodes {
 
-    private String classInternalName = "org/tomitribe/snitch/util/AsmTest$Orange2";
+    private String classInternalName;
 
-    public Enhancer(ClassVisitor classVisitor) {
+    public TrackEnhancer(ClassVisitor classVisitor) {
         super(classVisitor);
     }
 
@@ -47,9 +47,9 @@ public class Enhancer extends ClassAdapter implements Opcodes {
     public static byte[] enhance(ClassReader cr, final boolean b) {
         final ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
 
-        final Enhancer enhancer = new Enhancer(cw);
+        final TrackEnhancer timingEnhancer = new TrackEnhancer(cw);
 
-        cr.accept(enhancer, ClassReader.EXPAND_FRAMES);
+        cr.accept(timingEnhancer, ClassReader.EXPAND_FRAMES);
 
         return cw.toByteArray();
     }
@@ -68,7 +68,7 @@ public class Enhancer extends ClassAdapter implements Opcodes {
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 
-        if (name.contains("doit2")) {
+        if (name.contains("run")) {
             enhanceMethod(access, name, desc, signature, exceptions);
             return super.visitMethod(access, target(name), desc, signature, exceptions);
         } else {
@@ -90,28 +90,24 @@ public class Enhancer extends ClassAdapter implements Opcodes {
         mv.visitTryCatchBlock(l0, l1, l2, null);
         Label l3 = new Label();
         mv.visitTryCatchBlock(l2, l3, l2, null);
-        mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
-        mv.visitVarInsn(LSTORE, 1);
+        mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "start", "()V");
         mv.visitLabel(l0);
         mv.visitVarInsn(ALOAD, 0);
+        mv.visitVarInsn(ALOAD, 1);
         mv.visitMethodInsn(INVOKEVIRTUAL, classInternalName, target(name), desc);
-        mv.visitVarInsn(ASTORE, 3);
+        mv.visitVarInsn(ASTORE, 2);
         mv.visitLabel(l1);
-        mv.visitLdcInsn(name);
-        mv.visitVarInsn(LLOAD, 1);
-        mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-        mv.visitVarInsn(ALOAD, 3);
+        mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "stop", "()V");
+        mv.visitVarInsn(ALOAD, 2);
         mv.visitInsn(ARETURN);
         mv.visitLabel(l2);
-        mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{classInternalName, Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
-        mv.visitVarInsn(ASTORE, 4);
+        mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]{"java/lang/Throwable"});
+        mv.visitVarInsn(ASTORE, 3);
         mv.visitLabel(l3);
-        mv.visitLdcInsn(name);
-        mv.visitVarInsn(LLOAD, 1);
-        mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-        mv.visitVarInsn(ALOAD, 4);
+        mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "stop", "()V");
+        mv.visitVarInsn(ALOAD, 3);
         mv.visitInsn(ATHROW);
-        mv.visitMaxs(-1, -1);
+        mv.visitMaxs(2, 4);
         mv.visitEnd();
     }
 

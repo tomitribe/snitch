@@ -40,29 +40,30 @@ public class Agent {
     private static void initialize(String agentArgs, Instrumentation instrumentation) {
         try {
             if (agentArgs == null) {
-                err("No output directory specified");
+                err("No properties file specified");
                 return;
             }
 
-            final File dir = new File(agentArgs);
-            if (!dir.exists() && !dir.mkdirs()) {
-                err("Cannot create output directory '%s'", dir.getAbsolutePath());
+            final File file = new File(agentArgs);
+
+            if (!file.isFile()) {
+                err("Path does not exist '%s'", file.getAbsolutePath());
                 return;
             }
 
-            if (!dir.isDirectory()) {
-                err("Path is not a directory '%s'", dir.getAbsolutePath());
+            if (!file.isFile()) {
+                err("Path is not a file '%s'", file.getAbsolutePath());
                 return;
             }
 
-            if (!dir.canRead()) {
-                err("Cannot read output directory '%s'", dir.getAbsolutePath());
+            if (!file.canRead()) {
+                err("Cannot read properties file '%s'", file.getAbsolutePath());
                 return;
             }
 
-            instrumentation.addTransformer(new Tracker(dir, instrumentation));
+            instrumentation.addTransformer(new Tracker(file, instrumentation));
 
-            out("Initialized. Logging to '%s'", dir.getAbsolutePath());
+            out("Initialized. Logging to '%s'", file.getAbsolutePath());
         } catch (Throwable e) {
             err("Failed %s", e.getMessage());
             e.printStackTrace();
