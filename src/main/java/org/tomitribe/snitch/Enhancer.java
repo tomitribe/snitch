@@ -116,6 +116,6 @@ public class Enhancer extends ClassAdapter implements Opcodes {
     }
 
     private String target(String methodName) {
-        return "$" + methodName;
+        return "track$" + methodName;
     }
 }

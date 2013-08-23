@@ -6,7 +6,7 @@
  */
 package org.tomitribe.snitch.util;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.Opcodes;
 
 /**
  * @version $Revision$ $Date$

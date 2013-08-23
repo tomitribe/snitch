@@ -17,19 +17,20 @@ import java.security.ProtectionDomain;
 public class Unsafe {
 
     private static final sun.misc.Unsafe unsafe;
+
     static {
         unsafe = (sun.misc.Unsafe) AccessController.doPrivileged(new PrivilegedAction<Object>() {
-                    @Override
-                    public Object run() {
-                        try {
-                            final Field field = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
-                            field.setAccessible(true);
-                            return field.get(null);
-                        } catch (Exception e) {
-                            throw new IllegalStateException("Cannot get sun.misc.Unsafe", e);
-                        }
-                    }
-                });
+            @Override
+            public Object run() {
+                try {
+                    final Field field = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
+                    field.setAccessible(true);
+                    return field.get(null);
+                } catch (Exception e) {
+                    throw new IllegalStateException("Cannot get sun.misc.Unsafe", e);
+                }
+            }
+        });
     }
 
     public static sun.misc.Unsafe get() {
