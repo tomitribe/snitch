@@ -73,6 +73,27 @@ public class AsmTest {
             orange.dowithvoid();
             return null;
         }
+
+        public void run2(String[] doSomething) throws IllegalStateException {
+            Tracker.start();
+            try {
+                track$run2(doSomething);
+            } finally {
+                Tracker.stop();
+            }
+        }
+
+        public void track$run2(String[] doSomething) throws IllegalStateException {
+            final Orange2<Object> orange = new Orange2<Object>();
+            orange.dowithreturn();
+            orange.dowithreturn();
+            orange.dowithreturn();
+            orange.dowithreturn();
+            orange.dowithreturn();
+            orange.dowithvoid();
+            orange.dowithvoid();
+            orange.dowithvoid();
+        }
     }
 
     public static class Orange<T> {

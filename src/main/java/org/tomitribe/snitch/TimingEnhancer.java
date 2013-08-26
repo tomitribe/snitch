@@ -22,7 +22,7 @@ import java.io.InputStream;
  */
 public class TimingEnhancer extends ClassAdapter implements Opcodes {
 
-    private String classInternalName = "org/tomitribe/snitch/util/AsmTest$Orange2";
+    private String classInternalName;
 
     public TimingEnhancer(ClassVisitor classVisitor) {
         super(classVisitor);
@@ -54,6 +54,10 @@ public class TimingEnhancer extends ClassAdapter implements Opcodes {
         return cw.toByteArray();
     }
 
+    private boolean monitor(String name, String desc) {
+        return name.contains("do");
+    }
+
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] originalInterfaces) {
         this.classInternalName = name;
@@ -68,7 +72,7 @@ public class TimingEnhancer extends ClassAdapter implements Opcodes {
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 
-        if (name.contains("do")) {
+        if (monitor(name, desc)) {
             enhanceMethod(access, name, desc, signature, exceptions);
             return super.visitMethod(access, target(name), desc, signature, exceptions);
         } else {
