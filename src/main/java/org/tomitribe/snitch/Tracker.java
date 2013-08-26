@@ -3,6 +3,7 @@ package org.tomitribe.snitch;
 import org.tomitribe.snitch.util.Join;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Map;
  */
 public class Tracker {
 
-    private final Map<String, Operation> stats = new HashMap<String, Operation>();
+    private final Map<String, Operation> stats = new LinkedHashMap<String, Tracker.Operation>();
 
     private final static ThreadLocal<Tracker> trackers = new ThreadLocal<Tracker>();
 

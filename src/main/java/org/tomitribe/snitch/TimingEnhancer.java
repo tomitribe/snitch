@@ -22,36 +22,13 @@ import java.io.InputStream;
  */
 public class TimingEnhancer extends ClassAdapter implements Opcodes {
 
+    private final Clazz clazz;
+
     private String classInternalName;
 
-    public TimingEnhancer(ClassVisitor classVisitor) {
+    public TimingEnhancer(ClassVisitor classVisitor, Clazz clazz) {
         super(classVisitor);
-    }
-
-    public static byte[] enchance(byte[] original) throws Exception {
-        return enchance(original, false);
-    }
-
-    public static byte[] enchance(byte[] original, final boolean b) throws Exception {
-        return enhance(new ClassReader(original), b);
-    }
-
-    public static byte[] enchance(String className) throws Exception {
-        return enhance(new ClassReader(className), false);
-    }
-
-    public static byte[] enchance(InputStream inputStream) throws Exception {
-        return enhance(new ClassReader(inputStream), false);
-    }
-
-    public static byte[] enhance(ClassReader cr, final boolean b) {
-        final ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-
-        final TimingEnhancer timingEnhancer = new TimingEnhancer(cw);
-
-        cr.accept(timingEnhancer, ClassReader.EXPAND_FRAMES);
-
-        return cw.toByteArray();
+        this.clazz = clazz;
     }
 
     private boolean monitor(String name, String desc) {
@@ -72,19 +49,23 @@ public class TimingEnhancer extends ClassAdapter implements Opcodes {
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 
-        if (monitor(name, desc)) {
-            enhanceMethod(access, name, desc, signature, exceptions);
+        final Monitor monitor = clazz.get(Method.fromDescriptor(name, desc));
+
+        if (monitor != null) {
+            enhanceMethod(monitor, access, name, desc, signature, exceptions);
             return super.visitMethod(access, target(name), desc, signature, exceptions);
         } else {
             return super.visitMethod(access, name, desc, signature, exceptions);
         }
     }
 
-    private void enhanceMethod(int access, String name, String desc, String signature, String[] exceptions) {
+    private void enhanceMethod(Monitor monitor, int access, String name, String desc, String signature, String[] exceptions) {
         // Remove Synchronization from wrapper method so we
         if (AsmModifiers.isSynchronized(access)) {
             access -= Opcodes.ACC_SYNCHRONIZED;
         }
+
+        final String monitorName = monitor.getName();
 
         if (!desc.contains(")V")) {
             final MethodVisitor mv = this.cv.visitMethod(access, name, desc, signature, exceptions);
@@ -103,7 +84,7 @@ public class TimingEnhancer extends ClassAdapter implements Opcodes {
             mv.visitMethodInsn(INVOKEVIRTUAL, classInternalName, target(name), desc);
             mv.visitVarInsn(ASTORE, 3);
             mv.visitLabel(l1);
-            mv.visitLdcInsn(name);
+            mv.visitLdcInsn(monitorName);
             mv.visitVarInsn(LLOAD, 1);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
 
@@ -114,7 +95,7 @@ public class TimingEnhancer extends ClassAdapter implements Opcodes {
             mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{classInternalName, Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
-            mv.visitLdcInsn(name);
+            mv.visitLdcInsn(monitorName);
             mv.visitVarInsn(LLOAD, 1);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
             mv.visitVarInsn(ALOAD, 4);
@@ -140,7 +121,7 @@ public class TimingEnhancer extends ClassAdapter implements Opcodes {
             mv.visitVarInsn(ALOAD, 0);
             mv.visitMethodInsn(INVOKEVIRTUAL, classInternalName, target(name), "()V");
             mv.visitLabel(l1);
-            mv.visitLdcInsn(name);
+            mv.visitLdcInsn(monitorName);
             mv.visitVarInsn(LLOAD, 1);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
 
@@ -151,7 +132,7 @@ public class TimingEnhancer extends ClassAdapter implements Opcodes {
             mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{classInternalName, Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 3);
             mv.visitLabel(l3);
-            mv.visitLdcInsn(name);
+            mv.visitLdcInsn(monitorName);
             mv.visitVarInsn(LLOAD, 1);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
             mv.visitVarInsn(ALOAD, 3);

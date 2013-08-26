@@ -23,35 +23,11 @@ import java.io.InputStream;
 public class TrackEnhancer extends ClassAdapter implements Opcodes {
 
     private String classInternalName;
+    private final Clazz clazz;
 
-    public TrackEnhancer(ClassVisitor classVisitor) {
-        super(classVisitor);
-    }
-
-    public static byte[] enchance(byte[] original) throws Exception {
-        return enchance(original, false);
-    }
-
-    public static byte[] enchance(byte[] original, final boolean b) throws Exception {
-        return enhance(new ClassReader(original), b);
-    }
-
-    public static byte[] enchance(String className) throws Exception {
-        return enhance(new ClassReader(className), false);
-    }
-
-    public static byte[] enchance(InputStream inputStream) throws Exception {
-        return enhance(new ClassReader(inputStream), false);
-    }
-
-    public static byte[] enhance(ClassReader cr, final boolean b) {
-        final ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-
-        final TrackEnhancer timingEnhancer = new TrackEnhancer(cw);
-
-        cr.accept(timingEnhancer, ClassReader.EXPAND_FRAMES);
-
-        return cw.toByteArray();
+    public TrackEnhancer(ClassVisitor visitor, Clazz clazz) {
+        super(visitor);
+        this.clazz = clazz;
     }
 
     @Override
@@ -68,8 +44,10 @@ public class TrackEnhancer extends ClassAdapter implements Opcodes {
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 
-        if (monitor(name, desc)) {
-            enhanceMethod(access, name, desc, signature, exceptions);
+        final Monitor monitor = clazz.get(Method.fromDescriptor(name, desc));
+
+        if (monitor != null) {
+            enhanceMethod(monitor, access, name, desc, signature, exceptions);
             return super.visitMethod(access, target(name), desc, signature, exceptions);
         } else {
             return super.visitMethod(access, name, desc, signature, exceptions);
@@ -80,7 +58,7 @@ public class TrackEnhancer extends ClassAdapter implements Opcodes {
         return name.contains("run");
     }
 
-    private void enhanceMethod(int access, String name, String desc, String signature, String[] exceptions) {
+    private void enhanceMethod(Monitor monitor, int access, String name, String desc, String signature, String[] exceptions) {
         // Remove Synchronization from wrapper method so we
         if (AsmModifiers.isSynchronized(access)) {
             access -= Opcodes.ACC_SYNCHRONIZED;

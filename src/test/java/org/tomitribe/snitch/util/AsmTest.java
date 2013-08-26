@@ -8,6 +8,7 @@ package org.tomitribe.snitch.util;
 
 import org.tomitribe.snitch.Asmifier;
 import org.tomitribe.snitch.Bytecode;
+import org.tomitribe.snitch.Clazz;
 import org.tomitribe.snitch.TimingEnhancer;
 import org.tomitribe.snitch.TrackEnhancer;
 import org.tomitribe.snitch.Tracker;
@@ -16,6 +17,8 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Date;
+
+import static org.tomitribe.snitch.Method.fromToString;
 
 /**
  * @version $Revision$ $Date$
@@ -30,8 +33,17 @@ public class AsmTest {
         Asmifier.asmify(Green2.class, "modified");
 
         final URLClassLoader loader = new URLClassLoader(new URL[]{});
-        Bytecode.modifyAndDefine(loader, Orange.class.getName(), TimingEnhancer.class);
-        Bytecode.modifyAndDefine(loader, Green.class.getName(), TrackEnhancer.class);
+
+        final Clazz greenInfo = new Clazz(Green.class.getName());
+        greenInfo.put(fromToString(Green.class.getName() + ".run(java.lang.String[])"), "start");
+
+        final Clazz orangeInfo = new Clazz(Orange.class.getName());
+        orangeInfo.put(fromToString(Orange.class.getName() + ".dowithreturn()"), "doWithReturn");
+        orangeInfo.put(fromToString(Orange.class.getName() + ".dowithvoid()"), "doWithVoid");
+
+
+        Bytecode.modifyAndDefine(loader, orangeInfo, TimingEnhancer.class);
+        Bytecode.modifyAndDefine(loader, greenInfo, TrackEnhancer.class);
 
         final Class<?> clazz = loader.loadClass(Green.class.getName());
         final Object green = clazz.newInstance();
@@ -57,9 +69,11 @@ public class AsmTest {
 
         public Date run(String[] doSomething) throws IllegalStateException {
             Tracker.start();
+            final long doit$start = System.nanoTime();
             try {
                 return track$run(doSomething);
             } finally {
+                Tracker.track("theTag", doit$start);
                 Tracker.stop();
             }
         }
@@ -76,9 +90,11 @@ public class AsmTest {
 
         public void run2(String[] doSomething) throws IllegalStateException {
             Tracker.start();
+            final long doit$start = System.nanoTime();
             try {
                 track$run2(doSomething);
             } finally {
+                Tracker.track("theTag", doit$start);
                 Tracker.stop();
             }
         }

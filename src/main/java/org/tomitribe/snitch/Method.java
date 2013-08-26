@@ -56,7 +56,7 @@ public class Method {
 
         final String className = rawName.substring(0, rawName.lastIndexOf('.'));
         final String methodName = rawName.substring(rawName.lastIndexOf('.') + 1, rawName.length());
-        final String[] args = rawArgs.split(",");
+        final String[] args = (rawArgs.length() == 0) ? new String[0] : rawArgs.split(",");
 
         final Type[] types = new Type[args.length];
 

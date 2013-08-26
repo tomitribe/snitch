@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.objectweb.asm.Type;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,10 @@ public class MethodTest extends Assert {
         assertEquals(orange, Method.fromToString("public abstract java.lang.Boolean org.tomitribe.snitch.MethodTest$Colors.orange(java.lang.String,java.lang.Long,java.util.Date) throws "));
         assertEquals(orange, Method.fromToString("org.tomitribe.snitch.MethodTest$Colors.orange(java.lang.String,java.lang.Long,java.util.Date)"));
         assertEquals(orange, Method.fromToString(" org.tomitribe.snitch.MethodTest$Colors.orange( java.lang.String , java.lang.Long , java.util.Date ) "));
+
+        final Method yellow = new Method(Colors.class.getMethod("yellow"));
+        assertEquals(yellow, Method.fromToString("public abstract void org.tomitribe.snitch.MethodTest$Colors.yellow() throws java.io.IOException"));
+
     }
 
 
@@ -70,5 +75,8 @@ public class MethodTest extends Assert {
         public int[][] purple(String[] s, long[][] l, Date[][][] d) throws IOException;
 
         public <T extends Map> T white(List<T> t) throws IOException;
+
+        public void yellow() throws IOException;
+
     }
 }
