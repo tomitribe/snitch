@@ -2,7 +2,6 @@ package org.tomitribe.snitch;
 
 import org.tomitribe.snitch.util.Join;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

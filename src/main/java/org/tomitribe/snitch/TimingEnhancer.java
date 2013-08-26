@@ -7,28 +7,25 @@
 package org.tomitribe.snitch;
 
 import org.objectweb.asm.ClassAdapter;
-import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.tomitribe.snitch.util.AsmModifiers;
 
-import java.io.InputStream;
+import java.util.Map;
 
 /**
  * @version $Revision$ $Date$
  */
 public class TimingEnhancer extends ClassAdapter implements Opcodes {
 
-    private final Clazz clazz;
-
     private String classInternalName;
+    private final Map<Method,Monitor> methods;
 
     public TimingEnhancer(ClassVisitor classVisitor, Clazz clazz) {
         super(classVisitor);
-        this.clazz = clazz;
+        methods = clazz.getTime();
     }
 
     private boolean monitor(String name, String desc) {
@@ -44,12 +41,16 @@ public class TimingEnhancer extends ClassAdapter implements Opcodes {
     @Override
     public void visitEnd() {
         super.visitEnd();
+
+        for (Map.Entry<Method, Monitor> unused : methods.entrySet()) {
+            System.err.printf("SNITCH: No Such Method: %s = %s%n", unused.getValue().getName(), unused.getKey());
+        }
     }
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 
-        final Monitor monitor = clazz.get(Method.fromDescriptor(name, desc));
+        final Monitor monitor = methods.remove(Method.fromDescriptor(name, desc, ""));
 
         if (monitor != null) {
             enhanceMethod(monitor, access, name, desc, signature, exceptions);

@@ -34,6 +34,10 @@ public class Bytecode {
         return defineClass(modifiedBytes, clazz.getName(), classLoader);
     }
 
+    public static byte[] readClassFile(Class clazz) throws IOException {
+        return readClassFile(clazz.getClassLoader(), clazz);
+    }
+
     public static byte[] readClassFile(ClassLoader classLoader, Class clazz) throws IOException {
         final String internalName = clazz.getName().replace('.', '/') + ".class";
         final URL resource = classLoader.getResource(internalName);

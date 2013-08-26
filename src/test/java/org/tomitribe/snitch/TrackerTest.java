@@ -6,18 +6,16 @@
  */
 package org.tomitribe.snitch;
 
-import org.objectweb.asm.Type;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * @version $Revision$ $Date$
  */
-public class Configuration {
+public class TrackerTest extends Assert {
 
-//    private final Map<String, Clazz> classes = new HashMap<String, Clazz>();
+    @Test
+    public void testStart() throws Exception {
 
+    }
 }

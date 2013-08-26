@@ -15,7 +15,8 @@ import java.util.Map;
 public class Clazz {
 
     private final String name;
-    private final Map<Method, Monitor> methods = new HashMap<Method, Monitor>();
+    private final Map<Method, Monitor> time = new HashMap<Method, Monitor>();
+    private final Map<Method, Monitor> track = new HashMap<Method, Monitor>();
 
     public Clazz(String name) {
         this.name = name;
@@ -25,15 +26,35 @@ public class Clazz {
         return name;
     }
 
-    public Monitor get(Method method) {
-        return methods.get(method);
+    public Map<Method, Monitor> getTime() {
+        return new HashMap<Method, Monitor>(time);
     }
 
-    public Monitor put(Method method, Monitor monitor) {
-        return methods.put(method, monitor);
+    public Map<Method, Monitor> getTrack() {
+        return new HashMap<Method, Monitor>(track);
     }
 
-    public Monitor put(Method method, String monitor) {
-        return methods.put(method, new Monitor(monitor, method));
+    public Monitor time(Method method) {
+        return time.get(method);
+    }
+
+    public Monitor time(Method method, String monitor) {
+        return time.put(method, new Monitor(monitor, method));
+    }
+
+    public Monitor track(Method method) {
+        return track.get(method);
+    }
+
+    public Monitor track(Method method, String monitor) {
+        return track.put(method, new Monitor(monitor, method));
+    }
+
+    public boolean shouldTrack() {
+        return track.size() > 0;
+    }
+
+    public boolean shouldTime() {
+        return time.size() > 0;
     }
 }

@@ -35,11 +35,11 @@ public class AsmTest {
         final URLClassLoader loader = new URLClassLoader(new URL[]{});
 
         final Clazz greenInfo = new Clazz(Green.class.getName());
-        greenInfo.put(fromToString(Green.class.getName() + ".run(java.lang.String[])"), "start");
+        greenInfo.track(fromToString(Green.class.getName() + ".run(java.lang.String[])"), "start");
 
         final Clazz orangeInfo = new Clazz(Orange.class.getName());
-        orangeInfo.put(fromToString(Orange.class.getName() + ".dowithreturn()"), "doWithReturn");
-        orangeInfo.put(fromToString(Orange.class.getName() + ".dowithvoid()"), "doWithVoid");
+        orangeInfo.time(fromToString(Orange.class.getName() + ".dowithreturn()"), "doWithReturn");
+        orangeInfo.time(fromToString(Orange.class.getName() + ".dowithvoid()"), "doWithVoid");
 
 
         Bytecode.modifyAndDefine(loader, orangeInfo, TimingEnhancer.class);

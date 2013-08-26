@@ -26,4 +26,12 @@ public class Monitor {
     public Method getMethod() {
         return method;
     }
+
+    @Override
+    public String toString() {
+        return "Monitor{" +
+                "name='" + name + '\'' +
+                '}' +
+                method.toString();
+    }
 }

@@ -7,6 +7,7 @@
 package org.tomitribe.snitch;
 
 import org.objectweb.asm.Type;
+import org.tomitribe.snitch.util.Join;
 
 import java.util.Arrays;
 
@@ -14,21 +15,37 @@ import java.util.Arrays;
  * @version $Revision$ $Date$
  */
 public class Method {
+
+    private final String className;
     private final String methodName;
     private final Type[] arguments;
 
-    Method(java.lang.reflect.Method method) {
+    public Method(java.lang.reflect.Method method) {
+        this.className = method.getDeclaringClass().getName();
         this.methodName = method.getName();
         this.arguments = Type.getArgumentTypes(method);
     }
 
-    public Method(String methodName, Type[] arguments) {
+    public Method(String className, String methodName, Type[] arguments) {
+        this.className = className;
         this.methodName = methodName;
         this.arguments = arguments;
     }
 
-    public static Method fromDescriptor(String name, String desc) {
-        return new Method(name, Type.getArgumentTypes(desc));
+    public static Method fromDescriptor(String name, String desc, final String className) {
+        return new Method(className, name, Type.getArgumentTypes(desc));
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public Type[] getArguments() {
+        return arguments;
     }
 
     public static Method fromToString(String toStringValue) {
@@ -72,7 +89,7 @@ public class Method {
             types[i] = Type.getType(type);
         }
 
-        return new Method(methodName, types);
+        return new Method(className, methodName, types);
     }
 
     private static String type(String raw) {
@@ -87,12 +104,31 @@ public class Method {
         return "L" + raw.replace('.', '/') + ";";
     }
 
+    private static String type(Type type) {
+        if (Type.BYTE_TYPE.equals(type)) return "byte";
+        if (Type.BOOLEAN_TYPE.equals(type)) return "boolean";
+        if (Type.CHAR_TYPE.equals(type)) return "char";
+        if (Type.SHORT_TYPE.equals(type)) return "short";
+        if (Type.INT_TYPE.equals(type)) return "int";
+        if (Type.LONG_TYPE.equals(type)) return "long";
+        if (Type.FLOAT_TYPE.equals(type)) return "float";
+        if (Type.DOUBLE_TYPE.equals(type)) return "double";
+        return type.getClassName();
+    }
+
     @Override
     public String toString() {
-        return "Method{" +
-                "name='" + methodName + '\'' +
-                ", arguments=" + (arguments == null ? null : Arrays.asList(arguments)) +
-                '}';
+        final StringBuilder sb = new StringBuilder();
+        sb.append(className).append(".");
+        sb.append(methodName).append("(");
+        sb.append(Join.join(",", new Join.NameCallback<Type>() {
+            @Override
+            public String getName(Type type) {
+                return type(type);
+            }
+        }, arguments));
+        sb.append(")");
+        return sb.toString();
     }
 
     @Override
@@ -114,4 +150,6 @@ public class Method {
         result = 31 * result + Arrays.hashCode(arguments);
         return result;
     }
+
+
 }
