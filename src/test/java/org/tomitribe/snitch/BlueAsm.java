@@ -22,7 +22,8 @@ public class BlueAsm implements Opcodes {
         GeneratorAdapter mg = null;
 
         {
-            mg = new GeneratorAdapter(1, Method.getMethod("void voidMethod0()"), null, new Type[]{Type.getObjectType("java/lang/IllegalStateException")}, cw);
+            final Method method = Method.getMethod("void voidMethod9(org.tomitribe.snitch.Blue$Arg0,org.tomitribe.snitch.Blue$Arg1,org.tomitribe.snitch.Blue$Arg2,org.tomitribe.snitch.Blue$Arg3,org.tomitribe.snitch.Blue$Arg4,org.tomitribe.snitch.Blue$Arg5,org.tomitribe.snitch.Blue$Arg6,org.tomitribe.snitch.Blue$Arg7,org.tomitribe.snitch.Blue$Arg8)");
+            mg = new GeneratorAdapter(1, method, null, new Type[]{Type.getObjectType("java/lang/IllegalStateException")}, cw);
             mg.visitCode();
             Label label0 = mg.newLabel();
             Label label1 = mg.newLabel();
@@ -35,7 +36,16 @@ public class BlueAsm implements Opcodes {
             mg.storeLocal(local0);
             mg.mark(label0);
             mg.loadThis();
-            mg.invokeVirtual(Type.getObjectType("org/tomitribe/snitch/Blue"), Method.getMethod("void track$voidMethod0()"));
+            mg.loadArg(0);
+            mg.loadArg(1);
+            mg.loadArg(2);
+            mg.loadArg(3);
+            mg.loadArg(4);
+            mg.loadArg(5);
+            mg.loadArg(6);
+            mg.loadArg(7);
+            mg.loadArg(8);
+            mg.invokeVirtual(Type.getObjectType("org/tomitribe/snitch/Blue"), Method.getMethod("void track$voidMethod9(org.tomitribe.snitch.Blue$Arg0,org.tomitribe.snitch.Blue$Arg1,org.tomitribe.snitch.Blue$Arg2,org.tomitribe.snitch.Blue$Arg3,org.tomitribe.snitch.Blue$Arg4,org.tomitribe.snitch.Blue$Arg5,org.tomitribe.snitch.Blue$Arg6,org.tomitribe.snitch.Blue$Arg7,org.tomitribe.snitch.Blue$Arg8)"));
             mg.mark(label1);
             mg.push("theTag");
             mg.loadLocal(local0);
@@ -43,7 +53,21 @@ public class BlueAsm implements Opcodes {
             Label label4 = mg.newLabel();
             mg.goTo(label4);
             mg.mark(label2);
-            mg.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/Blue", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
+            mg.visitFrame(Opcodes.F_FULL
+                    , 11
+                    , new Object[]{"org/tomitribe/snitch/Blue"
+                    , "org/tomitribe/snitch/Blue$Arg0"
+                    , "org/tomitribe/snitch/Blue$Arg1"
+                    , "org/tomitribe/snitch/Blue$Arg2"
+                    , "org/tomitribe/snitch/Blue$Arg3"
+                    , "org/tomitribe/snitch/Blue$Arg4"
+                    , "org/tomitribe/snitch/Blue$Arg5"
+                    , "org/tomitribe/snitch/Blue$Arg6"
+                    , "org/tomitribe/snitch/Blue$Arg7"
+                    , "org/tomitribe/snitch/Blue$Arg8"
+                    , Opcodes.LONG}
+                    , 1
+                    , new Object[]{"java/lang/Throwable"});
             int local1 = mg.newLocal(Type.getObjectType("java/lang/Object"));
             mg.storeLocal(local1);
             mg.mark(label3);
@@ -59,7 +83,7 @@ public class BlueAsm implements Opcodes {
             mg.visitEnd();
         }
         {
-            mg = new GeneratorAdapter(1, Method.getMethod("boolean booleanMethod0()"), null, new Type[]{Type.getObjectType("java/lang/IllegalStateException")}, cw);
+            mg = new GeneratorAdapter(1, Method.getMethod("boolean booleanMethod9(org.tomitribe.snitch.Blue$Arg0,org.tomitribe.snitch.Blue$Arg1,org.tomitribe.snitch.Blue$Arg2,org.tomitribe.snitch.Blue$Arg3,org.tomitribe.snitch.Blue$Arg4,org.tomitribe.snitch.Blue$Arg5,org.tomitribe.snitch.Blue$Arg6,org.tomitribe.snitch.Blue$Arg7,org.tomitribe.snitch.Blue$Arg8)"), null, new Type[]{Type.getObjectType("java/lang/IllegalStateException")}, cw);
             mg.visitCode();
             Label label0 = mg.newLabel();
             Label label1 = mg.newLabel();
@@ -72,7 +96,16 @@ public class BlueAsm implements Opcodes {
             mg.storeLocal(local0);
             mg.mark(label0);
             mg.loadThis();
-            mg.invokeVirtual(Type.getObjectType("org/tomitribe/snitch/Blue"), Method.getMethod("boolean track$booleanMethod0()"));
+            mg.loadArg(0);
+            mg.loadArg(1);
+            mg.loadArg(2);
+            mg.loadArg(3);
+            mg.loadArg(4);
+            mg.loadArg(5);
+            mg.loadArg(6);
+            mg.loadArg(7);
+            mg.loadArg(8);
+            mg.invokeVirtual(Type.getObjectType("org/tomitribe/snitch/Blue"), Method.getMethod("boolean track$booleanMethod9(org.tomitribe.snitch.Blue$Arg0,org.tomitribe.snitch.Blue$Arg1,org.tomitribe.snitch.Blue$Arg2,org.tomitribe.snitch.Blue$Arg3,org.tomitribe.snitch.Blue$Arg4,org.tomitribe.snitch.Blue$Arg5,org.tomitribe.snitch.Blue$Arg6,org.tomitribe.snitch.Blue$Arg7,org.tomitribe.snitch.Blue$Arg8)"));
             int local1 = mg.newLocal(Type.INT_TYPE);
             mg.storeLocal(local1);
             mg.mark(label1);
@@ -82,7 +115,21 @@ public class BlueAsm implements Opcodes {
             mg.loadLocal(local1);
             mg.returnValue();
             mg.mark(label2);
-            mg.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/Blue", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
+            mg.visitFrame(Opcodes.F_FULL
+                    , 11
+                    , new Object[]{"org/tomitribe/snitch/Blue"
+                    , "org/tomitribe/snitch/Blue$Arg0"
+                    , "org/tomitribe/snitch/Blue$Arg1"
+                    , "org/tomitribe/snitch/Blue$Arg2"
+                    , "org/tomitribe/snitch/Blue$Arg3"
+                    , "org/tomitribe/snitch/Blue$Arg4"
+                    , "org/tomitribe/snitch/Blue$Arg5"
+                    , "org/tomitribe/snitch/Blue$Arg6"
+                    , "org/tomitribe/snitch/Blue$Arg7"
+                    , "org/tomitribe/snitch/Blue$Arg8"
+                    , Opcodes.LONG}
+                    , 1
+                    , new Object[]{"java/lang/Throwable"});
             int local2 = mg.newLocal(Type.getObjectType("java/lang/Object"));
             mg.storeLocal(local2);
             mg.mark(label3);

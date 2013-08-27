@@ -11,8 +11,11 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
+import org.objectweb.asm.commons.GeneratorAdapter;
 import org.tomitribe.snitch.util.AsmModifiers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -64,6 +67,21 @@ public class TrackEnhancer extends ClassVisitor implements Opcodes {
 
         final String monitorName = monitor.getName();
         final Type[] args = Type.getArgumentTypes(desc);
+        final Type[] exceptionTypes = new Type[exceptions.length];
+        for (int i = 0; i < exceptions.length; i++) {
+            exceptionTypes[i] = Type.getObjectType(exceptions[i]);
+        }
+
+        final org.objectweb.asm.commons.Method method = new org.objectweb.asm.commons.Method(name, desc);
+        final GeneratorAdapter mg = new GeneratorAdapter(access, method, signature, exceptionTypes, cv);
+
+        final List<Object> list = new ArrayList<Object>();
+        list.add(classInternalName);
+        for (Type arg : args) {
+            list.add(arg.getInternalName());
+        }
+        list.add(Opcodes.LONG);
+        final Object[] local = list.toArray();
 
         if (!desc.contains(")V")) {
 

@@ -11,8 +11,11 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
+import org.objectweb.asm.commons.GeneratorAdapter;
 import org.tomitribe.snitch.util.AsmModifiers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,7 +24,7 @@ import java.util.Map;
 public class TimingEnhancer extends ClassVisitor implements Opcodes {
 
     private String classInternalName;
-    private final Map<Method,Monitor> methods;
+    private final Map<Method, Monitor> methods;
 
     public TimingEnhancer(ClassVisitor classVisitor, Clazz clazz) {
         super(Opcodes.ASM4, classVisitor);
@@ -68,87 +71,107 @@ public class TimingEnhancer extends ClassVisitor implements Opcodes {
 
         final String monitorName = monitor.getName();
         final Type[] args = Type.getArgumentTypes(desc);
+        final Type[] exceptionTypes = new Type[exceptions.length];
+        for (int i = 0; i < exceptions.length; i++) {
+            exceptionTypes[i] = Type.getObjectType(exceptions[i]);
+        }
+
+        final org.objectweb.asm.commons.Method method = new org.objectweb.asm.commons.Method(name, desc);
+        final GeneratorAdapter mg = new GeneratorAdapter(access, method, signature, exceptionTypes, cv);
+
+        final List<Object> list = new ArrayList<Object>();
+        list.add(classInternalName);
+        for (Type arg : args) {
+            list.add(arg.getInternalName());
+        }
+        list.add(Opcodes.LONG);
+        final Object[] local = list.toArray();
+
+        final String trackerInternalName = Type.getInternalName(Tracker.class);
 
         if (!desc.contains(")V")) {
-            final MethodVisitor mv = this.cv.visitMethod(access, name, desc, signature, exceptions);
-            mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
-            mv.visitTryCatchBlock(l0, l1, l2, null);
+            mg.visitCode();
+            Label label0 = mg.newLabel();
+            Label label1 = mg.newLabel();
+            Label label2 = mg.newLabel();
+            mg.visitTryCatchBlock(label0, label1, label2, null);
+            Label label3 = mg.newLabel();
+            mg.visitTryCatchBlock(label2, label3, label2, null);
+            mg.invokeStatic(Type.getObjectType("java/lang/System"), org.objectweb.asm.commons.Method.getMethod("long nanoTime()"));
+            int local0 = mg.newLocal(Type.LONG_TYPE);
+            mg.storeLocal(local0);
+            mg.mark(label0);
+            mg.loadThis();
+            for (int i = 0; i < args.length; i++) mg.loadArg(0);
 
-            final Label l3 = new Label();
-            mv.visitTryCatchBlock(l2, l3, l2, null);
-            mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
-            mv.visitVarInsn(LSTORE, 1 + args.length);
-            mv.visitLabel(l0);
-            mv.visitVarInsn(ALOAD, 0);
-
-            for (int i = 0; i < args.length; i++) mv.visitVarInsn(ALOAD, i + 1);
-
-            mv.visitMethodInsn(INVOKEVIRTUAL, classInternalName, target(name), desc);
-            mv.visitVarInsn(ASTORE, 3 + args.length);
-            mv.visitLabel(l1);
-            mv.visitLdcInsn(monitorName);
-            mv.visitVarInsn(LLOAD, 1);
-            mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-
-            mv.visitVarInsn(ALOAD, 3);
-            mv.visitInsn(ARETURN);
-
-            mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{classInternalName, Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
-            mv.visitVarInsn(ASTORE, 4);
-            mv.visitLabel(l3);
-            mv.visitLdcInsn(monitorName);
-            mv.visitVarInsn(LLOAD, 1);
-            mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            mv.visitVarInsn(ALOAD, 4);
-            mv.visitInsn(ATHROW);
-
-            mv.visitMaxs(-1, -1);
-            mv.visitEnd();
+            mg.invokeVirtual(Type.getObjectType(classInternalName), new org.objectweb.asm.commons.Method(target(name), desc));
+            mg.mark(label1);
+            mg.push(monitorName);
+            mg.loadLocal(local0);
+            mg.invokeStatic(Type.getObjectType(trackerInternalName), org.objectweb.asm.commons.Method.getMethod("void track(java.lang.String,long)"));
+            Label label4 = mg.newLabel();
+            mg.goTo(label4);
+            mg.mark(label2);
+            mg.visitFrame(Opcodes.F_FULL
+                    , 11
+                    , local
+                    , 1
+                    , new Object[]{"java/lang/Throwable"});
+            int local1 = mg.newLocal(Type.getObjectType("java/lang/Object"));
+            mg.storeLocal(local1);
+            mg.mark(label3);
+            mg.push(monitorName);
+            mg.loadLocal(local0);
+            mg.invokeStatic(Type.getObjectType(trackerInternalName), org.objectweb.asm.commons.Method.getMethod("void track(java.lang.String,long)"));
+            mg.loadLocal(local1);
+            mg.throwException();
+            mg.mark(label4);
+            mg.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+            mg.returnValue();
+            mg.endMethod();
+            mg.visitEnd();
 
         } else {
+            mg.visitCode();
+            Label label0 = mg.newLabel();
+            Label label1 = mg.newLabel();
+            Label label2 = mg.newLabel();
+            mg.visitTryCatchBlock(label0, label1, label2, null);
+            Label label3 = mg.newLabel();
+            mg.visitTryCatchBlock(label2, label3, label2, null);
+            mg.invokeStatic(Type.getObjectType("java/lang/System"), org.objectweb.asm.commons.Method.getMethod("long nanoTime()"));
+            int local0 = mg.newLocal(Type.LONG_TYPE);
+            mg.storeLocal(local0);
+            mg.mark(label0);
+            mg.loadThis();
+            for (int i = 0; i < args.length; i++) mg.loadArg(0);
 
-            final MethodVisitor mv = this.cv.visitMethod(access, name, desc, signature, exceptions);
-            mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
-            mv.visitTryCatchBlock(l0, l1, l2, null);
-
-            final Label l3 = new Label();
-            mv.visitTryCatchBlock(l2, l3, l2, null);
-            mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
-            mv.visitVarInsn(LSTORE, 1);
-            mv.visitLabel(l0);
-            mv.visitVarInsn(ALOAD, 0);
-            mv.visitMethodInsn(INVOKEVIRTUAL, classInternalName, target(name), "()V");
-            mv.visitLabel(l1);
-            mv.visitLdcInsn(monitorName);
-            mv.visitVarInsn(LLOAD, 1);
-            mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-
-            final Label l4 = new Label();
-            mv.visitJumpInsn(GOTO, l4);
-
-            mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{classInternalName, Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
-            mv.visitVarInsn(ASTORE, 3);
-            mv.visitLabel(l3);
-            mv.visitLdcInsn(monitorName);
-            mv.visitVarInsn(LLOAD, 1);
-            mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            mv.visitVarInsn(ALOAD, 3);
-            mv.visitInsn(ATHROW);
-
-            mv.visitLabel(l4);
-            mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
-            mv.visitInsn(RETURN);
-
-            mv.visitMaxs(-1, -1);
-            mv.visitEnd();
+            mg.invokeVirtual(Type.getObjectType(classInternalName), new org.objectweb.asm.commons.Method(target(name), desc));
+            mg.mark(label1);
+            mg.push(monitorName);
+            mg.loadLocal(local0);
+            mg.invokeStatic(Type.getObjectType(trackerInternalName), org.objectweb.asm.commons.Method.getMethod("void track(java.lang.String,long)"));
+            Label label4 = mg.newLabel();
+            mg.goTo(label4);
+            mg.mark(label2);
+            mg.visitFrame(Opcodes.F_FULL
+                    , 11
+                    , local
+                    , 1
+                    , new Object[]{"java/lang/Throwable"});
+            int local1 = mg.newLocal(Type.getObjectType("java/lang/Object"));
+            mg.storeLocal(local1);
+            mg.mark(label3);
+            mg.push(monitorName);
+            mg.loadLocal(local0);
+            mg.invokeStatic(Type.getObjectType(trackerInternalName), org.objectweb.asm.commons.Method.getMethod("void track(java.lang.String,long)"));
+            mg.loadLocal(local1);
+            mg.throwException();
+            mg.mark(label4);
+            mg.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+            mg.returnValue();
+            mg.endMethod();
+            mg.visitEnd();
         }
 
     }

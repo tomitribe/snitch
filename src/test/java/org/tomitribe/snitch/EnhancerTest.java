@@ -118,23 +118,23 @@ public class EnhancerTest extends Assert {
         for (int i = 0; i < max; i++) {
 
             out.printf("    public void voidMethod%s(%s) throws IllegalStateException {\n" +
-//                    "        Tracker.start();\n" +
+                    "        Tracker.start();\n" +
                     "        final long start = System.nanoTime();\n" +
                     "        try {\n" +
                     "            track$voidMethod%s(%s);\n" +
                     "        } finally {\n" +
                     "            Tracker.track(\"theTag\", start);\n" +
-//                    "            Tracker.stop();\n" +
+                    "            Tracker.stop();\n" +
                     "        }\n" +
                     "    }%n", i, join(",", new ParamCallback(), args), i, join(",", new ArgCallback(), args));
             out.printf("    public boolean booleanMethod%s(%s) throws IllegalStateException {\n" +
-//                    "            Tracker.start();\n" +
+                    "            Tracker.start();\n" +
                     "        final long start = System.nanoTime();\n" +
                     "        try {\n" +
                     "            return track$booleanMethod%s(%s);\n" +
                     "        } finally {\n" +
                     "            Tracker.track(\"theTag\", start);\n" +
-//                    "            Tracker.stop();\n" +
+                    "            Tracker.stop();\n" +
                     "        }\n" +
                     "    }%n", i, join(",", new ParamCallback(), args), i, join(",", new ArgCallback(), args));
 
