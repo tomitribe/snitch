@@ -8,15 +8,20 @@ package org.tomitribe.snitch;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.tomitribe.snitch.util.Join;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import static org.tomitribe.snitch.util.Join.join;
 
 /**
  * @version $Revision$ $Date$
@@ -86,6 +91,7 @@ public class EnhancerTest extends Assert {
 
         final URLClassLoader loader = new URLClassLoader(new URL[]{});
 
+        Asmifier.asmify(Colors.class, "modified");
         modify(enhancer, loader, Colors.class);
         modify(enhancer, loader, Shapes.class);
 
@@ -101,12 +107,65 @@ public class EnhancerTest extends Assert {
         Bytecode.defineClass(enhance, clazz.getName(), loader);
     }
 
+    @Test
+    public void testGenerate() throws Exception {
+        final PrintStream out = System.out;
+        out.println("public class Blue {");
+
+        final int max = 12;
+        final List<String> args = new ArrayList<String>();
+
+        for (int i = 0; i < max; i++) {
+
+            out.printf("    public void voidMethod%s(%s) throws IllegalStateException {\n" +
+//                    "        Tracker.start();\n" +
+                    "        final long start = System.nanoTime();\n" +
+                    "        try {\n" +
+                    "            track$voidMethod%s(%s);\n" +
+                    "        } finally {\n" +
+                    "            Tracker.track(\"theTag\", start);\n" +
+//                    "            Tracker.stop();\n" +
+                    "        }\n" +
+                    "    }%n", i, join(",", new ParamCallback(), args), i, join(",", new ArgCallback(), args));
+            out.printf("    public boolean booleanMethod%s(%s) throws IllegalStateException {\n" +
+//                    "            Tracker.start();\n" +
+                    "        final long start = System.nanoTime();\n" +
+                    "        try {\n" +
+                    "            return track$booleanMethod%s(%s);\n" +
+                    "        } finally {\n" +
+                    "            Tracker.track(\"theTag\", start);\n" +
+//                    "            Tracker.stop();\n" +
+                    "        }\n" +
+                    "    }%n", i, join(",", new ParamCallback(), args), i, join(",", new ArgCallback(), args));
+
+            out.printf("    public boolean track$booleanMethod%s(%s) {return false;}%n", i, join(",", new ParamCallback(), args));
+            out.printf("    public void track$voidMethod%s(%s) {}%n", i, join(",", new ParamCallback(), args));
+            out.printf("    public static class Arg%s {}%n", i);
+
+            args.add("Arg" + i);
+        }
+
+        out.println("}");
+
+        Asmifier.asmify(Blue.class, "modified");
+    }
 
     public static class Colors {
 
         private final Shapes shapes = new Shapes();
 
         public Boolean orange(String s, Long l, Date d) throws IOException {
+            Tracker.start();
+            final long start = System.nanoTime();
+            try {
+                return track$orange(s, l, d);
+            } finally {
+                Tracker.track("tag", start);
+                Tracker.stop();
+            }
+        }
+
+        private Boolean track$orange(String s, Long l, Date d) throws IOException {
             green(0, false);
             purple(null, null, null);
             red(null, null, null);
@@ -153,6 +212,24 @@ public class EnhancerTest extends Assert {
 
         public void triangle(int i) {
 
+        }
+    }
+
+    private static class ArgCallback implements Join.NameCallback<String> {
+        int i;
+
+        @Override
+        public String getName(String object) {
+            return "a" + (i++);
+        }
+    }
+
+    private static class ParamCallback implements Join.NameCallback<String> {
+        int i;
+
+        @Override
+        public String getName(String object) {
+            return object + " a" + (i++);
         }
     }
 }

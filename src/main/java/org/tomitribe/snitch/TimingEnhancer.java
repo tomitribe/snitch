@@ -6,11 +6,11 @@
  */
 package org.tomitribe.snitch;
 
-import org.objectweb.asm.ClassAdapter;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.tomitribe.snitch.util.AsmModifiers;
 
 import java.util.Map;
@@ -18,13 +18,13 @@ import java.util.Map;
 /**
  * @version $Revision$ $Date$
  */
-public class TimingEnhancer extends ClassAdapter implements Opcodes {
+public class TimingEnhancer extends ClassVisitor implements Opcodes {
 
     private String classInternalName;
     private final Map<Method,Monitor> methods;
 
     public TimingEnhancer(ClassVisitor classVisitor, Clazz clazz) {
-        super(classVisitor);
+        super(Opcodes.ASM4, classVisitor);
         methods = clazz.getTime();
     }
 
@@ -67,6 +67,7 @@ public class TimingEnhancer extends ClassAdapter implements Opcodes {
         }
 
         final String monitorName = monitor.getName();
+        final Type[] args = Type.getArgumentTypes(desc);
 
         if (!desc.contains(")V")) {
             final MethodVisitor mv = this.cv.visitMethod(access, name, desc, signature, exceptions);
@@ -79,11 +80,14 @@ public class TimingEnhancer extends ClassAdapter implements Opcodes {
             final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
-            mv.visitVarInsn(LSTORE, 1);
+            mv.visitVarInsn(LSTORE, 1 + args.length);
             mv.visitLabel(l0);
             mv.visitVarInsn(ALOAD, 0);
+
+            for (int i = 0; i < args.length; i++) mv.visitVarInsn(ALOAD, i + 1);
+
             mv.visitMethodInsn(INVOKEVIRTUAL, classInternalName, target(name), desc);
-            mv.visitVarInsn(ASTORE, 3);
+            mv.visitVarInsn(ASTORE, 3 + args.length);
             mv.visitLabel(l1);
             mv.visitLdcInsn(monitorName);
             mv.visitVarInsn(LLOAD, 1);

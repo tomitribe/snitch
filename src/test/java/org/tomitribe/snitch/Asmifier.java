@@ -7,6 +7,8 @@
 package org.tomitribe.snitch;
 
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.util.ASMifier;
+import org.objectweb.asm.util.TraceClassVisitor;
 import org.tomitribe.snitch.util.IO;
 
 import java.io.File;
@@ -28,11 +30,16 @@ public class Asmifier {
 
 
         final File file = new File("/tmp/" + className);
-        final OutputStream write = IO.write(file);
-        reader.accept(new org.objectweb.asm.util.ASMifierClassVisitor(new PrintWriter(write)), ClassReader.SKIP_DEBUG);
-        write.close();
+
+        write(reader, file);
     }
 
+    private static void write(ClassReader reader, File file) throws IOException {
+        final OutputStream write = IO.write(file);
+        final TraceClassVisitor visitor = new TraceClassVisitor(null, new GASMifier(), new PrintWriter(write));
+        reader.accept(visitor, ClassReader.SKIP_DEBUG);
+        write.close();
+    }
 
     public static void asmify(Class clazz, String suffix) throws IOException {
         asmify(clazz.getName(), Bytecode.readClassFile(clazz.getClassLoader(), clazz), suffix);
@@ -45,8 +52,7 @@ public class Asmifier {
     public static void asmify(String className, byte[] bytes, final String suffix) throws IOException {
         final org.objectweb.asm.ClassReader reader = new org.objectweb.asm.ClassReader(bytes);
         final File file = new File("/tmp/" + className + "." + suffix);
-        final OutputStream write = IO.write(file);
-        reader.accept(new org.objectweb.asm.util.ASMifierClassVisitor(new PrintWriter(write)), ClassReader.SKIP_DEBUG);
-        write.close();
+
+        write(reader, file);
     }
 }

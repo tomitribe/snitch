@@ -8,9 +8,10 @@ package org.tomitribe.snitch.util;
 
 import junit.framework.TestCase;
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.commons.EmptyVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  * @version $Revision$ $Date$
@@ -19,7 +20,7 @@ public class AsmModifiersTest extends TestCase {
 
     public void testIsPublic() throws Exception {
         final ClassReader classReader = new ClassReader(IsPublic.class.getName());
-        classReader.accept(new EmptyVisitor() {
+        classReader.accept(new ClassVisitor(Opcodes.ASM4) {
             @Override
             public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
                 if (name.equals("<init>")) {
@@ -42,7 +43,7 @@ public class AsmModifiersTest extends TestCase {
 
     public void testIsPrivate() throws Exception {
         final ClassReader classReader = new ClassReader(IsPrivate.class.getName());
-        classReader.accept(new EmptyVisitor() {
+        classReader.accept(new ClassVisitor(Opcodes.ASM4) {
             @Override
             public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
                 if (name.equals("<init>")) {
@@ -65,7 +66,7 @@ public class AsmModifiersTest extends TestCase {
 
     public void testIsProtected() throws Exception {
         final ClassReader classReader = new ClassReader(IsProtected.class.getName());
-        classReader.accept(new EmptyVisitor() {
+        classReader.accept(new ClassVisitor(Opcodes.ASM4) {
             @Override
             public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
                 if (name.equals("<init>")) {
@@ -89,7 +90,7 @@ public class AsmModifiersTest extends TestCase {
 
     public void testIsStatic() throws Exception {
         final ClassReader classReader = new ClassReader(IsStatic.class.getName());
-        classReader.accept(new EmptyVisitor() {
+        classReader.accept(new ClassVisitor(Opcodes.ASM4) {
             @Override
             public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
                 if (name.equals("<init>")) {
@@ -113,7 +114,7 @@ public class AsmModifiersTest extends TestCase {
 
     public void testIsFinal() throws Exception {
         final ClassReader classReader = new ClassReader(IsFinal.class.getName());
-        classReader.accept(new EmptyVisitor() {
+        classReader.accept(new ClassVisitor(Opcodes.ASM4) {
             @Override
             public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
                 if (name.equals("<init>")) {
@@ -136,7 +137,7 @@ public class AsmModifiersTest extends TestCase {
 
     public void testIsSynchronized() throws Exception {
         final ClassReader classReader = new ClassReader(IsSynchronized.class.getName());
-        classReader.accept(new EmptyVisitor() {
+        classReader.accept(new ClassVisitor(Opcodes.ASM4) {
             @Override
             public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
                 if (name.equals("<init>")) {
@@ -159,7 +160,7 @@ public class AsmModifiersTest extends TestCase {
 
     public void testIsVolatile() throws Exception {
         final ClassReader classReader = new ClassReader(IsVolatile.class.getName());
-        classReader.accept(new EmptyVisitor() {
+        classReader.accept(new ClassVisitor(Opcodes.ASM4) {
             @Override
             public FieldVisitor visitField(int access, String s, String s1, String s2, Object o) {
 
@@ -179,7 +180,7 @@ public class AsmModifiersTest extends TestCase {
 
     public void testIsTransient() throws Exception {
         final ClassReader classReader = new ClassReader(IsTransient.class.getName());
-        classReader.accept(new EmptyVisitor() {
+        classReader.accept(new ClassVisitor(Opcodes.ASM4) {
             @Override
             public FieldVisitor visitField(int access, String s, String s1, String s2, Object o) {
 
@@ -199,7 +200,7 @@ public class AsmModifiersTest extends TestCase {
 
     public void testIsNative() throws Exception {
         final ClassReader classReader = new ClassReader(IsNative.class.getName());
-        classReader.accept(new EmptyVisitor() {
+        classReader.accept(new ClassVisitor(Opcodes.ASM4) {
             @Override
             public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
                 if (name.equals("<init>")) {
@@ -222,7 +223,7 @@ public class AsmModifiersTest extends TestCase {
 
     public void testIsAbstract() throws Exception {
         final ClassReader classReader = new ClassReader(IsAbstract.class.getName());
-        classReader.accept(new EmptyVisitor() {
+        classReader.accept(new ClassVisitor(Opcodes.ASM4) {
             @Override
             public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
                 if (name.equals("<init>")) {

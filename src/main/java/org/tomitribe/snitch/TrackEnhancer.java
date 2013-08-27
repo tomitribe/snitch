@@ -6,11 +6,11 @@
  */
 package org.tomitribe.snitch;
 
-import org.objectweb.asm.ClassAdapter;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.tomitribe.snitch.util.AsmModifiers;
 
 import java.util.Map;
@@ -18,13 +18,13 @@ import java.util.Map;
 /**
  * @version $Revision$ $Date$
  */
-public class TrackEnhancer extends ClassAdapter implements Opcodes {
+public class TrackEnhancer extends ClassVisitor implements Opcodes {
 
     private String classInternalName;
     private final Map<Method,Monitor> methods;
 
     public TrackEnhancer(ClassVisitor visitor, Clazz clazz) {
-        super(visitor);
+        super(Opcodes.ASM4, visitor);
         methods = clazz.getTrack();
     }
 
@@ -63,6 +63,7 @@ public class TrackEnhancer extends ClassAdapter implements Opcodes {
         }
 
         final String monitorName = monitor.getName();
+        final Type[] args = Type.getArgumentTypes(desc);
 
         if (!desc.contains(")V")) {
 
@@ -76,15 +77,19 @@ public class TrackEnhancer extends ClassAdapter implements Opcodes {
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "start", "()V");
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
-            mv.visitVarInsn(LSTORE, 2);
+            mv.visitVarInsn(LSTORE, 1 + args.length);
             mv.visitLabel(l0);
             mv.visitVarInsn(ALOAD, 0);
-            mv.visitVarInsn(ALOAD, 1);
+
+            for (int i = 0; i < args.length; i++) {
+                mv.visitVarInsn(ALOAD, i + 1);
+            }
+
             mv.visitMethodInsn(INVOKEVIRTUAL, classInternalName, target(name), desc);
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l1);
             mv.visitLdcInsn(monitorName);
-            mv.visitVarInsn(LLOAD, 2);
+            mv.visitVarInsn(LLOAD, 1 + args.length);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "stop", "()V");
             mv.visitVarInsn(ALOAD, 4);
