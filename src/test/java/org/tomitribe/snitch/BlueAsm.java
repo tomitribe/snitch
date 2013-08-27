@@ -22,8 +22,8 @@ public class BlueAsm implements Opcodes {
         {
             mv = cw.visitMethod(
                     ACC_PUBLIC,
-                    "voidMethod2",
-                    "(Lorg/tomitribe/snitch/Blue$Arg0;Lorg/tomitribe/snitch/Blue$Arg1;)V",
+                    "voidMethod9",
+                    "(Lorg/tomitribe/snitch/Blue$Arg0;Lorg/tomitribe/snitch/Blue$Arg1;Lorg/tomitribe/snitch/Blue$Arg2;Lorg/tomitribe/snitch/Blue$Arg3;Lorg/tomitribe/snitch/Blue$Arg4;Lorg/tomitribe/snitch/Blue$Arg5;Lorg/tomitribe/snitch/Blue$Arg6;Lorg/tomitribe/snitch/Blue$Arg7;Lorg/tomitribe/snitch/Blue$Arg8;)V",
                     null,
                     new String[]{"java/lang/IllegalStateException"}
             );
@@ -62,7 +62,7 @@ public class BlueAsm implements Opcodes {
             );
             mv.visitVarInsn(
                     LSTORE,
-                    3
+                    10
             );
             mv.visitLabel(
                     l0
@@ -79,11 +79,39 @@ public class BlueAsm implements Opcodes {
                     ALOAD,
                     2
             );
+            mv.visitVarInsn(
+                    ALOAD,
+                    3
+            );
+            mv.visitVarInsn(
+                    ALOAD,
+                    4
+            );
+            mv.visitVarInsn(
+                    ALOAD,
+                    5
+            );
+            mv.visitVarInsn(
+                    ALOAD,
+                    6
+            );
+            mv.visitVarInsn(
+                    ALOAD,
+                    7
+            );
+            mv.visitVarInsn(
+                    ALOAD,
+                    8
+            );
+            mv.visitVarInsn(
+                    ALOAD,
+                    9
+            );
             mv.visitMethodInsn(
                     INVOKEVIRTUAL,
                     "org/tomitribe/snitch/Blue",
-                    "track$voidMethod2",
-                    "(Lorg/tomitribe/snitch/Blue$Arg0;Lorg/tomitribe/snitch/Blue$Arg1;)V"
+                    "track$voidMethod9",
+                    "(Lorg/tomitribe/snitch/Blue$Arg0;Lorg/tomitribe/snitch/Blue$Arg1;Lorg/tomitribe/snitch/Blue$Arg2;Lorg/tomitribe/snitch/Blue$Arg3;Lorg/tomitribe/snitch/Blue$Arg4;Lorg/tomitribe/snitch/Blue$Arg5;Lorg/tomitribe/snitch/Blue$Arg6;Lorg/tomitribe/snitch/Blue$Arg7;Lorg/tomitribe/snitch/Blue$Arg8;)V"
             );
             mv.visitLabel(
                     l1
@@ -93,7 +121,7 @@ public class BlueAsm implements Opcodes {
             );
             mv.visitVarInsn(
                     LLOAD,
-                    3
+                    10
             );
             mv.visitMethodInsn(
                     INVOKESTATIC,
@@ -113,17 +141,24 @@ public class BlueAsm implements Opcodes {
             );
             mv.visitFrame(
                     Opcodes.F_FULL,
-                    4,
+                    11,
                     new Object[]{"org/tomitribe/snitch/Blue",
                             "org/tomitribe/snitch/Blue$Arg0",
                             "org/tomitribe/snitch/Blue$Arg1",
+                            "org/tomitribe/snitch/Blue$Arg2",
+                            "org/tomitribe/snitch/Blue$Arg3",
+                            "org/tomitribe/snitch/Blue$Arg4",
+                            "org/tomitribe/snitch/Blue$Arg5",
+                            "org/tomitribe/snitch/Blue$Arg6",
+                            "org/tomitribe/snitch/Blue$Arg7",
+                            "org/tomitribe/snitch/Blue$Arg8",
                             Opcodes.LONG},
                     1,
                     new Object[]{"java/lang/Throwable"}
             );
             mv.visitVarInsn(
                     ASTORE,
-                    5
+                    12
             );
             mv.visitLabel(
                     l3
@@ -133,7 +168,7 @@ public class BlueAsm implements Opcodes {
             );
             mv.visitVarInsn(
                     LLOAD,
-                    3
+                    10
             );
             mv.visitMethodInsn(
                     INVOKESTATIC,
@@ -143,7 +178,7 @@ public class BlueAsm implements Opcodes {
             );
             mv.visitVarInsn(
                     ALOAD,
-                    5
+                    12
             );
             mv.visitInsn(
                     ATHROW
@@ -162,8 +197,8 @@ public class BlueAsm implements Opcodes {
                     RETURN
             );
             mv.visitMaxs(
-                    3,
-                    6
+                    10,
+                    13
             );
             mv.visitEnd(
 
@@ -172,8 +207,8 @@ public class BlueAsm implements Opcodes {
         {
             mv = cw.visitMethod(
                     ACC_PUBLIC,
-                    "booleanMethod2",
-                    "(Lorg/tomitribe/snitch/Blue$Arg0;Lorg/tomitribe/snitch/Blue$Arg1;)Z",
+                    "booleanMethod9",
+                    "(Lorg/tomitribe/snitch/Blue$Arg0;Lorg/tomitribe/snitch/Blue$Arg1;Lorg/tomitribe/snitch/Blue$Arg2;Lorg/tomitribe/snitch/Blue$Arg3;Lorg/tomitribe/snitch/Blue$Arg4;Lorg/tomitribe/snitch/Blue$Arg5;Lorg/tomitribe/snitch/Blue$Arg6;Lorg/tomitribe/snitch/Blue$Arg7;Lorg/tomitribe/snitch/Blue$Arg8;)Z",
                     null,
                     new String[]{"java/lang/IllegalStateException"}
             );
@@ -212,7 +247,7 @@ public class BlueAsm implements Opcodes {
             );
             mv.visitVarInsn(
                     LSTORE,
-                    3
+                    10
             );
             mv.visitLabel(
                     l0
@@ -229,15 +264,43 @@ public class BlueAsm implements Opcodes {
                     ALOAD,
                     2
             );
+            mv.visitVarInsn(
+                    ALOAD,
+                    3
+            );
+            mv.visitVarInsn(
+                    ALOAD,
+                    4
+            );
+            mv.visitVarInsn(
+                    ALOAD,
+                    5
+            );
+            mv.visitVarInsn(
+                    ALOAD,
+                    6
+            );
+            mv.visitVarInsn(
+                    ALOAD,
+                    7
+            );
+            mv.visitVarInsn(
+                    ALOAD,
+                    8
+            );
+            mv.visitVarInsn(
+                    ALOAD,
+                    9
+            );
             mv.visitMethodInsn(
                     INVOKEVIRTUAL,
                     "org/tomitribe/snitch/Blue",
-                    "track$booleanMethod2",
-                    "(Lorg/tomitribe/snitch/Blue$Arg0;Lorg/tomitribe/snitch/Blue$Arg1;)Z"
+                    "track$booleanMethod9",
+                    "(Lorg/tomitribe/snitch/Blue$Arg0;Lorg/tomitribe/snitch/Blue$Arg1;Lorg/tomitribe/snitch/Blue$Arg2;Lorg/tomitribe/snitch/Blue$Arg3;Lorg/tomitribe/snitch/Blue$Arg4;Lorg/tomitribe/snitch/Blue$Arg5;Lorg/tomitribe/snitch/Blue$Arg6;Lorg/tomitribe/snitch/Blue$Arg7;Lorg/tomitribe/snitch/Blue$Arg8;)Z"
             );
             mv.visitVarInsn(
                     ISTORE,
-                    5
+                    12
             );
             mv.visitLabel(
                     l1
@@ -247,7 +310,7 @@ public class BlueAsm implements Opcodes {
             );
             mv.visitVarInsn(
                     LLOAD,
-                    3
+                    10
             );
             mv.visitMethodInsn(
                     INVOKESTATIC,
@@ -257,7 +320,7 @@ public class BlueAsm implements Opcodes {
             );
             mv.visitVarInsn(
                     ILOAD,
-                    5
+                    12
             );
             mv.visitInsn(
                     IRETURN
@@ -267,17 +330,24 @@ public class BlueAsm implements Opcodes {
             );
             mv.visitFrame(
                     Opcodes.F_FULL,
-                    4,
+                    11,
                     new Object[]{"org/tomitribe/snitch/Blue",
                             "org/tomitribe/snitch/Blue$Arg0",
                             "org/tomitribe/snitch/Blue$Arg1",
+                            "org/tomitribe/snitch/Blue$Arg2",
+                            "org/tomitribe/snitch/Blue$Arg3",
+                            "org/tomitribe/snitch/Blue$Arg4",
+                            "org/tomitribe/snitch/Blue$Arg5",
+                            "org/tomitribe/snitch/Blue$Arg6",
+                            "org/tomitribe/snitch/Blue$Arg7",
+                            "org/tomitribe/snitch/Blue$Arg8",
                             Opcodes.LONG},
                     1,
                     new Object[]{"java/lang/Throwable"}
             );
             mv.visitVarInsn(
                     ASTORE,
-                    6
+                    13
             );
             mv.visitLabel(
                     l3
@@ -287,7 +357,7 @@ public class BlueAsm implements Opcodes {
             );
             mv.visitVarInsn(
                     LLOAD,
-                    3
+                    10
             );
             mv.visitMethodInsn(
                     INVOKESTATIC,
@@ -297,14 +367,14 @@ public class BlueAsm implements Opcodes {
             );
             mv.visitVarInsn(
                     ALOAD,
-                    6
+                    13
             );
             mv.visitInsn(
                     ATHROW
             );
             mv.visitMaxs(
-                    3,
-                    7
+                    10,
+                    14
             );
             mv.visitEnd(
 
