@@ -23,7 +23,11 @@ import java.net.URLClassLoader;
  */
 public class Asmifier {
 
-    public static void print(URLClassLoader classLoader, final String className) throws IOException {
+    public static void main(String[] args) throws IOException {
+        Asmifier.print(Asmifier.class.getClassLoader(), "org.tomitribe.snitch.Blue");
+    }
+
+    public static void print(ClassLoader classLoader, final String className) throws IOException {
         final String internalName = className.replace('.', '/') + ".class";
         final URL resource = classLoader.getResource(internalName);
         final org.objectweb.asm.ClassReader reader = new org.objectweb.asm.ClassReader(resource.openStream());
@@ -36,7 +40,7 @@ public class Asmifier {
 
     private static void write(ClassReader reader, File file) throws IOException {
         final OutputStream write = IO.write(file);
-        final TraceClassVisitor visitor = new TraceClassVisitor(null, new GASMifier(), new PrintWriter(write));
+        final TraceClassVisitor visitor = new TraceClassVisitor(null, new ASMifier(), new PrintWriter(write));
         reader.accept(visitor, ClassReader.SKIP_DEBUG);
         write.close();
     }

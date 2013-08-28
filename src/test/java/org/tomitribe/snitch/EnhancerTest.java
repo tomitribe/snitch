@@ -109,48 +109,7 @@ public class EnhancerTest extends Assert {
         Bytecode.defineClass(enhance, clazz.getName(), loader);
     }
 
-    @Test
-    public void testGenerate() throws Exception {
-        final PrintStream out = System.out;
-        out.println("public class Blue {");
 
-        final int max = 12;
-        final List<String> args = new ArrayList<String>();
-
-        for (int i = 0; i < max; i++) {
-
-            out.printf("    public void voidMethod%s(%s) throws IllegalStateException {\n" +
-//                    "        Tracker.start();\n" +
-                    "        final long start = System.nanoTime();\n" +
-                    "        try {\n" +
-                    "            track$voidMethod%s(%s);\n" +
-                    "        } finally {\n" +
-                    "            Tracker.track(\"theTag\", start);\n" +
-//                    "            Tracker.stop();\n" +
-                    "        }\n" +
-                    "    }%n", i, join(",", new ParamCallback(), args), i, join(",", new ArgCallback(), args));
-            out.printf("    public boolean booleanMethod%s(%s) throws IllegalStateException {\n" +
-//                    "            Tracker.start();\n" +
-                    "        final long start = System.nanoTime();\n" +
-                    "        try {\n" +
-                    "            return track$booleanMethod%s(%s);\n" +
-                    "        } finally {\n" +
-                    "            Tracker.track(\"theTag\", start);\n" +
-//                    "            Tracker.stop();\n" +
-                    "        }\n" +
-                    "    }%n", i, join(",", new ParamCallback(), args), i, join(",", new ArgCallback(), args));
-
-            out.printf("    public boolean track$booleanMethod%s(%s) {return false;}%n", i, join(",", new ParamCallback(), args));
-            out.printf("    public void track$voidMethod%s(%s) {}%n", i, join(",", new ParamCallback(), args));
-            out.printf("    public static class Arg%s {}%n", i);
-
-            args.add("Arg" + i);
-        }
-
-        out.println("}");
-
-        Asmifier.asmify(Blue.class, "modified");
-    }
 
     public static class Colors {
 
@@ -251,21 +210,4 @@ public class EnhancerTest extends Assert {
         }
     }
 
-    private static class ArgCallback implements Join.NameCallback<String> {
-        int i;
-
-        @Override
-        public String getName(String object) {
-            return "a" + (i++);
-        }
-    }
-
-    private static class ParamCallback implements Join.NameCallback<String> {
-        int i;
-
-        @Override
-        public String getName(String object) {
-            return object + " a" + (i++);
-        }
-    }
 }

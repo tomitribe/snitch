@@ -1,345 +1,446 @@
-/* =====================================================================
- *
- * Copyright (c) 2011 David Blevins.  All rights reserved.
- *
- * =====================================================================
- */
 package org.tomitribe.snitch;
 
+import org.tomitribe.snitch.Tracker;
+
 public class Blue {
-    public void voidMethod0() throws IllegalStateException {
+    // void return type
+
+    public void voidMethodTime0() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            track$voidMethod0();
+            track$voidMethodTime0();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean booleanMethod0() throws IllegalStateException {
+    public void track$voidMethodTime0() {
+    }
+
+    // object or primitive return type
+
+    public byte byteMethodTime0() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            return track$booleanMethod0();
+            return track$byteMethodTime0();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean track$booleanMethod0() {
-        return false;
+    public byte track$byteMethodTime0() {
+        throw new UnsupportedOperationException();
     }
 
-    public void track$voidMethod0() {
-    }
+    // array object or primitive return type
 
-    public static class Arg0 {
-    }
-
-    public void voidMethod1(Arg0 a0) throws IllegalStateException {
+    public byte[] byteArrayMethodTime0() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            track$voidMethod1(a0);
+            return track$byteArrayMethodTime0();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean booleanMethod1(Arg0 a0) throws IllegalStateException {
+    public byte[] track$byteArrayMethodTime0() {
+        throw new UnsupportedOperationException();
+    }
+
+    // void return type
+
+    public void voidMethodTime1() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            return track$booleanMethod1(a0);
+            track$voidMethodTime1();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean track$booleanMethod1(Arg0 a0) {
-        return false;
+    public void track$voidMethodTime1() {
     }
 
-    public void track$voidMethod1(Arg0 a0) {
-    }
+    // object or primitive return type
 
-    public static class Arg1 {
-    }
-
-    public void voidMethod2(Arg0 a0, Arg1 a1) throws IllegalStateException {
+    public boolean booleanMethodTime1() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            track$voidMethod2(a0, a1);
+            return track$booleanMethodTime1();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean booleanMethod2(Arg0 a0, Arg1 a1) throws IllegalStateException {
+    public boolean track$booleanMethodTime1() {
+        throw new UnsupportedOperationException();
+    }
+
+    // array object or primitive return type
+
+    public boolean[] booleanArrayMethodTime1() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            return track$booleanMethod2(a0, a1);
+            return track$booleanArrayMethodTime1();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean track$booleanMethod2(Arg0 a0, Arg1 a1) {
-        return false;
+    public boolean[] track$booleanArrayMethodTime1() {
+        throw new UnsupportedOperationException();
     }
 
-    public void track$voidMethod2(Arg0 a0, Arg1 a1) {
-    }
+    // void return type
 
-    public static class Arg2 {
-    }
-
-    public void voidMethod3(Arg0 a0, Arg1 a1, Arg2 a2) throws IllegalStateException {
+    public void voidMethodTime2() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            track$voidMethod3(a0, a1, a2);
+            track$voidMethodTime2();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean booleanMethod3(Arg0 a0, Arg1 a1, Arg2 a2) throws IllegalStateException {
+    public void track$voidMethodTime2() {
+    }
+
+    // object or primitive return type
+
+    public char charMethodTime2() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            return track$booleanMethod3(a0, a1, a2);
+            return track$charMethodTime2();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean track$booleanMethod3(Arg0 a0, Arg1 a1, Arg2 a2) {
-        return false;
+    public char track$charMethodTime2() {
+        throw new UnsupportedOperationException();
     }
 
-    public void track$voidMethod3(Arg0 a0, Arg1 a1, Arg2 a2) {
-    }
+    // array object or primitive return type
 
-    public static class Arg3 {
-    }
-
-    public void voidMethod4(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3) throws IllegalStateException {
+    public char[] charArrayMethodTime2() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            track$voidMethod4(a0, a1, a2, a3);
+            return track$charArrayMethodTime2();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean booleanMethod4(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3) throws IllegalStateException {
+    public char[] track$charArrayMethodTime2() {
+        throw new UnsupportedOperationException();
+    }
+
+    // void return type
+
+    public void voidMethodTime3() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            return track$booleanMethod4(a0, a1, a2, a3);
+            track$voidMethodTime3();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean track$booleanMethod4(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3) {
-        return false;
+    public void track$voidMethodTime3() {
     }
 
-    public void track$voidMethod4(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3) {
-    }
+    // object or primitive return type
 
-    public static class Arg4 {
-    }
-
-    public void voidMethod5(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4) throws IllegalStateException {
+    public short shortMethodTime3() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            track$voidMethod5(a0, a1, a2, a3, a4);
+            return track$shortMethodTime3();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean booleanMethod5(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4) throws IllegalStateException {
+    public short track$shortMethodTime3() {
+        throw new UnsupportedOperationException();
+    }
+
+    // array object or primitive return type
+
+    public short[] shortArrayMethodTime3() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            return track$booleanMethod5(a0, a1, a2, a3, a4);
+            return track$shortArrayMethodTime3();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean track$booleanMethod5(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4) {
-        return false;
+    public short[] track$shortArrayMethodTime3() {
+        throw new UnsupportedOperationException();
     }
 
-    public void track$voidMethod5(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4) {
-    }
+    // void return type
 
-    public static class Arg5 {
-    }
-
-    public void voidMethod6(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5) throws IllegalStateException {
+    public void voidMethodTime4() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            track$voidMethod6(a0, a1, a2, a3, a4, a5);
+            track$voidMethodTime4();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean booleanMethod6(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5) throws IllegalStateException {
+    public void track$voidMethodTime4() {
+    }
+
+    // object or primitive return type
+
+    public int intMethodTime4() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            return track$booleanMethod6(a0, a1, a2, a3, a4, a5);
+            return track$intMethodTime4();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean track$booleanMethod6(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5) {
-        return false;
+    public int track$intMethodTime4() {
+        throw new UnsupportedOperationException();
     }
 
-    public void track$voidMethod6(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5) {
-    }
+    // array object or primitive return type
 
-    public static class Arg6 {
-    }
-
-    public void voidMethod7(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6) throws IllegalStateException {
+    public int[] intArrayMethodTime4() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            track$voidMethod7(a0, a1, a2, a3, a4, a5, a6);
+            return track$intArrayMethodTime4();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean booleanMethod7(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6) throws IllegalStateException {
+    public int[] track$intArrayMethodTime4() {
+        throw new UnsupportedOperationException();
+    }
+
+    // void return type
+
+    public void voidMethodTime5() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            return track$booleanMethod7(a0, a1, a2, a3, a4, a5, a6);
+            track$voidMethodTime5();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean track$booleanMethod7(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6) {
-        return false;
+    public void track$voidMethodTime5() {
     }
 
-    public void track$voidMethod7(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6) {
-    }
+    // object or primitive return type
 
-    public static class Arg7 {
-    }
-
-    public void voidMethod8(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6, Arg7 a7) throws IllegalStateException {
+    public long longMethodTime5() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            track$voidMethod8(a0, a1, a2, a3, a4, a5, a6, a7);
+            return track$longMethodTime5();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean booleanMethod8(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6, Arg7 a7) throws IllegalStateException {
+    public long track$longMethodTime5() {
+        throw new UnsupportedOperationException();
+    }
+
+    // array object or primitive return type
+
+    public long[] longArrayMethodTime5() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            return track$booleanMethod8(a0, a1, a2, a3, a4, a5, a6, a7);
+            return track$longArrayMethodTime5();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean track$booleanMethod8(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6, Arg7 a7) {
-        return false;
+    public long[] track$longArrayMethodTime5() {
+        throw new UnsupportedOperationException();
     }
 
-    public void track$voidMethod8(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6, Arg7 a7) {
-    }
+    // void return type
 
-    public static class Arg8 {
-    }
-
-    public void voidMethod9(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6, Arg7 a7, Arg8 a8) throws IllegalStateException {
+    public void voidMethodTime6() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            track$voidMethod9(a0, a1, a2, a3, a4, a5, a6, a7, a8);
+            track$voidMethodTime6();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean booleanMethod9(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6, Arg7 a7, Arg8 a8) throws IllegalStateException {
+    public void track$voidMethodTime6() {
+    }
+
+    // object or primitive return type
+
+    public float floatMethodTime6() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            return track$booleanMethod9(a0, a1, a2, a3, a4, a5, a6, a7, a8);
+            return track$floatMethodTime6();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean track$booleanMethod9(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6, Arg7 a7, Arg8 a8) {
-        return false;
+    public float track$floatMethodTime6() {
+        throw new UnsupportedOperationException();
     }
 
-    public void track$voidMethod9(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6, Arg7 a7, Arg8 a8) {
-    }
+    // array object or primitive return type
 
-    public static class Arg9 {
-    }
-
-    public void voidMethod10(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6, Arg7 a7, Arg8 a8, Arg9 a9) throws IllegalStateException {
+    public float[] floatArrayMethodTime6() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            track$voidMethod10(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9);
+            return track$floatArrayMethodTime6();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean booleanMethod10(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6, Arg7 a7, Arg8 a8, Arg9 a9) throws IllegalStateException {
+    public float[] track$floatArrayMethodTime6() {
+        throw new UnsupportedOperationException();
+    }
+
+    // void return type
+
+    public void voidMethodTime7() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            return track$booleanMethod10(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9);
+            track$voidMethodTime7();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean track$booleanMethod10(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6, Arg7 a7, Arg8 a8, Arg9 a9) {
-        return false;
+    public void track$voidMethodTime7() {
     }
 
-    public void track$voidMethod10(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6, Arg7 a7, Arg8 a8, Arg9 a9) {
-    }
+    // object or primitive return type
 
-    public static class Arg10 {
-    }
-
-    public void voidMethod11(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6, Arg7 a7, Arg8 a8, Arg9 a9, Arg10 a10) throws IllegalStateException {
+    public double doubleMethodTime7() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            track$voidMethod11(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10);
+            return track$doubleMethodTime7();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean booleanMethod11(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6, Arg7 a7, Arg8 a8, Arg9 a9, Arg10 a10) throws IllegalStateException {
+    public double track$doubleMethodTime7() {
+        throw new UnsupportedOperationException();
+    }
+
+    // array object or primitive return type
+
+    public double[] doubleArrayMethodTime7() throws IllegalStateException {
         final long start = System.nanoTime();
         try {
-            return track$booleanMethod11(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10);
+            return track$doubleArrayMethodTime7();
         } finally {
             Tracker.track("theTag", start);
         }
     }
 
-    public boolean track$booleanMethod11(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6, Arg7 a7, Arg8 a8, Arg9 a9, Arg10 a10) {
-        return false;
+    public double[] track$doubleArrayMethodTime7() {
+        throw new UnsupportedOperationException();
     }
 
-    public void track$voidMethod11(Arg0 a0, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4, Arg5 a5, Arg6 a6, Arg7 a7, Arg8 a8, Arg9 a9, Arg10 a10) {
+    // void return type
+
+    public void voidMethodTime8() throws IllegalStateException {
+        final long start = System.nanoTime();
+        try {
+            track$voidMethodTime8();
+        } finally {
+            Tracker.track("theTag", start);
+        }
     }
 
-    public static class Arg11 {
+    public void track$voidMethodTime8() {
     }
+
+    // object or primitive return type
+
+    public java.util.Date DateMethodTime8() throws IllegalStateException {
+        final long start = System.nanoTime();
+        try {
+            return track$DateMethodTime8();
+        } finally {
+            Tracker.track("theTag", start);
+        }
+    }
+
+    public java.util.Date track$DateMethodTime8() {
+        throw new UnsupportedOperationException();
+    }
+
+    // array object or primitive return type
+
+    public java.util.Date[] DateArrayMethodTime8() throws IllegalStateException {
+        final long start = System.nanoTime();
+        try {
+            return track$DateArrayMethodTime8();
+        } finally {
+            Tracker.track("theTag", start);
+        }
+    }
+
+    public java.util.Date[] track$DateArrayMethodTime8() {
+        throw new UnsupportedOperationException();
+    }
+
+    // void return type
+
+    public void voidMethodTime9() throws IllegalStateException {
+        final long start = System.nanoTime();
+        try {
+            track$voidMethodTime9();
+        } finally {
+            Tracker.track("theTag", start);
+        }
+    }
+
+    public void track$voidMethodTime9() {
+    }
+
+    // object or primitive return type
+
+    public java.net.URI URIMethodTime9() throws IllegalStateException {
+        final long start = System.nanoTime();
+        try {
+            return track$URIMethodTime9();
+        } finally {
+            Tracker.track("theTag", start);
+        }
+    }
+
+    public java.net.URI track$URIMethodTime9() {
+        throw new UnsupportedOperationException();
+    }
+
+    // array object or primitive return type
+
+    public java.net.URI[] URIArrayMethodTime9() throws IllegalStateException {
+        final long start = System.nanoTime();
+        try {
+            return track$URIArrayMethodTime9();
+        } finally {
+            Tracker.track("theTag", start);
+        }
+    }
+
+    public java.net.URI[] track$URIArrayMethodTime9() {
+        throw new UnsupportedOperationException();
+    }
+
 }
