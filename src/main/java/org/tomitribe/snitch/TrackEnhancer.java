@@ -67,8 +67,8 @@ public class TrackEnhancer extends ClassVisitor implements Opcodes {
 
         final String monitorName = monitor.getName();
         final Type[] args = Type.getArgumentTypes(desc);
-        final Type[] exceptionTypes = new Type[exceptions.length];
-        for (int i = 0; i < exceptions.length; i++) {
+        final Type[] exceptionTypes = (exceptions == null) ? new Type[0] : new Type[exceptions.length];
+        for (int i = 0; i < exceptionTypes.length; i++) {
             exceptionTypes[i] = Type.getObjectType(exceptions[i]);
         }
 
@@ -93,6 +93,7 @@ public class TrackEnhancer extends ClassVisitor implements Opcodes {
             mg.visitTryCatchBlock(label0, label1, label2, null);
             Label label3 = mg.newLabel();
             mg.visitTryCatchBlock(label2, label3, label2, null);
+            mg.invokeStatic(Type.getObjectType(trackerInternalName), org.objectweb.asm.commons.Method.getMethod("void start()"));
             mg.invokeStatic(Type.getObjectType("java/lang/System"), org.objectweb.asm.commons.Method.getMethod("long nanoTime()"));
             int local0 = mg.newLocal(Type.LONG_TYPE);
             mg.storeLocal(local0);
@@ -105,11 +106,12 @@ public class TrackEnhancer extends ClassVisitor implements Opcodes {
             mg.push(monitorName);
             mg.loadLocal(local0);
             mg.invokeStatic(Type.getObjectType(trackerInternalName), org.objectweb.asm.commons.Method.getMethod("void track(java.lang.String,long)"));
+            mg.invokeStatic(Type.getObjectType(trackerInternalName), org.objectweb.asm.commons.Method.getMethod("void stop()"));
             Label label4 = mg.newLabel();
             mg.goTo(label4);
             mg.mark(label2);
-            mg.visitFrame(Opcodes.F_FULL
-                    , 11
+            mg.visitFrame(Opcodes.F_NEW
+                    , 2 + args.length
                     , local
                     , 1
                     , new Object[]{"java/lang/Throwable"});
@@ -119,10 +121,11 @@ public class TrackEnhancer extends ClassVisitor implements Opcodes {
             mg.push(monitorName);
             mg.loadLocal(local0);
             mg.invokeStatic(Type.getObjectType(trackerInternalName), org.objectweb.asm.commons.Method.getMethod("void track(java.lang.String,long)"));
+            mg.invokeStatic(Type.getObjectType(trackerInternalName), org.objectweb.asm.commons.Method.getMethod("void stop()"));
             mg.loadLocal(local1);
             mg.throwException();
             mg.mark(label4);
-            mg.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+            mg.visitFrame(Opcodes.F_NEW, 0, null, 0, null);
             mg.returnValue();
             mg.endMethod();
             mg.visitEnd();
@@ -135,6 +138,7 @@ public class TrackEnhancer extends ClassVisitor implements Opcodes {
             mg.visitTryCatchBlock(label0, label1, label2, null);
             Label label3 = mg.newLabel();
             mg.visitTryCatchBlock(label2, label3, label2, null);
+            mg.invokeStatic(Type.getObjectType(trackerInternalName), org.objectweb.asm.commons.Method.getMethod("void start()"));
             mg.invokeStatic(Type.getObjectType("java/lang/System"), org.objectweb.asm.commons.Method.getMethod("long nanoTime()"));
             int local0 = mg.newLocal(Type.LONG_TYPE);
             mg.storeLocal(local0);
@@ -147,11 +151,12 @@ public class TrackEnhancer extends ClassVisitor implements Opcodes {
             mg.push(monitorName);
             mg.loadLocal(local0);
             mg.invokeStatic(Type.getObjectType(trackerInternalName), org.objectweb.asm.commons.Method.getMethod("void track(java.lang.String,long)"));
+            mg.invokeStatic(Type.getObjectType(trackerInternalName), org.objectweb.asm.commons.Method.getMethod("void stop()"));
             Label label4 = mg.newLabel();
             mg.goTo(label4);
             mg.mark(label2);
-            mg.visitFrame(Opcodes.F_FULL
-                    , 11
+            mg.visitFrame(Opcodes.F_NEW
+                    , 2 + args.length
                     , local
                     , 1
                     , new Object[]{"java/lang/Throwable"});
@@ -161,6 +166,7 @@ public class TrackEnhancer extends ClassVisitor implements Opcodes {
             mg.push(monitorName);
             mg.loadLocal(local0);
             mg.invokeStatic(Type.getObjectType(trackerInternalName), org.objectweb.asm.commons.Method.getMethod("void track(java.lang.String,long)"));
+            mg.invokeStatic(Type.getObjectType(trackerInternalName), org.objectweb.asm.commons.Method.getMethod("void stop()"));
             mg.loadLocal(local1);
             mg.throwException();
             mg.mark(label4);

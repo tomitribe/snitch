@@ -104,7 +104,7 @@ public class Method {
         return "L" + raw.replace('.', '/') + ";";
     }
 
-    private static String type(Type type) {
+    public static String type(Type type) {
         if (Type.BYTE_TYPE.equals(type)) return "byte";
         if (Type.BOOLEAN_TYPE.equals(type)) return "boolean";
         if (Type.CHAR_TYPE.equals(type)) return "char";

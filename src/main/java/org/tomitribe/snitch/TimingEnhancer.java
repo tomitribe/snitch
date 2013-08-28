@@ -53,13 +53,18 @@ public class TimingEnhancer extends ClassVisitor implements Opcodes {
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 
-        final Monitor monitor = methods.remove(Method.fromDescriptor(name, desc, ""));
+        try {
+            final Monitor monitor = methods.remove(Method.fromDescriptor(name, desc, ""));
 
-        if (monitor != null) {
-            enhanceMethod(monitor, access, name, desc, signature, exceptions);
-            return super.visitMethod(access, target(name), desc, signature, exceptions);
-        } else {
-            return super.visitMethod(access, name, desc, signature, exceptions);
+            if (monitor != null) {
+                enhanceMethod(monitor, access, name, desc, signature, exceptions);
+                return super.visitMethod(access, target(name), desc, signature, exceptions);
+            } else {
+                return super.visitMethod(access, name, desc, signature, exceptions);
+            }
+        } catch (RuntimeException e) {
+            System.err.println(name + " " + desc);
+            throw e;
         }
     }
 
@@ -71,8 +76,8 @@ public class TimingEnhancer extends ClassVisitor implements Opcodes {
 
         final String monitorName = monitor.getName();
         final Type[] args = Type.getArgumentTypes(desc);
-        final Type[] exceptionTypes = new Type[exceptions.length];
-        for (int i = 0; i < exceptions.length; i++) {
+        final Type[] exceptionTypes = (exceptions == null) ? new Type[0] : new Type[exceptions.length];
+        for (int i = 0; i < exceptionTypes.length; i++) {
             exceptionTypes[i] = Type.getObjectType(exceptions[i]);
         }
 
@@ -82,7 +87,7 @@ public class TimingEnhancer extends ClassVisitor implements Opcodes {
         final List<Object> list = new ArrayList<Object>();
         list.add(classInternalName);
         for (Type arg : args) {
-            list.add(arg.getInternalName());
+            list.add(internalName(arg));
         }
         list.add(Opcodes.LONG);
         final Object[] local = list.toArray();
@@ -112,8 +117,8 @@ public class TimingEnhancer extends ClassVisitor implements Opcodes {
             Label label4 = mg.newLabel();
             mg.goTo(label4);
             mg.mark(label2);
-            mg.visitFrame(Opcodes.F_FULL
-                    , 11
+            mg.visitFrame(Opcodes.F_NEW
+                    , 2 + args.length
                     , local
                     , 1
                     , new Object[]{"java/lang/Throwable"});
@@ -126,7 +131,7 @@ public class TimingEnhancer extends ClassVisitor implements Opcodes {
             mg.loadLocal(local1);
             mg.throwException();
             mg.mark(label4);
-            mg.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+            mg.visitFrame(Opcodes.F_NEW, 0, null, 0, null);
             mg.returnValue();
             mg.endMethod();
             mg.visitEnd();
@@ -154,8 +159,8 @@ public class TimingEnhancer extends ClassVisitor implements Opcodes {
             Label label4 = mg.newLabel();
             mg.goTo(label4);
             mg.mark(label2);
-            mg.visitFrame(Opcodes.F_FULL
-                    , 11
+            mg.visitFrame(Opcodes.F_NEW
+                    , 2 + args.length
                     , local
                     , 1
                     , new Object[]{"java/lang/Throwable"});
@@ -168,7 +173,7 @@ public class TimingEnhancer extends ClassVisitor implements Opcodes {
             mg.loadLocal(local1);
             mg.throwException();
             mg.mark(label4);
-            mg.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+            mg.visitFrame(Opcodes.F_NEW, 0, null, 0, null);
             mg.returnValue();
             mg.endMethod();
             mg.visitEnd();
@@ -178,5 +183,18 @@ public class TimingEnhancer extends ClassVisitor implements Opcodes {
 
     private String target(String methodName) {
         return "track$" + methodName;
+    }
+
+    private static Object internalName(Type type) {
+        if (Type.BYTE_TYPE.equals(type)) return Opcodes.INTEGER;
+        if (Type.BOOLEAN_TYPE.equals(type)) return Opcodes.INTEGER;
+        if (Type.CHAR_TYPE.equals(type)) return Opcodes.INTEGER;
+        if (Type.SHORT_TYPE.equals(type)) return Opcodes.INTEGER;
+        if (Type.INT_TYPE.equals(type)) return Opcodes.INTEGER;
+        if (Type.LONG_TYPE.equals(type)) return Opcodes.LONG;
+        if (Type.FLOAT_TYPE.equals(type)) return Opcodes.FLOAT;
+        if (Type.DOUBLE_TYPE.equals(type)) return Opcodes.DOUBLE;
+
+        return type.getInternalName();
     }
 }

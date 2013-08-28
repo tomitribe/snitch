@@ -80,6 +80,8 @@ public class EnhancerTest extends Assert {
 
     @Test
     public void testEnhance() throws Exception {
+        Asmifier.asmify(Colors.class, "unmodified");
+
         final Properties properties = new Properties();
 
         properties.put("@Orange", Colors.class.getMethod("orange", String.class, Long.class, Date.class).toString());
@@ -91,7 +93,6 @@ public class EnhancerTest extends Assert {
 
         final URLClassLoader loader = new URLClassLoader(new URL[]{});
 
-        Asmifier.asmify(Colors.class, "modified");
         modify(enhancer, loader, Colors.class);
         modify(enhancer, loader, Shapes.class);
 
@@ -104,6 +105,7 @@ public class EnhancerTest extends Assert {
 
     private void modify(Enhancer enhancer, ClassLoader loader, final Class<?> clazz) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException, IOException {
         final byte[] enhance = enhancer.enhance(clazz.getName(), Bytecode.readClassFile(clazz));
+        Asmifier.asmify(clazz.getName(), enhance, "modified");
         Bytecode.defineClass(enhance, clazz.getName(), loader);
     }
 
@@ -118,23 +120,23 @@ public class EnhancerTest extends Assert {
         for (int i = 0; i < max; i++) {
 
             out.printf("    public void voidMethod%s(%s) throws IllegalStateException {\n" +
-                    "        Tracker.start();\n" +
+//                    "        Tracker.start();\n" +
                     "        final long start = System.nanoTime();\n" +
                     "        try {\n" +
                     "            track$voidMethod%s(%s);\n" +
                     "        } finally {\n" +
                     "            Tracker.track(\"theTag\", start);\n" +
-                    "            Tracker.stop();\n" +
+//                    "            Tracker.stop();\n" +
                     "        }\n" +
                     "    }%n", i, join(",", new ParamCallback(), args), i, join(",", new ArgCallback(), args));
             out.printf("    public boolean booleanMethod%s(%s) throws IllegalStateException {\n" +
-                    "            Tracker.start();\n" +
+//                    "            Tracker.start();\n" +
                     "        final long start = System.nanoTime();\n" +
                     "        try {\n" +
                     "            return track$booleanMethod%s(%s);\n" +
                     "        } finally {\n" +
                     "            Tracker.track(\"theTag\", start);\n" +
-                    "            Tracker.stop();\n" +
+//                    "            Tracker.stop();\n" +
                     "        }\n" +
                     "    }%n", i, join(",", new ParamCallback(), args), i, join(",", new ArgCallback(), args));
 
@@ -155,17 +157,17 @@ public class EnhancerTest extends Assert {
         private final Shapes shapes = new Shapes();
 
         public Boolean orange(String s, Long l, Date d) throws IOException {
-            Tracker.start();
-            final long start = System.nanoTime();
-            try {
-                return track$orange(s, l, d);
-            } finally {
-                Tracker.track("tag", start);
-                Tracker.stop();
-            }
-        }
-
-        private Boolean track$orange(String s, Long l, Date d) throws IOException {
+//            Tracker.start();
+//            final long start = System.nanoTime();
+//            try {
+//                return track$orange2(s, l, d);
+//            } finally {
+//                Tracker.track("tag", start);
+//                Tracker.stop();
+//            }
+//        }
+//
+//        private Boolean track$orange2(String s, Long l, Date d) throws IOException {
             green(0, false);
             purple(null, null, null);
             red(null, null, null);
@@ -189,6 +191,14 @@ public class EnhancerTest extends Assert {
         }
 
         public int[][] purple(String[] s, long[][] l, Date[][][] d) throws IOException {
+            final long start = System.nanoTime();
+            try {
+                return purple2(s,l,d);
+            } finally {
+                Tracker.track("theTag", start);
+            }
+        }
+        public int[][] purple2(String[] s, long[][] l, Date[][][] d) throws IOException {
 
             return null;
         }
@@ -198,6 +208,32 @@ public class EnhancerTest extends Assert {
         }
 
         public void yellow() throws IOException {
+        }
+
+
+        private void primitives(byte b, boolean z, char c, short s, int i, long l, float f, double d){
+            final long start = System.nanoTime();
+            try {
+                primitives1(b, z, c, s, i, l, f, d);
+            } finally {
+                Tracker.track("theTag", start);
+            }
+        }
+
+        private void primitives(byte[] b, boolean[] z, char[] c, short[] s, int[] i, long[] l, float[] f, double[] d){
+            final long start = System.nanoTime();
+            try {
+                primitives1(b, z, c, s, i, l, f, d);
+            } finally {
+                Tracker.track("theTag", start);
+            }
+        }
+
+        private void primitives1(byte b, boolean z, char c, short s, int i, long l, float f, double d){
+
+        }
+        private void primitives1(byte[] b, boolean[] z, char[] c, short[] s, int[] i, long[] l, float[] f, double[] d){
+
         }
     }
 
