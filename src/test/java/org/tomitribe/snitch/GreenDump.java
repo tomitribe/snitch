@@ -6,6 +6,7 @@ import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -1348,27 +1349,37 @@ public class GreenDump implements Opcodes {
             mv.visitTryCatchBlock(tryBlock, successBlock, failureBlock, null);
             mv.visitTryCatchBlock(failureBlock, finallyBlock, failureBlock, null);
 
+            final Type[] types = Type.getArgumentTypes("(BZCSIJFDLjava/util/Date;)V");
+
+            int variables = types.length;
+            for (Type type : types) {
+                if (Type.LONG_TYPE.equals(type) || Type.DOUBLE_TYPE.equals(type)) {
+                    variables++;
+                }
+            }
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
-            mv.visitVarInsn(LSTORE, 12);
+            mv.visitVarInsn(LSTORE, variables + 1);
 
             mv.visitLabel(tryBlock);
             {
-                mv.visitVarInsn(ALOAD, 0);
-                mv.visitVarInsn(ILOAD, 1);
-                mv.visitVarInsn(ILOAD, 2);
-                mv.visitVarInsn(ILOAD, 3);
-                mv.visitVarInsn(ILOAD, 4);
-                mv.visitVarInsn(ILOAD, 5);
-                mv.visitVarInsn(LLOAD, 6); // consumes 2
-                mv.visitVarInsn(FLOAD, 8);
-                mv.visitVarInsn(DLOAD, 9); // consumes 2
-                mv.visitVarInsn(ALOAD, 11);
+                int slot = 0;
+
+                mv.visitVarInsn(ALOAD, slot++); // "this"
+
+                for (Type type : types) {
+                    mv.visitVarInsn(type.getOpcode(ILOAD), slot++);
+
+                    if (Type.LONG_TYPE.equals(type) || Type.DOUBLE_TYPE.equals(type)) {
+                        slot++;
+                    }
+
+                }
                 mv.visitMethodInsn(INVOKEVIRTUAL, "org/tomitribe/snitch/Green", "track$voidMethodTime9", "(BZCSIJFDLjava/util/Date;)V");
             }
             mv.visitLabel(successBlock);
             {
                 mv.visitLdcInsn("time9");
-                mv.visitVarInsn(LLOAD, 12);
+                mv.visitVarInsn(LLOAD, variables + 1);
                 mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
                 mv.visitJumpInsn(GOTO, endBlock);
             }
@@ -1380,7 +1391,7 @@ public class GreenDump implements Opcodes {
             mv.visitLabel(finallyBlock);
             {
                 mv.visitLdcInsn("time9");
-                mv.visitVarInsn(LLOAD, 12);
+                mv.visitVarInsn(LLOAD, variables + 1);
                 mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
                 mv.visitVarInsn(ALOAD, 14);
                 mv.visitInsn(ATHROW);
@@ -1390,7 +1401,7 @@ public class GreenDump implements Opcodes {
                 mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
                 mv.visitInsn(RETURN);
             }
-            mv.visitMaxs(12, 15);
+            mv.visitMaxs(variables + 1, 15);
             mv.visitEnd();
         }
         {
