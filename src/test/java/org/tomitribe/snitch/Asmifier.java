@@ -24,7 +24,7 @@ import java.net.URLClassLoader;
 public class Asmifier {
 
     public static void main(String[] args) throws IOException {
-        Asmifier.print(Asmifier.class.getClassLoader(), "org.tomitribe.snitch.Blue");
+        Asmifier.print(Asmifier.class.getClassLoader(), "org.tomitribe.snitch.Green");
     }
 
     public static void print(ClassLoader classLoader, final String className) throws IOException {

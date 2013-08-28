@@ -25,16 +25,18 @@ public class BlueAsm implements Opcodes {
             final Method method = Method.getMethod("void voidMethod9(org.tomitribe.snitch.Blue$Arg0,org.tomitribe.snitch.Blue$Arg1,org.tomitribe.snitch.Blue$Arg2,org.tomitribe.snitch.Blue$Arg3,org.tomitribe.snitch.Blue$Arg4,org.tomitribe.snitch.Blue$Arg5,org.tomitribe.snitch.Blue$Arg6,org.tomitribe.snitch.Blue$Arg7,org.tomitribe.snitch.Blue$Arg8)");
             mg = new GeneratorAdapter(1, method, null, new Type[]{Type.getObjectType("java/lang/IllegalStateException")}, cw);
             mg.visitCode();
-            Label label0 = mg.newLabel();
-            Label label1 = mg.newLabel();
-            Label label2 = mg.newLabel();
-            mg.visitTryCatchBlock(label0, label1, label2, null);
-            Label label3 = mg.newLabel();
-            mg.visitTryCatchBlock(label2, label3, label2, null);
+            Label tryBlock = mg.newLabel();
+            Label successBlock = mg.newLabel();
+            Label failureBlock = mg.newLabel();
+            Label finallyBlock = mg.newLabel();
+
+            mg.visitTryCatchBlock(tryBlock, successBlock, failureBlock, null);
+            mg.visitTryCatchBlock(failureBlock, finallyBlock, failureBlock, null);
+
             mg.invokeStatic(Type.getObjectType("java/lang/System"), Method.getMethod("long nanoTime()"));
             int local0 = mg.newLocal(Type.LONG_TYPE);
             mg.storeLocal(local0);
-            mg.mark(label0);
+            mg.mark(tryBlock);
             mg.loadThis();
             mg.loadArg(0);
             mg.loadArg(1);
@@ -46,13 +48,13 @@ public class BlueAsm implements Opcodes {
             mg.loadArg(7);
             mg.loadArg(8);
             mg.invokeVirtual(Type.getObjectType("org/tomitribe/snitch/Blue"), Method.getMethod("void track$voidMethod9(org.tomitribe.snitch.Blue$Arg0,org.tomitribe.snitch.Blue$Arg1,org.tomitribe.snitch.Blue$Arg2,org.tomitribe.snitch.Blue$Arg3,org.tomitribe.snitch.Blue$Arg4,org.tomitribe.snitch.Blue$Arg5,org.tomitribe.snitch.Blue$Arg6,org.tomitribe.snitch.Blue$Arg7,org.tomitribe.snitch.Blue$Arg8)"));
-            mg.mark(label1);
+            mg.mark(successBlock);
             mg.push("theTag");
             mg.loadLocal(local0);
             mg.invokeStatic(Type.getObjectType("org/tomitribe/snitch/Tracker"), Method.getMethod("void track(java.lang.String,long)"));
             Label label4 = mg.newLabel();
             mg.goTo(label4);
-            mg.mark(label2);
+            mg.mark(failureBlock);
             mg.visitFrame(Opcodes.F_FULL
                     , 11
                     , new Object[]{"org/tomitribe/snitch/Blue"
@@ -70,7 +72,7 @@ public class BlueAsm implements Opcodes {
                     , new Object[]{"java/lang/Throwable"});
             int local1 = mg.newLocal(Type.getObjectType("java/lang/Object"));
             mg.storeLocal(local1);
-            mg.mark(label3);
+            mg.mark(finallyBlock);
             mg.push("theTag");
             mg.loadLocal(local0);
             mg.invokeStatic(Type.getObjectType("org/tomitribe/snitch/Tracker"), Method.getMethod("void track(java.lang.String,long)"));
