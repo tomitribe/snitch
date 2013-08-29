@@ -7,10 +7,13 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
+import org.tomitribe.snitch.util.AsmModifiers;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GreenDump implements Opcodes {
 
@@ -1338,6 +1341,8 @@ public class GreenDump implements Opcodes {
             mv.visitEnd();
         }
         {
+            final boolean staticMethod = AsmModifiers.isStatic(ACC_PUBLIC);
+
             mv = cw.visitMethod(ACC_PUBLIC, "voidMethodTime9", "(BZCSIJFDLjava/util/Date;)V", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
             Label tryBlock = new Label();
@@ -1351,20 +1356,29 @@ public class GreenDump implements Opcodes {
 
             final Type[] types = Type.getArgumentTypes("(BZCSIJFDLjava/util/Date;)V");
 
+
             int variables = types.length;
+
+            // no "this" reference for static methods
+            if (staticMethod) variables--;
+
             for (Type type : types) {
                 if (Type.LONG_TYPE.equals(type) || Type.DOUBLE_TYPE.equals(type)) {
                     variables++;
                 }
             }
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
-            mv.visitVarInsn(LSTORE, variables + 1);
+
+            final int nanotimeVariable = variables + 1;
+            final int throwableVariable = nanotimeVariable + 2;
+
+            mv.visitVarInsn(LSTORE, nanotimeVariable);
 
             mv.visitLabel(tryBlock);
             {
                 int slot = 0;
 
-                mv.visitVarInsn(ALOAD, slot++); // "this"
+                if (!staticMethod) mv.visitVarInsn(ALOAD, slot++); // "this"
 
                 for (Type type : types) {
                     mv.visitVarInsn(type.getOpcode(ILOAD), slot++);
@@ -1374,26 +1388,49 @@ public class GreenDump implements Opcodes {
                     }
 
                 }
-                mv.visitMethodInsn(INVOKEVIRTUAL, "org/tomitribe/snitch/Green", "track$voidMethodTime9", "(BZCSIJFDLjava/util/Date;)V");
+
+                if (staticMethod) {
+                    mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Green", "track$voidMethodTime9", "(BZCSIJFDLjava/util/Date;)V");
+                } else {
+                    mv.visitMethodInsn(INVOKEVIRTUAL, "org/tomitribe/snitch/Green", "track$voidMethodTime9", "(BZCSIJFDLjava/util/Date;)V");
+                }
             }
             mv.visitLabel(successBlock);
             {
                 mv.visitLdcInsn("time9");
-                mv.visitVarInsn(LLOAD, variables + 1);
+                mv.visitVarInsn(LLOAD, nanotimeVariable);
                 mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
                 mv.visitJumpInsn(GOTO, endBlock);
             }
             mv.visitLabel(failureBlock);
             {
-                mv.visitFrame(Opcodes.F_FULL, 11, new Object[]{"org/tomitribe/snitch/Green", Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.LONG, Opcodes.FLOAT, Opcodes.DOUBLE, "java/util/Date", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
-                mv.visitVarInsn(ASTORE, 14);
+
+                final Object[] stack = {"java/lang/Throwable"};
+                final Object[] objects;
+                {
+                    final List<Object> variables2 = new ArrayList<Object>();
+
+                    // "this" needs to be in the local variables
+                    if (!staticMethod) variables2.add("org/tomitribe/snitch/Green");
+
+                    // as do the args
+                    for (Type type : types) variables2.add(internalName(type));
+
+                    // as does our nano time
+                    variables2.add(Opcodes.LONG);
+
+                    objects = variables2.toArray();
+                }
+
+                mv.visitFrame(Opcodes.F_FULL, objects.length, objects, stack.length, stack);
+                mv.visitVarInsn(ASTORE, throwableVariable);
             }
             mv.visitLabel(finallyBlock);
             {
                 mv.visitLdcInsn("time9");
-                mv.visitVarInsn(LLOAD, variables + 1);
+                mv.visitVarInsn(LLOAD, nanotimeVariable);
                 mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-                mv.visitVarInsn(ALOAD, 14);
+                mv.visitVarInsn(ALOAD, throwableVariable);
                 mv.visitInsn(ATHROW);
             }
             mv.visitLabel(endBlock);
@@ -1401,7 +1438,7 @@ public class GreenDump implements Opcodes {
                 mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
                 mv.visitInsn(RETURN);
             }
-            mv.visitMaxs(variables + 1, 15);
+            mv.visitMaxs(nanotimeVariable, throwableVariable + 1);
             mv.visitEnd();
         }
         {
@@ -1414,42 +1451,58 @@ public class GreenDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "URIMethodTime9", "(BZCSIJFDLjava/util/Date;)Ljava/net/URI;", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
-            mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
-            mv.visitTryCatchBlock(l2, l3, l2, null);
+
+            Label tryBlock = new Label();
+            Label successBlock = new Label();
+            Label failureBlock = new Label();
+            Label finallyBlock = new Label();
+
+            mv.visitTryCatchBlock(tryBlock, successBlock, failureBlock, null);
+            mv.visitTryCatchBlock(failureBlock, finallyBlock, failureBlock, null);
+
+            final int nanotimeVariable = 12;
+            final int returnVariable = 14;
+            final int throwableVariable = 15;
+
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
-            mv.visitVarInsn(LSTORE, 12);
-            mv.visitLabel(l0);
-            mv.visitVarInsn(ALOAD, 0);
-            mv.visitVarInsn(ILOAD, 1);
-            mv.visitVarInsn(ILOAD, 2);
-            mv.visitVarInsn(ILOAD, 3);
-            mv.visitVarInsn(ILOAD, 4);
-            mv.visitVarInsn(ILOAD, 5);
-            mv.visitVarInsn(LLOAD, 6);
-            mv.visitVarInsn(FLOAD, 8);
-            mv.visitVarInsn(DLOAD, 9);
-            mv.visitVarInsn(ALOAD, 11);
-            mv.visitMethodInsn(INVOKEVIRTUAL, "org/tomitribe/snitch/Green", "track$URIMethodTime9", "(BZCSIJFDLjava/util/Date;)Ljava/net/URI;");
-            mv.visitVarInsn(ASTORE, 14);
-            mv.visitLabel(l1);
-            mv.visitLdcInsn("theTag");
-            mv.visitVarInsn(LLOAD, 12);
-            mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            mv.visitVarInsn(ALOAD, 14);
-            mv.visitInsn(ARETURN);
-            mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 11, new Object[]{"org/tomitribe/snitch/Green", Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.LONG, Opcodes.FLOAT, Opcodes.DOUBLE, "java/util/Date", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
-            mv.visitVarInsn(ASTORE, 15);
-            mv.visitLabel(l3);
-            mv.visitLdcInsn("theTag");
-            mv.visitVarInsn(LLOAD, 12);
-            mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            mv.visitVarInsn(ALOAD, 15);
-            mv.visitInsn(ATHROW);
+            mv.visitVarInsn(LSTORE, nanotimeVariable);
+
+            mv.visitLabel(tryBlock);
+            {
+                mv.visitVarInsn(ALOAD, 0);
+                mv.visitVarInsn(ILOAD, 1);
+                mv.visitVarInsn(ILOAD, 2);
+                mv.visitVarInsn(ILOAD, 3);
+                mv.visitVarInsn(ILOAD, 4);
+                mv.visitVarInsn(ILOAD, 5);
+                mv.visitVarInsn(LLOAD, 6);
+                mv.visitVarInsn(FLOAD, 8);
+                mv.visitVarInsn(DLOAD, 9);
+                mv.visitVarInsn(ALOAD, 11);
+                mv.visitMethodInsn(INVOKEVIRTUAL, "org/tomitribe/snitch/Green", "track$URIMethodTime9", "(BZCSIJFDLjava/util/Date;)Ljava/net/URI;");
+                mv.visitVarInsn(ASTORE, returnVariable);
+            }
+            mv.visitLabel(successBlock);
+            {
+                mv.visitLdcInsn("urimethod9");
+                mv.visitVarInsn(LLOAD, nanotimeVariable);
+                mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
+                mv.visitVarInsn(ALOAD, returnVariable);
+                mv.visitInsn(ARETURN);
+            }
+            mv.visitLabel(failureBlock);
+            {
+                mv.visitFrame(Opcodes.F_FULL, 11, new Object[]{"org/tomitribe/snitch/Green", Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.LONG, Opcodes.FLOAT, Opcodes.DOUBLE, "java/util/Date", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
+                mv.visitVarInsn(ASTORE, 15);
+            }
+            mv.visitLabel(finallyBlock);
+            {
+                mv.visitLdcInsn("urimethod9");
+                mv.visitVarInsn(LLOAD, 12);
+                mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
+                mv.visitVarInsn(ALOAD, 15);
+                mv.visitInsn(ATHROW);
+            }
             mv.visitMaxs(12, 16);
             mv.visitEnd();
         }
@@ -1518,5 +1571,33 @@ public class GreenDump implements Opcodes {
         cw.visitEnd();
 
         return cw.toByteArray();
+    }
+
+    private static Object internalName(Type type) {
+        if (Type.BYTE_TYPE.equals(type)) return Opcodes.INTEGER;
+        if (Type.BOOLEAN_TYPE.equals(type)) return Opcodes.INTEGER;
+        if (Type.CHAR_TYPE.equals(type)) return Opcodes.INTEGER;
+        if (Type.SHORT_TYPE.equals(type)) return Opcodes.INTEGER;
+        if (Type.INT_TYPE.equals(type)) return Opcodes.INTEGER;
+        if (Type.LONG_TYPE.equals(type)) return Opcodes.LONG;
+        if (Type.FLOAT_TYPE.equals(type)) return Opcodes.FLOAT;
+        if (Type.DOUBLE_TYPE.equals(type)) return Opcodes.DOUBLE;
+
+        return type.getInternalName();
+    }
+
+    private static int size(List<Type> types) {
+        int size = 0;
+        for (Type type : types) {
+            size += size(type);
+        }
+
+        return size;
+    }
+
+    private static int size(Type type) {
+        if (Type.VOID_TYPE.equals(type)) return 0;
+        if (Type.LONG_TYPE.equals(type) || Type.DOUBLE_TYPE.equals(type)) return 2;
+        return 1;
     }
 }
