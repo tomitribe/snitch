@@ -166,14 +166,15 @@ public class Enhance {
             if (isVoid) {
                 mv.visitJumpInsn(Opcodes.GOTO, endBlock);
             } else {
-                mv.visitVarInsn(Opcodes.ALOAD, returnVariable);
-                mv.visitInsn(Opcodes.ARETURN);
+                mv.visitVarInsn(returnType.getOpcode(Opcodes.ILOAD), returnVariable);
+                mv.visitInsn(returnType.getOpcode(Opcodes.IRETURN));
             }
         }
         mv.visitLabel(failureBlock);
         {
             final List<Type> newLocals = new ArrayList<Type>(locals);
-            newLocals.remove(newLocals.size() - 1);
+            newLocals.remove(newLocals.size() - 1); // remove the throwable
+            newLocals.remove(newLocals.size() - 1); // remove the return type
             final Object[] objects = toInternalNames(newLocals);
             mv.visitFrame(Opcodes.F_FULL, objects.length, objects, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(Opcodes.ASTORE, throwableVariable);

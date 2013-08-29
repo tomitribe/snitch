@@ -14,18 +14,31 @@ import org.objectweb.asm.ClassWriter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 
 /**
  * @version $Revision$ $Date$
  */
-public class BlueTest extends Assert {
+public class GeneratorTest extends Assert {
 
     @Test
-    public void test() throws Exception {
-        final byte[] bytes = Bytecode.readClassFile(BlueBefore.class);
+    public void testBlue() throws Exception {
+        assertBytecode(BlueBefore.class, BlueAfter.class);
+    }
 
-        final ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+    @Test
+    public void testGreen() throws Exception {
+        assertBytecode(GreenBefore.class, GreenAfter.class);
+    }
+
+    @Test
+    public void testRed() throws Exception {
+        assertBytecode(RedBefore.class, RedAfter.class);
+    }
+
+    private void assertBytecode(Class<?> beforeClass, Class<?> afterClass) throws IOException {
+        final byte[] bytes = Bytecode.readClassFile(beforeClass);
+
+        final ClassWriter cw = new ClassWriter(0);
 
         final ClassVisitor classAdapter = new GenericEnhancer(cw, new Filter() {
             @Override
@@ -38,13 +51,12 @@ public class BlueTest extends Assert {
         Bytecode.read(bytes, classAdapter);
 
         final byte[] actualBytes = cw.toByteArray();
-        final byte[] expectedBytes = Bytecode.readClassFile(BlueAfter.class);
+        final byte[] expectedBytes = Bytecode.readClassFile(afterClass);
 
         final String actual = asmify(actualBytes).replaceAll("Before", "");
         final String expected = asmify(expectedBytes).replaceAll("After", "");
 
         assertEquals(expected, actual);
-
     }
 
     private String asmify(byte[] actualBytes) throws IOException {
