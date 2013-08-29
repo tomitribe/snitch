@@ -76,37 +76,58 @@ public class RedDump implements Opcodes {
             mv.visitEnd();
         }
         {
-            mv = cw.visitMethod(ACC_PUBLIC, "voidMethodTime0", "()V", null, new String[]{"java/lang/IllegalStateException"});
+            final int access = ACC_PUBLIC;
+            final String name = "voidMethodTime0";
+            final String desc = "()V";
+            final String signature = null;
+            final String[] exceptions = {"java/lang/IllegalStateException"};
+            final String theTag = name;
+
+            mv = cw.visitMethod(access, name, desc, signature, exceptions);
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
-            mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
-            mv.visitTryCatchBlock(l2, l3, l2, null);
+
+            final Label tryBlock = new Label();
+            final Label successBlock = new Label();
+            final Label failureBlock = new Label();
+            final Label finallyBlock = new Label();
+            final Label endBlock = new Label();
+
+            mv.visitTryCatchBlock(tryBlock, successBlock, failureBlock, null);
+            mv.visitTryCatchBlock(failureBlock, finallyBlock, failureBlock, null);
+
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
-            mv.visitLabel(l0);
-            mv.visitVarInsn(ALOAD, 0);
-            mv.visitMethodInsn(INVOKEVIRTUAL, "org/tomitribe/snitch/Red", "track$voidMethodTime0", "()V");
-            mv.visitLabel(l1);
-            mv.visitLdcInsn("theTag");
-            mv.visitVarInsn(LLOAD, 1);
-            mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            Label l4 = new Label();
-            mv.visitJumpInsn(GOTO, l4);
-            mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/Red", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
-            mv.visitVarInsn(ASTORE, 3);
-            mv.visitLabel(l3);
-            mv.visitLdcInsn("theTag");
-            mv.visitVarInsn(LLOAD, 1);
-            mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            mv.visitVarInsn(ALOAD, 3);
-            mv.visitInsn(ATHROW);
-            mv.visitLabel(l4);
-            mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
-            mv.visitInsn(RETURN);
+
+            mv.visitLabel(tryBlock);
+            {
+                mv.visitVarInsn(ALOAD, 0);
+                mv.visitMethodInsn(INVOKEVIRTUAL, "org/tomitribe/snitch/Red", "track$voidMethodTime0", "()V");
+            }
+            mv.visitLabel(successBlock);
+            {
+                mv.visitLdcInsn(theTag);
+                mv.visitVarInsn(LLOAD, 1);
+                mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
+                mv.visitJumpInsn(GOTO, endBlock);
+            }
+            mv.visitLabel(failureBlock);
+            {
+                mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/Red", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
+                mv.visitVarInsn(ASTORE, 3);
+            }
+            mv.visitLabel(finallyBlock);
+            {
+                mv.visitLdcInsn(theTag);
+                mv.visitVarInsn(LLOAD, 1);
+                mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
+                mv.visitVarInsn(ALOAD, 3);
+                mv.visitInsn(ATHROW);
+            }
+            mv.visitLabel(endBlock);
+            {
+                mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+                mv.visitInsn(RETURN);
+            }
             mv.visitMaxs(3, 4);
             mv.visitEnd();
         }
