@@ -172,7 +172,9 @@ public class Enhance {
         }
         mv.visitLabel(failureBlock);
         {
-            final Object[] objects = toInternalNames(locals);
+            final List<Type> newLocals = new ArrayList<Type>(locals);
+            newLocals.remove(newLocals.size() - 1);
+            final Object[] objects = toInternalNames(newLocals);
             mv.visitFrame(Opcodes.F_FULL, objects.length, objects, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(Opcodes.ASTORE, throwableVariable);
         }
@@ -194,7 +196,7 @@ public class Enhance {
                 mv.visitInsn(Opcodes.RETURN);
             }
         }
-        mv.visitMaxs(nanotimeVariable, variablesSize);
+        mv.visitMaxs(nanotimeVariable + 2, variablesSize);
         mv.visitEnd();
     }
 }

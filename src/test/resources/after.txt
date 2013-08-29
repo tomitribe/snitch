@@ -9,7 +9,7 @@
         }
     }
 
-    public void track$voidMethodTime${number}(${parameters}) {
+    public void track$voidMethodTime${number}(${parameters}) throws IllegalStateException {
     }
 
     // object or primitive return type
@@ -23,7 +23,7 @@
         }
     }
 
-    public ${type} track$${typeSimpleName}MethodTime${number}(${parameters}) {
+    public ${type} track$${typeSimpleName}MethodTime${number}(${parameters})  throws IllegalStateException{
         throw new UnsupportedOperationException();
     }
 
@@ -38,6 +38,6 @@
         }
     }
 
-    public ${type}[] track$${typeSimpleName}ArrayMethodTime${number}(${parameters}) {
+    public ${type}[] track$${typeSimpleName}ArrayMethodTime${number}(${parameters}) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }

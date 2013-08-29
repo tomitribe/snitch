@@ -14,7 +14,7 @@ public class Green {
         }
     }
 
-    public synchronized void track$voidMethodTime0() {
+    public void track$voidMethodTime0() {
     }
 
     // object or primitive return type

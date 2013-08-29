@@ -24,6 +24,8 @@ import java.net.URLClassLoader;
 public class Asmifier {
 
     public static void main(String[] args) throws IOException {
+        Asmifier.print(Asmifier.class.getClassLoader(), "org.tomitribe.snitch.Blue");
+        Asmifier.print(Asmifier.class.getClassLoader(), "org.tomitribe.snitch.Green");
         Asmifier.print(Asmifier.class.getClassLoader(), "org.tomitribe.snitch.Red");
     }
 
@@ -40,6 +42,10 @@ public class Asmifier {
 
     private static void write(ClassReader reader, File file) throws IOException {
         final OutputStream write = IO.write(file);
+        write(reader, write);
+    }
+
+    public static void write(ClassReader reader, OutputStream write) throws IOException {
         final TraceClassVisitor visitor = new TraceClassVisitor(null, new ASMifier(), new PrintWriter(write));
         reader.accept(visitor, ClassReader.SKIP_DEBUG);
         write.close();

@@ -15,6 +15,8 @@ public class GreenDump implements Opcodes {
 
     public static void main(String[] args) throws Exception {
         final byte[] dump = dump();
+        Asmifier.asmify("org.tomitribe.snitch.Green", dump, "modified");
+
         final Class clazz = Bytecode.defineClass(dump, "org.tomitribe.snitch.Green", new URLClassLoader(new URL[0]));
         final Object blue = clazz.newInstance();
 

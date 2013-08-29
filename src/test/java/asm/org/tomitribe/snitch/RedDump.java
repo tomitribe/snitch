@@ -42,7 +42,7 @@ public class RedDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 0);
             mv.visitMethodInsn(INVOKEVIRTUAL, "org/tomitribe/snitch/Red", "track$voidMethodTime0", "()V");
             mv.visitLabel(l1);
-            mv.visitLdcInsn("theTag");
+            mv.visitLdcInsn("voidMethodTime0");
             mv.visitVarInsn(LLOAD, 1);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
             Label l4 = new Label();
@@ -51,7 +51,7 @@ public class RedDump implements Opcodes {
             mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/Red", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 3);
             mv.visitLabel(l3);
-            mv.visitLdcInsn("theTag");
+            mv.visitLdcInsn("voidMethodTime0");
             mv.visitVarInsn(LLOAD, 1);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
             mv.visitVarInsn(ALOAD, 3);

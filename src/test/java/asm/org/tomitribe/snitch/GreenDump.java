@@ -63,7 +63,7 @@ public class GreenDump implements Opcodes {
             mv.visitEnd();
         }
         {
-            mv = cw.visitMethod(ACC_PUBLIC + ACC_SYNCHRONIZED, "track$voidMethodTime0", "()V", null, null);
+            mv = cw.visitMethod(ACC_PUBLIC, "track$voidMethodTime0", "()V", null, null);
             mv.visitCode();
             mv.visitInsn(RETURN);
             mv.visitMaxs(0, 1);
@@ -1260,21 +1260,21 @@ public class GreenDump implements Opcodes {
             mv.visitMethodInsn(INVOKEVIRTUAL, "org/tomitribe/snitch/Green", "track$DateArrayMethodTime8", "(BZCSIJFD)[Ljava/util/Date;");
             mv.visitVarInsn(ASTORE, 13);
             mv.visitLabel(l1);
-            mv.visitLdcInsn("theTag");
+            mv.visitLdcInsn("dateArrayMethod8");
             mv.visitVarInsn(LLOAD, 11);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
             mv.visitVarInsn(ALOAD, 13);
             mv.visitInsn(ARETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 10, new Object[]{"org/tomitribe/snitch/Green", Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.LONG, Opcodes.FLOAT, Opcodes.DOUBLE, Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
+            mv.visitFrame(Opcodes.F_FULL, 11, new Object[]{"org/tomitribe/snitch/Green", Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.LONG, Opcodes.FLOAT, Opcodes.DOUBLE, Opcodes.LONG, "[Ljava/util/Date;"}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 14);
             mv.visitLabel(l3);
-            mv.visitLdcInsn("theTag");
+            mv.visitLdcInsn("dateArrayMethod8");
             mv.visitVarInsn(LLOAD, 11);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
             mv.visitVarInsn(ALOAD, 14);
             mv.visitInsn(ATHROW);
-            mv.visitMaxs(11, 15);
+            mv.visitMaxs(13, 15);
             mv.visitEnd();
         }
         {
@@ -1311,7 +1311,7 @@ public class GreenDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 11);
             mv.visitMethodInsn(INVOKEVIRTUAL, "org/tomitribe/snitch/Green", "track$voidMethodTime9", "(BZCSIJFDLjava/util/Date;)V");
             mv.visitLabel(l1);
-            mv.visitLdcInsn("theTag");
+            mv.visitLdcInsn("time9");
             mv.visitVarInsn(LLOAD, 12);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
             Label l4 = new Label();
@@ -1320,7 +1320,7 @@ public class GreenDump implements Opcodes {
             mv.visitFrame(Opcodes.F_FULL, 11, new Object[]{"org/tomitribe/snitch/Green", Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.LONG, Opcodes.FLOAT, Opcodes.DOUBLE, "java/util/Date", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 14);
             mv.visitLabel(l3);
-            mv.visitLdcInsn("theTag");
+            mv.visitLdcInsn("time9");
             mv.visitVarInsn(LLOAD, 12);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
             mv.visitVarInsn(ALOAD, 14);
@@ -1328,7 +1328,7 @@ public class GreenDump implements Opcodes {
             mv.visitLabel(l4);
             mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             mv.visitInsn(RETURN);
-            mv.visitMaxs(12, 15);
+            mv.visitMaxs(14, 15);
             mv.visitEnd();
         }
         {
@@ -1363,21 +1363,21 @@ public class GreenDump implements Opcodes {
             mv.visitMethodInsn(INVOKEVIRTUAL, "org/tomitribe/snitch/Green", "track$URIMethodTime9", "(BZCSIJFDLjava/util/Date;)Ljava/net/URI;");
             mv.visitVarInsn(ASTORE, 14);
             mv.visitLabel(l1);
-            mv.visitLdcInsn("theTag");
+            mv.visitLdcInsn("urimethod9");
             mv.visitVarInsn(LLOAD, 12);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
             mv.visitVarInsn(ALOAD, 14);
             mv.visitInsn(ARETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 11, new Object[]{"org/tomitribe/snitch/Green", Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.LONG, Opcodes.FLOAT, Opcodes.DOUBLE, "java/util/Date", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
+            mv.visitFrame(Opcodes.F_FULL, 12, new Object[]{"org/tomitribe/snitch/Green", Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.LONG, Opcodes.FLOAT, Opcodes.DOUBLE, "java/util/Date", Opcodes.LONG, "java/net/URI"}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 15);
             mv.visitLabel(l3);
-            mv.visitLdcInsn("theTag");
+            mv.visitLdcInsn("urimethod9");
             mv.visitVarInsn(LLOAD, 12);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
             mv.visitVarInsn(ALOAD, 15);
             mv.visitInsn(ATHROW);
-            mv.visitMaxs(12, 16);
+            mv.visitMaxs(14, 16);
             mv.visitEnd();
         }
         {
