@@ -1,4 +1,4 @@
-package org.tomitribe.snitch;
+package asm.org.tomitribe.snitch;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassWriter;
