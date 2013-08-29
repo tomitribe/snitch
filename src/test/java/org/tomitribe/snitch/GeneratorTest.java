@@ -15,8 +15,10 @@ import org.tomitribe.snitch.gen.BlueAfter;
 import org.tomitribe.snitch.gen.BlueBefore;
 import org.tomitribe.snitch.gen.GreenAfter;
 import org.tomitribe.snitch.gen.GreenBefore;
+import org.tomitribe.snitch.gen.OrangeAfter;
+import org.tomitribe.snitch.gen.OrangeBefore;
 import org.tomitribe.snitch.gen.RedAfter;
-import org.tomitribe.snitch.gen.RedBefore;
+import org.tomitribe.snitch.gen.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -39,6 +41,31 @@ public class GeneratorTest extends Assert {
     @Test
     public void testRed() throws Exception {
         assertBytecode(RedBefore.class, RedAfter.class);
+    }
+
+    @Test
+    public void testOrange() throws Exception {
+        assertBytecode(OrangeBefore.class, OrangeAfter.class);
+    }
+
+    @Test
+    public void testYellow() throws Exception {
+        assertBytecode(YellowBefore.class, YellowAfter.class);
+    }
+
+    @Test
+    public void testPurple() throws Exception {
+        assertBytecode(PurpleBefore.class, PurpleAfter.class);
+    }
+
+    @Test
+    public void testPink() throws Exception {
+        assertBytecode(PinkBefore.class, PinkAfter.class);
+    }
+
+    @Test
+    public void testMagenta() throws Exception {
+        assertBytecode(MagentaBefore.class, MagentaAfter.class);
     }
 
     private void assertBytecode(Class<?> beforeClass, Class<?> afterClass) throws IOException {

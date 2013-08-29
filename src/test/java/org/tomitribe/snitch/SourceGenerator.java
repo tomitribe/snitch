@@ -31,6 +31,11 @@ public class SourceGenerator {
         generator.testGenerateBlue();
         generator.testGenerateGreen();
         generator.testGenerateRed();
+        generator.testGenerateOrange();
+        generator.testGenerateYellow();
+        generator.testGeneratePurple();
+        generator.testGeneratePink();
+        generator.testGenerateMagenta();
     }
 
     public void testGenerateBlue() throws Exception {
@@ -38,6 +43,8 @@ public class SourceGenerator {
             @Override
             public Map<String, String> process(List<String> parameters, Class type) {
                 final Map<String, String> data = new HashMap<String, String>();
+                data.put("keywords", "public");
+                data.put("keywordsAfter", "public");
                 data.put("parameters", "");
                 data.put("args", "");
                 data.put("type", type.getName());
@@ -54,6 +61,76 @@ public class SourceGenerator {
             @Override
             public Map<String, String> process(List<String> parameters, Class type) {
                 final Map<String, String> data = new HashMap<String, String>();
+                data.put("keywords", "public");
+                data.put("keywordsAfter", "public");
+                data.put("parameters", Join.join(", ", new ParamCallback(), parameters));
+                data.put("args", Join.join(", ", new ArgCallback(), parameters));
+                data.put("type", type.getName());
+                data.put("typeSimpleName", type.getSimpleName());
+
+                return data;
+            }
+        });
+    }
+
+    public void testGenerateYellow() throws Exception {
+        generate("Yellow", new Processor() {
+            @Override
+            public Map<String, String> process(List<String> parameters, Class type) {
+                final Map<String, String> data = new HashMap<String, String>();
+                data.put("keywords", "public synchronized");
+                data.put("keywordsAfter", "public");
+                data.put("parameters", Join.join(", ", new ParamCallback(), parameters));
+                data.put("args", Join.join(", ", new ArgCallback(), parameters));
+                data.put("type", type.getName());
+                data.put("typeSimpleName", type.getSimpleName());
+
+                return data;
+            }
+        });
+    }
+
+    public void testGeneratePurple() throws Exception {
+        generate("Purple", new Processor() {
+            @Override
+            public Map<String, String> process(List<String> parameters, Class type) {
+                final Map<String, String> data = new HashMap<String, String>();
+                data.put("keywords", "private");
+                data.put("keywordsAfter", "private");
+                data.put("parameters", Join.join(", ", new ParamCallback(), parameters));
+                data.put("args", Join.join(", ", new ArgCallback(), parameters));
+                data.put("type", type.getName());
+                data.put("typeSimpleName", type.getSimpleName());
+
+                return data;
+            }
+        });
+    }
+
+    public void testGeneratePink() throws Exception {
+        generate("Pink", new Processor() {
+            @Override
+            public Map<String, String> process(List<String> parameters, Class type) {
+                final Map<String, String> data = new HashMap<String, String>();
+                data.put("keywords", "protected");
+                data.put("keywordsAfter", "protected");
+                data.put("parameters", Join.join(", ", new ParamCallback(), parameters));
+                data.put("args", Join.join(", ", new ArgCallback(), parameters));
+                data.put("type", type.getName());
+                data.put("typeSimpleName", type.getSimpleName());
+
+                return data;
+            }
+        });
+    }
+
+    public void testGenerateMagenta() throws Exception {
+        generate("Magenta", new Processor() {
+            @Override
+            public Map<String, String> process(List<String> parameters, Class type) {
+                final Map<String, String> data = new HashMap<String, String>();
+                data.put("keywords", "");
+                data.put("keywordsAfter", "");
                 data.put("parameters", Join.join(", ", new ParamCallback(), parameters));
                 data.put("args", Join.join(", ", new ArgCallback(), parameters));
                 data.put("type", type.getName());
@@ -69,6 +146,25 @@ public class SourceGenerator {
             @Override
             public Map<String, String> process(List<String> parameters, Class type) {
                 final Map<String, String> data = new HashMap<String, String>();
+                data.put("keywords", "public");
+                data.put("keywordsAfter", "public");
+                data.put("parameters", Join.join(", ", new ArrayParamCallback(), parameters));
+                data.put("args", Join.join(", ", new ArgCallback(), parameters));
+                data.put("type", type.getName() + "[]");
+                data.put("typeSimpleName", type.getSimpleName());
+
+                return data;
+            }
+        });
+    }
+
+    public void testGenerateOrange() throws Exception {
+        generate("Orange", new Processor() {
+            @Override
+            public Map<String, String> process(List<String> parameters, Class type) {
+                final Map<String, String> data = new HashMap<String, String>();
+                data.put("keywords", "public static");
+                data.put("keywordsAfter", "public static");
                 data.put("parameters", Join.join(", ", new ArrayParamCallback(), parameters));
                 data.put("args", Join.join(", ", new ArgCallback(), parameters));
                 data.put("type", type.getName() + "[]");

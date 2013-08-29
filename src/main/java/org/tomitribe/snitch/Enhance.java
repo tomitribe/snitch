@@ -148,7 +148,7 @@ public class Enhance {
             // fill the stack for delegating to the right method
             load(invocationStack, mv);
 
-            mv.visitMethodInsn((isStatic) ? Opcodes.INVOKESTATIC : Opcodes.INVOKEVIRTUAL, thisType.getInternalName(), target(name), desc);
+            mv.visitMethodInsn(invoke(access), thisType.getInternalName(), target(name), desc);
 
             if (!isVoid) {
                 mv.visitVarInsn(returnType.getOpcode(Opcodes.ISTORE), returnVariable);
@@ -199,5 +199,16 @@ public class Enhance {
         }
         mv.visitMaxs(-1, -1);
         mv.visitEnd();
+    }
+
+    private static int invoke(int access) {
+        if (AsmModifiers.isStatic(access)) {
+            return Opcodes.INVOKESTATIC;
+        }
+        if (AsmModifiers.isPrivate(access)) {
+            return Opcodes.INVOKESPECIAL;
+        }
+
+        return Opcodes.INVOKEVIRTUAL;
     }
 }
