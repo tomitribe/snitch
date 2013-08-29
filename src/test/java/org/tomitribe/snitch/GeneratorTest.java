@@ -11,6 +11,12 @@ import org.junit.Test;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
+import org.tomitribe.snitch.gen.BlueAfter;
+import org.tomitribe.snitch.gen.BlueBefore;
+import org.tomitribe.snitch.gen.GreenAfter;
+import org.tomitribe.snitch.gen.GreenBefore;
+import org.tomitribe.snitch.gen.RedAfter;
+import org.tomitribe.snitch.gen.RedBefore;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

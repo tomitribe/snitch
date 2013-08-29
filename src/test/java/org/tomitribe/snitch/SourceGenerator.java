@@ -113,8 +113,8 @@ public class SourceGenerator {
     }
 
     private PrintStream start(String name) throws FileNotFoundException {
-        final PrintStream out = IO.print(new File("/Users/dblevins/work/tomitribe/snitch/src/test/java/org/tomitribe/snitch/" + name + ".java"));
-        out.println("package org.tomitribe.snitch;");
+        final PrintStream out = IO.print(new File("/Users/dblevins/work/tomitribe/snitch/src/test/java/org/tomitribe/snitch/gen/" + name + ".java"));
+        out.println("package org.tomitribe.snitch.gen;");
         out.println();
         out.println("import org.tomitribe.snitch.Tracker;");
         out.println();

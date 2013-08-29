@@ -1,0 +1,16 @@
+    // void return type
+
+    public void voidMethodTime${number}(${parameters}) throws IllegalStateException {
+    }
+
+    // object or primitive return type
+
+    public ${type} ${typeSimpleName}MethodTime${number}(${parameters}) throws IllegalStateException {
+        throw new UnsupportedOperationException();
+    }
+
+    // array object or primitive return type
+
+    public ${type}[] ${typeSimpleName}ArrayMethodTime${number}(${parameters}) throws IllegalStateException {
+        throw new UnsupportedOperationException();
+    }

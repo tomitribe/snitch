@@ -1,4 +1,4 @@
-package org.tomitribe.snitch;
+package org.tomitribe.snitch.gen;
 
 import org.tomitribe.snitch.Tracker;
 
