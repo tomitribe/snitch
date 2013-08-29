@@ -71,9 +71,41 @@ public class GenerateExamplesTest {
         int count = 0;
         for (Class type : types) {
             final Map<String, String> data = new HashMap<String, String>();
-            data.put("parameters", Join.join(",", new ParamCallback(), parameters));
-            data.put("args", Join.join(",", new ArgCallback(), parameters));
+            data.put("parameters", Join.join(", ", new ParamCallback(), parameters));
+            data.put("args", Join.join(", ", new ArgCallback(), parameters));
             data.put("type", type.getName());
+            data.put("typeSimpleName", type.getSimpleName());
+            data.put("number", (count++) + "");
+            out.println(Substitution.format(template, data));
+
+            parameters.add(type.getName());
+        }
+
+        out.println("}");
+        out.close();
+    }
+
+    @Test
+    public void testGenerateRed() throws Exception {
+        final PrintStream out = IO.print(new File("/Users/dblevins/work/tomitribe/snitch/src/test/java/org/tomitribe/snitch/Red.java"));
+        out.println("package org.tomitribe.snitch;");
+        out.println();
+        out.println("import org.tomitribe.snitch.Tracker;");
+        out.println();
+        out.println("public class Red {");
+
+        final Class[] types = new Class[]{byte.class, boolean.class, char.class, short.class, int.class, long.class, float.class, double.class, Date.class, URI.class};
+
+        final List<String> parameters = new ArrayList<String>();
+
+        final String template = IO.slurp(this.getClass().getResource("/return-types.txt"));
+
+        int count = 0;
+        for (Class type : types) {
+            final Map<String, String> data = new HashMap<String, String>();
+            data.put("parameters", Join.join(", ", new ArrayParamCallback(), parameters));
+            data.put("args", Join.join(", ", new ArgCallback(), parameters));
+            data.put("type", type.getName()+"[]");
             data.put("typeSimpleName", type.getSimpleName());
             data.put("number", (count++) + "");
             out.println(Substitution.format(template, data));
@@ -100,6 +132,15 @@ public class GenerateExamplesTest {
         @Override
         public String getName(String object) {
             return object + " a" + (i++);
+        }
+    }
+
+    private static class ArrayParamCallback implements Join.NameCallback<String> {
+        int i;
+
+        @Override
+        public String getName(String object) {
+            return object + "[] a" + (i++);
         }
     }
 }
