@@ -44,7 +44,7 @@ public class GeneratorTest extends Assert {
     private void assertBytecode(Class<?> beforeClass, Class<?> afterClass) throws IOException {
         final byte[] bytes = Bytecode.readClassFile(beforeClass);
 
-        final ClassWriter cw = new ClassWriter(0);
+        final ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 
         final ClassVisitor classAdapter = new GenericEnhancer(cw, new Filter() {
             @Override

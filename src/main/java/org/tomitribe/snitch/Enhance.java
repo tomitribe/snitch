@@ -197,7 +197,7 @@ public class Enhance {
                 mv.visitInsn(Opcodes.RETURN);
             }
         }
-        mv.visitMaxs(nanotimeVariable + 2, variablesSize);
+        mv.visitMaxs(-1, -1);
         mv.visitEnd();
     }
 }
