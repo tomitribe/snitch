@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GreenDump implements Opcodes {
@@ -1449,37 +1450,54 @@ public class GreenDump implements Opcodes {
             mv.visitEnd();
         }
         {
-            mv = cw.visitMethod(ACC_PUBLIC, "URIMethodTime9", "(BZCSIJFDLjava/util/Date;)Ljava/net/URI;", null, new String[]{"java/lang/IllegalStateException"});
+            final String desc = "(BZCSIJFDLjava/util/Date;)Ljava/net/URI;";
+            mv = cw.visitMethod(ACC_PUBLIC, "URIMethodTime9", desc, null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
 
-            Label tryBlock = new Label();
-            Label successBlock = new Label();
-            Label failureBlock = new Label();
-            Label finallyBlock = new Label();
+            final Type thisType = Type.getObjectType("org/tomitribe/snitch/Green");
+            final Type[] argumentTypes = Type.getArgumentTypes(desc);
+            final Type returnType = Type.getReturnType(desc);
+            final Type throwableType = Type.getType(Throwable.class);
+
+            // local variable stack
+            final List<Type> locals = new ArrayList<Type>();
+            final List<Type> invocationStack = new ArrayList<Type>();
+
+            if (!AsmModifiers.isStatic(ACC_PUBLIC)) {
+                locals.add(thisType);
+            }
+
+            locals.addAll(Arrays.asList(argumentTypes));
+
+            invocationStack.addAll(locals);
+
+            final int nanotimeVariable = size(locals);
+            locals.add(Type.LONG_TYPE);
+
+            final int returnVariable = size(locals);
+            locals.add(returnType);
+
+            final int throwableVariable = size((locals));
+            locals.add(throwableType);
+
+            final int variablesSize = size(locals);
+
+            final Label tryBlock = new Label();
+            final Label successBlock = new Label();
+            final Label failureBlock = new Label();
+            final Label finallyBlock = new Label();
 
             mv.visitTryCatchBlock(tryBlock, successBlock, failureBlock, null);
             mv.visitTryCatchBlock(failureBlock, finallyBlock, failureBlock, null);
 
-            final int nanotimeVariable = 12;
-            final int returnVariable = 14;
-            final int throwableVariable = 15;
 
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, nanotimeVariable);
 
             mv.visitLabel(tryBlock);
             {
-                mv.visitVarInsn(ALOAD, 0);
-                mv.visitVarInsn(ILOAD, 1);
-                mv.visitVarInsn(ILOAD, 2);
-                mv.visitVarInsn(ILOAD, 3);
-                mv.visitVarInsn(ILOAD, 4);
-                mv.visitVarInsn(ILOAD, 5);
-                mv.visitVarInsn(LLOAD, 6);
-                mv.visitVarInsn(FLOAD, 8);
-                mv.visitVarInsn(DLOAD, 9);
-                mv.visitVarInsn(ALOAD, 11);
-                mv.visitMethodInsn(INVOKEVIRTUAL, "org/tomitribe/snitch/Green", "track$URIMethodTime9", "(BZCSIJFDLjava/util/Date;)Ljava/net/URI;");
+                load(invocationStack, mv);
+                mv.visitMethodInsn(INVOKEVIRTUAL, "org/tomitribe/snitch/Green", "track$URIMethodTime9", desc);
                 mv.visitVarInsn(ASTORE, returnVariable);
             }
             mv.visitLabel(successBlock);
@@ -1492,22 +1510,24 @@ public class GreenDump implements Opcodes {
             }
             mv.visitLabel(failureBlock);
             {
-                mv.visitFrame(Opcodes.F_FULL, 11, new Object[]{"org/tomitribe/snitch/Green", Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.LONG, Opcodes.FLOAT, Opcodes.DOUBLE, "java/util/Date", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
-                mv.visitVarInsn(ASTORE, 15);
+                final Object[] objects = toInternalNames(locals);
+                mv.visitFrame(Opcodes.F_FULL, objects.length, objects, 1, new Object[]{"java/lang/Throwable"});
+                mv.visitVarInsn(ASTORE, throwableVariable);
             }
             mv.visitLabel(finallyBlock);
             {
                 mv.visitLdcInsn("urimethod9");
-                mv.visitVarInsn(LLOAD, 12);
+                mv.visitVarInsn(LLOAD, nanotimeVariable);
                 mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-                mv.visitVarInsn(ALOAD, 15);
+                mv.visitVarInsn(ALOAD, throwableVariable);
                 mv.visitInsn(ATHROW);
             }
-            mv.visitMaxs(12, 16);
+            mv.visitMaxs(nanotimeVariable, variablesSize);
             mv.visitEnd();
         }
         {
-            mv = cw.visitMethod(ACC_PUBLIC, "track$URIMethodTime9", "(BZCSIJFDLjava/util/Date;)Ljava/net/URI;", null, null);
+            final String desc = "(BZCSIJFDLjava/util/Date;)Ljava/net/URI;";
+            mv = cw.visitMethod(ACC_PUBLIC, "track$URIMethodTime9", desc, null, null);
             mv.visitCode();
             mv.visitTypeInsn(NEW, "java/lang/UnsupportedOperationException");
             mv.visitInsn(DUP);
@@ -1573,6 +1593,14 @@ public class GreenDump implements Opcodes {
         return cw.toByteArray();
     }
 
+    private static void load(List<Type> invocationStack, MethodVisitor mv) {
+        int slot = 0;
+        for (Type type : invocationStack) {
+            mv.visitVarInsn(type.getOpcode(ILOAD), slot);
+            slot += size(type);
+        }
+    }
+
     private static Object internalName(Type type) {
         if (Type.BYTE_TYPE.equals(type)) return Opcodes.INTEGER;
         if (Type.BOOLEAN_TYPE.equals(type)) return Opcodes.INTEGER;
@@ -1595,9 +1623,28 @@ public class GreenDump implements Opcodes {
         return size;
     }
 
+    private static int size(Type[] types) {
+        int size = 0;
+        for (Type type : types) {
+            size += size(type);
+        }
+        return size;
+    }
+
     private static int size(Type type) {
         if (Type.VOID_TYPE.equals(type)) return 0;
         if (Type.LONG_TYPE.equals(type) || Type.DOUBLE_TYPE.equals(type)) return 2;
         return 1;
+    }
+
+    private static Object[] toInternalNames(List<Type> types) {
+        final List<Object> objects = new ArrayList<Object>(types.size());
+
+        for (Type type : types) {
+            if (Type.VOID_TYPE.equals(type)) continue;
+            objects.add(internalName(type));
+        }
+
+        return objects.toArray();
     }
 }
