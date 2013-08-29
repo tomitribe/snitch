@@ -6,18 +6,10 @@ import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
-import org.tomitribe.snitch.util.AsmModifiers;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.objectweb.asm.Type.LONG_TYPE;
-import static org.objectweb.asm.Type.VOID_TYPE;
 
 public class GreenDump implements Opcodes {
 
@@ -1299,7 +1291,7 @@ public class GreenDump implements Opcodes {
             final String desc = "(BZCSIJFD)[Ljava/util/Date;";
             final String signature = null;
             final String[] exceptions = {"java/lang/IllegalStateException"};
-            Enhance.enhance(cw, "dateArrayMethod8", access, name, desc, signature, exceptions);
+            Enhance.enhance(cw, "dateArrayMethod8", "org/tomitribe/snitch/Green", access, name, desc, signature, exceptions);
         }
         {
             mv = cw.visitMethod(ACC_PUBLIC, "track$DateArrayMethodTime8", "(BZCSIJFD)[Ljava/util/Date;", null, null);
@@ -1319,7 +1311,7 @@ public class GreenDump implements Opcodes {
             final String monitorName = "time9";
             final String[] exceptions = {"java/lang/IllegalStateException"};
 
-            Enhance.enhance(cw, monitorName, access, name, desc, signature, exceptions);
+            Enhance.enhance(cw, monitorName, "org/tomitribe/snitch/Green", access, name, desc, signature, exceptions);
         }
         {
             mv = cw.visitMethod(ACC_PUBLIC, "track$voidMethodTime9", "(BZCSIJFDLjava/util/Date;)V", null, null);
@@ -1336,7 +1328,7 @@ public class GreenDump implements Opcodes {
             final String signature = null;
             final String monitorName = "urimethod9";
 
-            Enhance.enhance(cw, monitorName, access, name, desc, signature, exceptions);
+            Enhance.enhance(cw, monitorName, "org/tomitribe/snitch/Green", access, name, desc, signature, exceptions);
         }
         {
             final String desc = "(BZCSIJFDLjava/util/Date;)Ljava/net/URI;";
@@ -1406,162 +1398,4 @@ public class GreenDump implements Opcodes {
         return cw.toByteArray();
     }
 
-    public static class Enhance {
-
-        private static void load(List<Type> invocationStack, MethodVisitor mv) {
-            int slot = 0;
-            for (Type type : invocationStack) {
-                mv.visitVarInsn(type.getOpcode(ILOAD), slot);
-                slot += size(type);
-            }
-        }
-
-        private static Object internalName(Type type) {
-            if (Type.BYTE_TYPE.equals(type)) return Opcodes.INTEGER;
-            if (Type.BOOLEAN_TYPE.equals(type)) return Opcodes.INTEGER;
-            if (Type.CHAR_TYPE.equals(type)) return Opcodes.INTEGER;
-            if (Type.SHORT_TYPE.equals(type)) return Opcodes.INTEGER;
-            if (Type.INT_TYPE.equals(type)) return Opcodes.INTEGER;
-            if (LONG_TYPE.equals(type)) return Opcodes.LONG;
-            if (Type.FLOAT_TYPE.equals(type)) return Opcodes.FLOAT;
-            if (Type.DOUBLE_TYPE.equals(type)) return Opcodes.DOUBLE;
-
-            return type.getInternalName();
-        }
-
-        public static int size(List<Type> types) {
-            int size = 0;
-            for (Type type : types) {
-                size += size(type);
-            }
-
-            return size;
-        }
-
-        public static int size(Type[] types) {
-            int size = 0;
-            for (Type type : types) {
-                size += size(type);
-            }
-            return size;
-        }
-
-        public static int size(Type type) {
-            if (VOID_TYPE.equals(type)) return 0;
-            if (LONG_TYPE.equals(type) || Type.DOUBLE_TYPE.equals(type)) return 2;
-            return 1;
-        }
-
-        public static Object[] toInternalNames(List<Type> types) {
-            final List<Object> objects = new ArrayList<Object>(types.size());
-
-            for (Type type : types) {
-                if (VOID_TYPE.equals(type)) continue;
-                objects.add(internalName(type));
-            }
-
-            return objects.toArray();
-        }
-
-        public static String target(String name) {
-            return "track$" + name;
-        }
-
-        public static void enhance(ClassWriter cw, String monitorName, int access, String name, String desc, String signature, String[] exceptions) {
-            MethodVisitor mv;
-            mv = cw.visitMethod(access, name, desc, signature, exceptions);
-            mv.visitCode();
-
-            final Type thisType = Type.getObjectType("org/tomitribe/snitch/Green");
-            final Type returnType = Type.getReturnType(desc);
-            final Type throwableType = Type.getType(Throwable.class);
-            final Type[] argumentTypes = Type.getArgumentTypes(desc);
-
-            // local variable stack
-            final List<Type> locals = new ArrayList<Type>();
-            final List<Type> invocationStack = new ArrayList<Type>();
-
-            final boolean isStatic = AsmModifiers.isStatic(access);
-            final boolean isVoid = VOID_TYPE.equals(returnType);
-
-            if (!isStatic) {
-                locals.add(thisType);
-            }
-
-            locals.addAll(Arrays.asList(argumentTypes));
-
-            invocationStack.addAll(locals);
-
-            final int nanotimeVariable = size(locals);
-            locals.add(LONG_TYPE);
-
-            final int returnVariable = size(locals);
-            locals.add(returnType);
-
-            final int throwableVariable = size((locals));
-            locals.add(throwableType);
-
-            final int variablesSize = size(locals);
-
-            final Label tryBlock = new Label();
-            final Label successBlock = new Label();
-            final Label failureBlock = new Label();
-            final Label finallyBlock = new Label();
-            final Label endBlock = new Label();
-
-            mv.visitTryCatchBlock(tryBlock, successBlock, failureBlock, null);
-            mv.visitTryCatchBlock(failureBlock, finallyBlock, failureBlock, null);
-
-            mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
-            mv.visitVarInsn(LSTORE, nanotimeVariable);
-
-            mv.visitLabel(tryBlock);
-            {
-                // fill the stack for delegating to the right method
-                load(invocationStack, mv);
-
-                mv.visitMethodInsn((isStatic) ? INVOKESTATIC : INVOKEVIRTUAL, thisType.getInternalName(), target(name), desc);
-
-                if (!isVoid) {
-                    mv.visitVarInsn(returnType.getOpcode(ISTORE), returnVariable);
-                }
-            }
-            mv.visitLabel(successBlock);
-            {
-                mv.visitLdcInsn(monitorName);
-                mv.visitVarInsn(LLOAD, nanotimeVariable);
-                mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-
-                if (isVoid) {
-                    mv.visitJumpInsn(GOTO, endBlock);
-                } else {
-                    mv.visitVarInsn(ALOAD, returnVariable);
-                    mv.visitInsn(ARETURN);
-                }
-            }
-            mv.visitLabel(failureBlock);
-            {
-                final Object[] objects = toInternalNames(locals);
-                mv.visitFrame(Opcodes.F_FULL, objects.length, objects, 1, new Object[]{"java/lang/Throwable"});
-                mv.visitVarInsn(ASTORE, throwableVariable);
-            }
-            mv.visitLabel(finallyBlock);
-            {
-                mv.visitLdcInsn(monitorName);
-                mv.visitVarInsn(LLOAD, nanotimeVariable);
-                mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-                mv.visitVarInsn(ALOAD, throwableVariable);
-                mv.visitInsn(ATHROW);
-            }
-            if (isVoid) {
-                mv.visitLabel(endBlock);
-                {
-                    mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
-                    mv.visitInsn(RETURN);
-                }
-            }
-            mv.visitMaxs(nanotimeVariable, variablesSize);
-            mv.visitEnd();
-        }
-    }
 }
