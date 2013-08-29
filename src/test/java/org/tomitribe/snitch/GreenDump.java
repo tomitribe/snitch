@@ -1294,45 +1294,12 @@ public class GreenDump implements Opcodes {
             mv.visitEnd();
         }
         {
-            mv = cw.visitMethod(ACC_PUBLIC, "DateArrayMethodTime8", "(BZCSIJFD)[Ljava/util/Date;", null, new String[]{"java/lang/IllegalStateException"});
-            mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
-            mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
-            mv.visitTryCatchBlock(l2, l3, l2, null);
-            mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
-            mv.visitVarInsn(LSTORE, 11);
-            mv.visitLabel(l0);
-            mv.visitVarInsn(ALOAD, 0);
-            mv.visitVarInsn(ILOAD, 1);
-            mv.visitVarInsn(ILOAD, 2);
-            mv.visitVarInsn(ILOAD, 3);
-            mv.visitVarInsn(ILOAD, 4);
-            mv.visitVarInsn(ILOAD, 5);
-            mv.visitVarInsn(LLOAD, 6);
-            mv.visitVarInsn(FLOAD, 8);
-            mv.visitVarInsn(DLOAD, 9);
-            mv.visitMethodInsn(INVOKEVIRTUAL, "org/tomitribe/snitch/Green", "track$DateArrayMethodTime8", "(BZCSIJFD)[Ljava/util/Date;");
-            mv.visitVarInsn(ASTORE, 13);
-            mv.visitLabel(l1);
-            mv.visitLdcInsn("theTag");
-            mv.visitVarInsn(LLOAD, 11);
-            mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            mv.visitVarInsn(ALOAD, 13);
-            mv.visitInsn(ARETURN);
-            mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 10, new Object[]{"org/tomitribe/snitch/Green", Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.LONG, Opcodes.FLOAT, Opcodes.DOUBLE, Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
-            mv.visitVarInsn(ASTORE, 14);
-            mv.visitLabel(l3);
-            mv.visitLdcInsn("theTag");
-            mv.visitVarInsn(LLOAD, 11);
-            mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            mv.visitVarInsn(ALOAD, 14);
-            mv.visitInsn(ATHROW);
-            mv.visitMaxs(11, 15);
-            mv.visitEnd();
+            final int access = ACC_PUBLIC;
+            final String name = "DateArrayMethodTime8";
+            final String desc = "(BZCSIJFD)[Ljava/util/Date;";
+            final String signature = null;
+            final String[] exceptions = {"java/lang/IllegalStateException"};
+            Enhance.enhance(cw, "dateArrayMethod8", access, name, desc, signature, exceptions);
         }
         {
             mv = cw.visitMethod(ACC_PUBLIC, "track$DateArrayMethodTime8", "(BZCSIJFD)[Ljava/util/Date;", null, null);
@@ -1345,105 +1312,14 @@ public class GreenDump implements Opcodes {
             mv.visitEnd();
         }
         {
-            final boolean staticMethod = AsmModifiers.isStatic(ACC_PUBLIC);
+            final int access = ACC_PUBLIC;
+            final String name = "voidMethodTime9";
+            final String desc = "(BZCSIJFDLjava/util/Date;)V";
+            final String signature = null;
+            final String monitorName = "time9";
+            final String[] exceptions = {"java/lang/IllegalStateException"};
 
-            mv = cw.visitMethod(ACC_PUBLIC, "voidMethodTime9", "(BZCSIJFDLjava/util/Date;)V", null, new String[]{"java/lang/IllegalStateException"});
-            mv.visitCode();
-            Label tryBlock = new Label();
-            Label successBlock = new Label();
-            Label failureBlock = new Label();
-            Label finallyBlock = new Label();
-            Label endBlock = new Label();
-
-            mv.visitTryCatchBlock(tryBlock, successBlock, failureBlock, null);
-            mv.visitTryCatchBlock(failureBlock, finallyBlock, failureBlock, null);
-
-            final Type[] types = Type.getArgumentTypes("(BZCSIJFDLjava/util/Date;)V");
-
-
-            int variables = types.length;
-
-            // no "this" reference for static methods
-            if (staticMethod) variables--;
-
-            for (Type type : types) {
-                if (LONG_TYPE.equals(type) || Type.DOUBLE_TYPE.equals(type)) {
-                    variables++;
-                }
-            }
-            mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
-
-            final int nanotimeVariable = variables + 1;
-            final int throwableVariable = nanotimeVariable + 2;
-
-            mv.visitVarInsn(LSTORE, nanotimeVariable);
-
-            mv.visitLabel(tryBlock);
-            {
-                int slot = 0;
-
-                if (!staticMethod) mv.visitVarInsn(ALOAD, slot++); // "this"
-
-                for (Type type : types) {
-                    mv.visitVarInsn(type.getOpcode(ILOAD), slot++);
-
-                    if (LONG_TYPE.equals(type) || Type.DOUBLE_TYPE.equals(type)) {
-                        slot++;
-                    }
-
-                }
-
-                if (staticMethod) {
-                    mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Green", "track$voidMethodTime9", "(BZCSIJFDLjava/util/Date;)V");
-                } else {
-                    mv.visitMethodInsn(INVOKEVIRTUAL, "org/tomitribe/snitch/Green", "track$voidMethodTime9", "(BZCSIJFDLjava/util/Date;)V");
-                }
-            }
-            mv.visitLabel(successBlock);
-            {
-                mv.visitLdcInsn("time9");
-                mv.visitVarInsn(LLOAD, nanotimeVariable);
-                mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-                mv.visitJumpInsn(GOTO, endBlock);
-            }
-            mv.visitLabel(failureBlock);
-            {
-
-                final Object[] stack = {"java/lang/Throwable"};
-                final Object[] objects;
-                {
-                    final List<Object> variables2 = new ArrayList<Object>();
-
-                    // "this" needs to be in the local variables
-                    if (!staticMethod) variables2.add("org/tomitribe/snitch/Green");
-
-                    // as do the args
-                    for (Type type : types) variables2.add(Enhance.internalName(type));
-
-                    // as does our nano time
-                    variables2.add(Opcodes.LONG);
-
-                    objects = variables2.toArray();
-                }
-
-                mv.visitFrame(Opcodes.F_FULL, objects.length, objects, stack.length, stack);
-                mv.visitVarInsn(ASTORE, throwableVariable);
-            }
-            mv.visitLabel(finallyBlock);
-            {
-                mv.visitLdcInsn("time9");
-                mv.visitVarInsn(LLOAD, nanotimeVariable);
-                mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-                mv.visitVarInsn(ALOAD, throwableVariable);
-                mv.visitInsn(ATHROW);
-            }
-            mv.visitLabel(endBlock);
-            {
-                mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
-                mv.visitInsn(RETURN);
-            }
-            mv.visitMaxs(nanotimeVariable, throwableVariable + 1);
-            mv.visitEnd();
+            Enhance.enhance(cw, monitorName, access, name, desc, signature, exceptions);
         }
         {
             mv = cw.visitMethod(ACC_PUBLIC, "track$voidMethodTime9", "(BZCSIJFDLjava/util/Date;)V", null, null);
