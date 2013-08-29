@@ -1418,7 +1418,7 @@ public class GreenDump implements Opcodes {
                     if (!staticMethod) variables2.add("org/tomitribe/snitch/Green");
 
                     // as do the args
-                    for (Type type : types) variables2.add(internalName(type));
+                    for (Type type : types) variables2.add(Enhance.internalName(type));
 
                     // as does our nano time
                     variables2.add(Opcodes.LONG);
@@ -1460,6 +1460,139 @@ public class GreenDump implements Opcodes {
             final String signature = null;
             final String monitorName = "urimethod9";
 
+            Enhance.enhance(cw, monitorName, access, name, desc, signature, exceptions);
+        }
+        {
+            final String desc = "(BZCSIJFDLjava/util/Date;)Ljava/net/URI;";
+            mv = cw.visitMethod(ACC_PUBLIC, "track$URIMethodTime9", desc, null, null);
+            mv.visitCode();
+            mv.visitTypeInsn(NEW, "java/lang/UnsupportedOperationException");
+            mv.visitInsn(DUP);
+            mv.visitMethodInsn(INVOKESPECIAL, "java/lang/UnsupportedOperationException", "<init>", "()V");
+            mv.visitInsn(ATHROW);
+            mv.visitMaxs(2, 12);
+            mv.visitEnd();
+        }
+        {
+            mv = cw.visitMethod(ACC_PUBLIC, "URIArrayMethodTime9", "(BZCSIJFDLjava/util/Date;)[Ljava/net/URI;", null, new String[]{"java/lang/IllegalStateException"});
+            mv.visitCode();
+            Label l0 = new Label();
+            Label l1 = new Label();
+            Label l2 = new Label();
+            mv.visitTryCatchBlock(l0, l1, l2, null);
+            Label l3 = new Label();
+            mv.visitTryCatchBlock(l2, l3, l2, null);
+            mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
+            mv.visitVarInsn(LSTORE, 12);
+            mv.visitLabel(l0);
+            mv.visitVarInsn(ALOAD, 0);
+            mv.visitVarInsn(ILOAD, 1);
+            mv.visitVarInsn(ILOAD, 2);
+            mv.visitVarInsn(ILOAD, 3);
+            mv.visitVarInsn(ILOAD, 4);
+            mv.visitVarInsn(ILOAD, 5);
+            mv.visitVarInsn(LLOAD, 6);
+            mv.visitVarInsn(FLOAD, 8);
+            mv.visitVarInsn(DLOAD, 9);
+            mv.visitVarInsn(ALOAD, 11);
+            mv.visitMethodInsn(INVOKEVIRTUAL, "org/tomitribe/snitch/Green", "track$URIArrayMethodTime9", "(BZCSIJFDLjava/util/Date;)[Ljava/net/URI;");
+            mv.visitVarInsn(ASTORE, 14);
+            mv.visitLabel(l1);
+            mv.visitLdcInsn("theTag");
+            mv.visitVarInsn(LLOAD, 12);
+            mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
+            mv.visitVarInsn(ALOAD, 14);
+            mv.visitInsn(ARETURN);
+            mv.visitLabel(l2);
+            mv.visitFrame(Opcodes.F_FULL, 11, new Object[]{"org/tomitribe/snitch/Green", Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.LONG, Opcodes.FLOAT, Opcodes.DOUBLE, "java/util/Date", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
+            mv.visitVarInsn(ASTORE, 15);
+            mv.visitLabel(l3);
+            mv.visitLdcInsn("theTag");
+            mv.visitVarInsn(LLOAD, 12);
+            mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
+            mv.visitVarInsn(ALOAD, 15);
+            mv.visitInsn(ATHROW);
+            mv.visitMaxs(12, 16);
+            mv.visitEnd();
+        }
+        {
+            mv = cw.visitMethod(ACC_PUBLIC, "track$URIArrayMethodTime9", "(BZCSIJFDLjava/util/Date;)[Ljava/net/URI;", null, null);
+            mv.visitCode();
+            mv.visitTypeInsn(NEW, "java/lang/UnsupportedOperationException");
+            mv.visitInsn(DUP);
+            mv.visitMethodInsn(INVOKESPECIAL, "java/lang/UnsupportedOperationException", "<init>", "()V");
+            mv.visitInsn(ATHROW);
+            mv.visitMaxs(2, 12);
+            mv.visitEnd();
+        }
+        cw.visitEnd();
+
+        return cw.toByteArray();
+    }
+
+    public static class Enhance {
+
+        private static void load(List<Type> invocationStack, MethodVisitor mv) {
+            int slot = 0;
+            for (Type type : invocationStack) {
+                mv.visitVarInsn(type.getOpcode(ILOAD), slot);
+                slot += size(type);
+            }
+        }
+
+        private static Object internalName(Type type) {
+            if (Type.BYTE_TYPE.equals(type)) return Opcodes.INTEGER;
+            if (Type.BOOLEAN_TYPE.equals(type)) return Opcodes.INTEGER;
+            if (Type.CHAR_TYPE.equals(type)) return Opcodes.INTEGER;
+            if (Type.SHORT_TYPE.equals(type)) return Opcodes.INTEGER;
+            if (Type.INT_TYPE.equals(type)) return Opcodes.INTEGER;
+            if (LONG_TYPE.equals(type)) return Opcodes.LONG;
+            if (Type.FLOAT_TYPE.equals(type)) return Opcodes.FLOAT;
+            if (Type.DOUBLE_TYPE.equals(type)) return Opcodes.DOUBLE;
+
+            return type.getInternalName();
+        }
+
+        public static int size(List<Type> types) {
+            int size = 0;
+            for (Type type : types) {
+                size += size(type);
+            }
+
+            return size;
+        }
+
+        public static int size(Type[] types) {
+            int size = 0;
+            for (Type type : types) {
+                size += size(type);
+            }
+            return size;
+        }
+
+        public static int size(Type type) {
+            if (VOID_TYPE.equals(type)) return 0;
+            if (LONG_TYPE.equals(type) || Type.DOUBLE_TYPE.equals(type)) return 2;
+            return 1;
+        }
+
+        public static Object[] toInternalNames(List<Type> types) {
+            final List<Object> objects = new ArrayList<Object>(types.size());
+
+            for (Type type : types) {
+                if (VOID_TYPE.equals(type)) continue;
+                objects.add(internalName(type));
+            }
+
+            return objects.toArray();
+        }
+
+        public static String target(String name) {
+            return "track$" + name;
+        }
+
+        public static void enhance(ClassWriter cw, String monitorName, int access, String name, String desc, String signature, String[] exceptions) {
+            MethodVisitor mv;
             mv = cw.visitMethod(access, name, desc, signature, exceptions);
             mv.visitCode();
 
@@ -1554,130 +1687,5 @@ public class GreenDump implements Opcodes {
             mv.visitMaxs(nanotimeVariable, variablesSize);
             mv.visitEnd();
         }
-        {
-            final String desc = "(BZCSIJFDLjava/util/Date;)Ljava/net/URI;";
-            mv = cw.visitMethod(ACC_PUBLIC, "track$URIMethodTime9", desc, null, null);
-            mv.visitCode();
-            mv.visitTypeInsn(NEW, "java/lang/UnsupportedOperationException");
-            mv.visitInsn(DUP);
-            mv.visitMethodInsn(INVOKESPECIAL, "java/lang/UnsupportedOperationException", "<init>", "()V");
-            mv.visitInsn(ATHROW);
-            mv.visitMaxs(2, 12);
-            mv.visitEnd();
-        }
-        {
-            mv = cw.visitMethod(ACC_PUBLIC, "URIArrayMethodTime9", "(BZCSIJFDLjava/util/Date;)[Ljava/net/URI;", null, new String[]{"java/lang/IllegalStateException"});
-            mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
-            mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
-            mv.visitTryCatchBlock(l2, l3, l2, null);
-            mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
-            mv.visitVarInsn(LSTORE, 12);
-            mv.visitLabel(l0);
-            mv.visitVarInsn(ALOAD, 0);
-            mv.visitVarInsn(ILOAD, 1);
-            mv.visitVarInsn(ILOAD, 2);
-            mv.visitVarInsn(ILOAD, 3);
-            mv.visitVarInsn(ILOAD, 4);
-            mv.visitVarInsn(ILOAD, 5);
-            mv.visitVarInsn(LLOAD, 6);
-            mv.visitVarInsn(FLOAD, 8);
-            mv.visitVarInsn(DLOAD, 9);
-            mv.visitVarInsn(ALOAD, 11);
-            mv.visitMethodInsn(INVOKEVIRTUAL, "org/tomitribe/snitch/Green", "track$URIArrayMethodTime9", "(BZCSIJFDLjava/util/Date;)[Ljava/net/URI;");
-            mv.visitVarInsn(ASTORE, 14);
-            mv.visitLabel(l1);
-            mv.visitLdcInsn("theTag");
-            mv.visitVarInsn(LLOAD, 12);
-            mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            mv.visitVarInsn(ALOAD, 14);
-            mv.visitInsn(ARETURN);
-            mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 11, new Object[]{"org/tomitribe/snitch/Green", Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.INTEGER, Opcodes.LONG, Opcodes.FLOAT, Opcodes.DOUBLE, "java/util/Date", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
-            mv.visitVarInsn(ASTORE, 15);
-            mv.visitLabel(l3);
-            mv.visitLdcInsn("theTag");
-            mv.visitVarInsn(LLOAD, 12);
-            mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            mv.visitVarInsn(ALOAD, 15);
-            mv.visitInsn(ATHROW);
-            mv.visitMaxs(12, 16);
-            mv.visitEnd();
-        }
-        {
-            mv = cw.visitMethod(ACC_PUBLIC, "track$URIArrayMethodTime9", "(BZCSIJFDLjava/util/Date;)[Ljava/net/URI;", null, null);
-            mv.visitCode();
-            mv.visitTypeInsn(NEW, "java/lang/UnsupportedOperationException");
-            mv.visitInsn(DUP);
-            mv.visitMethodInsn(INVOKESPECIAL, "java/lang/UnsupportedOperationException", "<init>", "()V");
-            mv.visitInsn(ATHROW);
-            mv.visitMaxs(2, 12);
-            mv.visitEnd();
-        }
-        cw.visitEnd();
-
-        return cw.toByteArray();
-    }
-
-    private static void load(List<Type> invocationStack, MethodVisitor mv) {
-        int slot = 0;
-        for (Type type : invocationStack) {
-            mv.visitVarInsn(type.getOpcode(ILOAD), slot);
-            slot += size(type);
-        }
-    }
-
-    private static Object internalName(Type type) {
-        if (Type.BYTE_TYPE.equals(type)) return Opcodes.INTEGER;
-        if (Type.BOOLEAN_TYPE.equals(type)) return Opcodes.INTEGER;
-        if (Type.CHAR_TYPE.equals(type)) return Opcodes.INTEGER;
-        if (Type.SHORT_TYPE.equals(type)) return Opcodes.INTEGER;
-        if (Type.INT_TYPE.equals(type)) return Opcodes.INTEGER;
-        if (LONG_TYPE.equals(type)) return Opcodes.LONG;
-        if (Type.FLOAT_TYPE.equals(type)) return Opcodes.FLOAT;
-        if (Type.DOUBLE_TYPE.equals(type)) return Opcodes.DOUBLE;
-
-        return type.getInternalName();
-    }
-
-    private static int size(List<Type> types) {
-        int size = 0;
-        for (Type type : types) {
-            size += size(type);
-        }
-
-        return size;
-    }
-
-    private static int size(Type[] types) {
-        int size = 0;
-        for (Type type : types) {
-            size += size(type);
-        }
-        return size;
-    }
-
-    private static int size(Type type) {
-        if (VOID_TYPE.equals(type)) return 0;
-        if (LONG_TYPE.equals(type) || Type.DOUBLE_TYPE.equals(type)) return 2;
-        return 1;
-    }
-
-    private static Object[] toInternalNames(List<Type> types) {
-        final List<Object> objects = new ArrayList<Object>(types.size());
-
-        for (Type type : types) {
-            if (VOID_TYPE.equals(type)) continue;
-            objects.add(internalName(type));
-        }
-
-        return objects.toArray();
-    }
-
-    public static String target(String name) {
-        return "track$" + name;
     }
 }
