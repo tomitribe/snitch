@@ -6,15 +6,10 @@
  */
 package org.tomitribe.snitch;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.util.ASMifier;
-import org.objectweb.asm.util.TraceClassVisitor;
 import org.tomitribe.snitch.util.IO;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,11 +78,7 @@ public class Enhancer {
         final Clazz clazz = getClazz(className);
         if (clazz == null) return bytecode;
 
-        asmify(className, bytecode, "agent.before");
-
-        if (clazz.shouldTime() || clazz.shouldTrack()) {
-            System.out.println("SNITCH: Tracking " + className);
-        }
+        Log.log("Tracking %s", className);
 
         if (clazz.shouldTrack()) {
             bytecode = Bytecode.modify(bytecode, TrackEnhancer.class, clazz);
@@ -97,22 +88,7 @@ public class Enhancer {
             bytecode = Bytecode.modify(bytecode, TimingEnhancer.class, clazz);
         }
 
-        asmify(className, bytecode, "agent.after");
-
         return bytecode;
     }
 
-    private void asmify(String className, byte[] bytecode, String s) {
-        try {
-            final ClassReader reader = new ClassReader(bytecode);
-            final File file = new File("/tmp/" + className.replace('/', '.') + "." + s);
-
-            final OutputStream write = IO.write(file);
-            final TraceClassVisitor visitor = new TraceClassVisitor(null, new ASMifier(), new PrintWriter(write));
-            reader.accept(visitor, ClassReader.SKIP_DEBUG);
-            write.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

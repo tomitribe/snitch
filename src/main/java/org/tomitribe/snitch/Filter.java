@@ -11,4 +11,5 @@ package org.tomitribe.snitch;
 */
 public interface Filter {
     public String accept(Method method);
+    public void end();
 }

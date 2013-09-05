@@ -90,6 +90,10 @@ public class GeneratorTest extends Assert {
                 if (method.getMethodName().contains("<")) return null;
                 return "theTag";
             }
+
+            @Override
+            public void end() {
+            }
         });
 
         Bytecode.read(bytes, classAdapter);

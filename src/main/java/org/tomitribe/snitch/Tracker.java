@@ -19,9 +19,14 @@ public class Tracker {
     }
 
     public static void stop() {
+        end();
+    }
+
+    public static Tracker end() {
         final Tracker tracker = trackers.get();
         trackers.remove();
         tracker.report();
+        return tracker;
     }
 
     public static void track(String name, long start) {
@@ -43,10 +48,10 @@ public class Tracker {
     }
 
     private void report() {
-        System.out.printf("SNITCH: %s%n", Join.join(" - ", stats.values()));
+        Log.log("TRACK: %s", Join.join(" - ", stats.values()));
     }
 
-    private final class Operation {
+    public final class Operation {
 
         private final String name;
         private long count;
@@ -59,6 +64,18 @@ public class Tracker {
         public void time(long start) {
             count++;
             time += System.nanoTime() - start;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public long getCount() {
+            return count;
+        }
+
+        public long getTime() {
+            return time;
         }
 
         @Override
