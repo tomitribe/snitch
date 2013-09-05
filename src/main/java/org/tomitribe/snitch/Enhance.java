@@ -84,15 +84,17 @@ public class Enhance {
         return "track$" + name;
     }
 
-    public static void enhance(ClassVisitor cw, String monitorName, final String internalName, int access, String name, String desc, String signature, String[] exceptions) {
-        enhance(cw, monitorName, internalName, access, name, desc, signature, exceptions, false);
+    public static void enhance(ClassVisitor cw, String monitorName, final String internalName, final int version, int access, String name, String desc, String signature, String[] exceptions) {
+        enhance(cw, monitorName, internalName, version, access, name, desc, signature, exceptions, false);
     }
 
-    public static void enhance(ClassVisitor cw, String monitorName, final String internalName, int access, String name, String desc, String signature, String[] exceptions, final boolean track) {
+    public static void enhance(ClassVisitor cw, String monitorName, final String internalName, final int version, int access, String name, String desc, String signature, String[] exceptions, final boolean track) {
         // Remove Synchronization from wrapper method so we
         if (AsmModifiers.isSynchronized(access)) {
             access -= Opcodes.ACC_SYNCHRONIZED;
         }
+
+        final boolean enableFrames = isJava6orHigher(version);
 
         final MethodVisitor mv = cw.visitMethod(access, name, desc, signature, exceptions);
         mv.visitCode();
@@ -172,11 +174,13 @@ public class Enhance {
         }
         mv.visitLabel(failureBlock);
         {
-            final List<Type> newLocals = new ArrayList<Type>(locals);
-            newLocals.remove(newLocals.size() - 1); // remove the throwable
-            newLocals.remove(newLocals.size() - 1); // remove the return type
-            final Object[] objects = toInternalNames(newLocals);
-            mv.visitFrame(Opcodes.F_FULL, objects.length, objects, 1, new Object[]{"java/lang/Throwable"});
+            if (enableFrames) {
+                final List<Type> newLocals = new ArrayList<Type>(locals);
+                newLocals.remove(newLocals.size() - 1); // remove the throwable
+                newLocals.remove(newLocals.size() - 1); // remove the return type
+                final Object[] objects = toInternalNames(newLocals);
+                mv.visitFrame(Opcodes.F_FULL, objects.length, objects, 1, new Object[]{"java/lang/Throwable"});
+            }
             mv.visitVarInsn(Opcodes.ASTORE, throwableVariable);
         }
         mv.visitLabel(finallyBlock);
@@ -193,12 +197,18 @@ public class Enhance {
         if (isVoid) {
             mv.visitLabel(endBlock);
             {
-                mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+                if (enableFrames) {
+                    mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+                }
                 mv.visitInsn(Opcodes.RETURN);
             }
         }
         mv.visitMaxs(-1, -1);
         mv.visitEnd();
+    }
+
+    private static boolean isJava6orHigher(int version) {
+        return version >= Opcodes.V1_6;
     }
 
     private static int invoke(int access) {

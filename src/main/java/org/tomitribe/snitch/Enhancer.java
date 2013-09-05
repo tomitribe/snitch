@@ -6,10 +6,15 @@
  */
 package org.tomitribe.snitch;
 
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.util.ASMifier;
+import org.objectweb.asm.util.TraceClassVisitor;
 import org.tomitribe.snitch.util.IO;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +34,7 @@ public class Enhancer {
     }
 
     public Clazz getClazz(String name) {
+        name = normalize(name);
         return classes.get(name);
     }
 
@@ -53,6 +59,7 @@ public class Enhancer {
     }
 
     private Clazz clazz(String name) {
+        name = normalize(name);
         {
             final Clazz clazz = classes.get(name);
             if (clazz != null) return clazz;
@@ -60,14 +67,27 @@ public class Enhancer {
 
         {
             final Clazz clazz = new Clazz(name);
-            classes.put(clazz.getName(), clazz);
+            classes.put(clazz.getInternalName(), clazz);
             return clazz;
         }
     }
 
+    private String normalize(String name) {
+        if (name.contains(".")) {
+            name = name.replace('.', '/');
+        }
+        return name;
+    }
+
     public byte[] enhance(String className, byte[] bytecode) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException {
-        final Clazz clazz = clazz(className);
+        final Clazz clazz = getClazz(className);
         if (clazz == null) return bytecode;
+
+        asmify(className, bytecode, "agent.before");
+
+        if (clazz.shouldTime() || clazz.shouldTrack()) {
+            System.out.println("SNITCH: Tracking " + className);
+        }
 
         if (clazz.shouldTrack()) {
             bytecode = Bytecode.modify(bytecode, TrackEnhancer.class, clazz);
@@ -77,10 +97,22 @@ public class Enhancer {
             bytecode = Bytecode.modify(bytecode, TimingEnhancer.class, clazz);
         }
 
-        if (clazz.shouldTime() || clazz.shouldTrack()) {
-            System.out.println("SNITCH: Tracking " + className);
-        }
+        asmify(className, bytecode, "agent.after");
 
         return bytecode;
+    }
+
+    private void asmify(String className, byte[] bytecode, String s) {
+        try {
+            final ClassReader reader = new ClassReader(bytecode);
+            final File file = new File("/tmp/" + className.replace('/', '.') + "." + s);
+
+            final OutputStream write = IO.write(file);
+            final TraceClassVisitor visitor = new TraceClassVisitor(null, new ASMifier(), new PrintWriter(write));
+            reader.accept(visitor, ClassReader.SKIP_DEBUG);
+            write.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

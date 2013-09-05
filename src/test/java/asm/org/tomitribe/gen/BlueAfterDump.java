@@ -16,7 +16,7 @@ public class BlueAfterDump implements Opcodes {
         MethodVisitor mv;
         AnnotationVisitor av0;
 
-        cw.visit(V1_6, ACC_PUBLIC + ACC_SUPER, "org/tomitribe/snitch/gen/BlueAfter", null, "java/lang/Object", null);
+        cw.visit(V1_5, ACC_PUBLIC + ACC_SUPER, "org/tomitribe/snitch/gen/BlueAfter", null, "java/lang/Object", null);
 
         {
             mv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
@@ -48,7 +48,6 @@ public class BlueAfterDump implements Opcodes {
             Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 3);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -57,7 +56,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ATHROW);
             mv.visitLabel(l4);
-            mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             mv.visitInsn(RETURN);
             mv.visitMaxs(3, 4);
             mv.visitEnd();
@@ -91,7 +89,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ILOAD, 3);
             mv.visitInsn(IRETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -134,7 +131,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ARETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -176,7 +172,6 @@ public class BlueAfterDump implements Opcodes {
             Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 3);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -185,7 +180,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ATHROW);
             mv.visitLabel(l4);
-            mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             mv.visitInsn(RETURN);
             mv.visitMaxs(3, 4);
             mv.visitEnd();
@@ -219,7 +213,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ILOAD, 3);
             mv.visitInsn(IRETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -262,7 +255,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ARETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -304,7 +296,6 @@ public class BlueAfterDump implements Opcodes {
             Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 3);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -313,7 +304,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ATHROW);
             mv.visitLabel(l4);
-            mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             mv.visitInsn(RETURN);
             mv.visitMaxs(3, 4);
             mv.visitEnd();
@@ -347,7 +337,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ILOAD, 3);
             mv.visitInsn(IRETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -390,7 +379,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ARETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -432,7 +420,6 @@ public class BlueAfterDump implements Opcodes {
             Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 3);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -441,7 +428,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ATHROW);
             mv.visitLabel(l4);
-            mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             mv.visitInsn(RETURN);
             mv.visitMaxs(3, 4);
             mv.visitEnd();
@@ -475,7 +461,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ILOAD, 3);
             mv.visitInsn(IRETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -518,7 +503,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ARETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -560,7 +544,6 @@ public class BlueAfterDump implements Opcodes {
             Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 3);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -569,7 +552,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ATHROW);
             mv.visitLabel(l4);
-            mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             mv.visitInsn(RETURN);
             mv.visitMaxs(3, 4);
             mv.visitEnd();
@@ -603,7 +585,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ILOAD, 3);
             mv.visitInsn(IRETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -646,7 +627,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ARETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -688,7 +668,6 @@ public class BlueAfterDump implements Opcodes {
             Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 3);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -697,7 +676,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ATHROW);
             mv.visitLabel(l4);
-            mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             mv.visitInsn(RETURN);
             mv.visitMaxs(3, 4);
             mv.visitEnd();
@@ -731,7 +709,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(LLOAD, 3);
             mv.visitInsn(LRETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 5);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -774,7 +751,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ARETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -816,7 +792,6 @@ public class BlueAfterDump implements Opcodes {
             Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 3);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -825,7 +800,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ATHROW);
             mv.visitLabel(l4);
-            mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             mv.visitInsn(RETURN);
             mv.visitMaxs(3, 4);
             mv.visitEnd();
@@ -859,7 +833,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(FLOAD, 3);
             mv.visitInsn(FRETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -902,7 +875,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ARETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -944,7 +916,6 @@ public class BlueAfterDump implements Opcodes {
             Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 3);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -953,7 +924,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ATHROW);
             mv.visitLabel(l4);
-            mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             mv.visitInsn(RETURN);
             mv.visitMaxs(3, 4);
             mv.visitEnd();
@@ -987,7 +957,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(DLOAD, 3);
             mv.visitInsn(DRETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 5);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -1030,7 +999,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ARETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -1072,7 +1040,6 @@ public class BlueAfterDump implements Opcodes {
             Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 3);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -1081,7 +1048,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ATHROW);
             mv.visitLabel(l4);
-            mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             mv.visitInsn(RETURN);
             mv.visitMaxs(3, 4);
             mv.visitEnd();
@@ -1115,7 +1081,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ARETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -1158,7 +1123,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ARETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -1200,7 +1164,6 @@ public class BlueAfterDump implements Opcodes {
             Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 3);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -1209,7 +1172,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ATHROW);
             mv.visitLabel(l4);
-            mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             mv.visitInsn(RETURN);
             mv.visitMaxs(3, 4);
             mv.visitEnd();
@@ -1243,7 +1205,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ARETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");
@@ -1286,7 +1247,6 @@ public class BlueAfterDump implements Opcodes {
             mv.visitVarInsn(ALOAD, 3);
             mv.visitInsn(ARETURN);
             mv.visitLabel(l2);
-            mv.visitFrame(Opcodes.F_FULL, 2, new Object[]{"org/tomitribe/snitch/gen/BlueAfter", Opcodes.LONG}, 1, new Object[]{"java/lang/Throwable"});
             mv.visitVarInsn(ASTORE, 4);
             mv.visitLabel(l3);
             mv.visitLdcInsn("theTag");

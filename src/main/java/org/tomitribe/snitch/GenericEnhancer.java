@@ -18,6 +18,7 @@ public class GenericEnhancer extends ClassVisitor implements Opcodes {
     private final Filter filter;
 
     private String classInternalName;
+    private int version;
 
     public GenericEnhancer(ClassVisitor classVisitor, Filter filter) {
         super(Opcodes.ASM4, classVisitor);
@@ -27,6 +28,7 @@ public class GenericEnhancer extends ClassVisitor implements Opcodes {
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         this.classInternalName = name;
+        this.version = version;
         super.visit(version, access, name, signature, superName, interfaces);
     }
 
@@ -37,7 +39,7 @@ public class GenericEnhancer extends ClassVisitor implements Opcodes {
             final Method method = Method.fromDescriptor(name, desc, "");
             final String monitor = filter.accept(method);
             if (monitor != null) {
-                Enhance.enhance(cv, monitor, classInternalName, access, name, desc, signature, exceptions);
+                Enhance.enhance(cv, monitor, classInternalName, version, access, name, desc, signature, exceptions);
                 return super.visitMethod(access, Enhance.target(name), desc, signature, exceptions);
             } else {
                 return super.visitMethod(access, name, desc, signature, exceptions);

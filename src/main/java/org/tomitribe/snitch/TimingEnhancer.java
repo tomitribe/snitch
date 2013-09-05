@@ -19,6 +19,7 @@ public class TimingEnhancer extends ClassVisitor implements Opcodes {
 
     private String classInternalName;
     private final Map<Method, Monitor> methods;
+    private int version;
 
     public TimingEnhancer(ClassVisitor classVisitor, Clazz clazz) {
         super(Opcodes.ASM4, classVisitor);
@@ -28,6 +29,7 @@ public class TimingEnhancer extends ClassVisitor implements Opcodes {
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] originalInterfaces) {
         this.classInternalName = name;
+        this.version = version;
         super.visit(version, access, name, signature, superName, originalInterfaces);
     }
 
@@ -45,7 +47,7 @@ public class TimingEnhancer extends ClassVisitor implements Opcodes {
         try {
             final Monitor monitor = methods.remove(Method.fromDescriptor(name, desc, ""));
             if (monitor != null) {
-                Enhance.enhance(cv, monitor.getName(), classInternalName, access, name, desc, signature, exceptions);
+                Enhance.enhance(cv, monitor.getName(), classInternalName, version, access, name, desc, signature, exceptions);
                 return super.visitMethod(access, Enhance.target(name), desc, signature, exceptions);
             } else {
                 return super.visitMethod(access, name, desc, signature, exceptions);

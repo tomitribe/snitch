@@ -6,6 +6,8 @@
  */
 package org.tomitribe.snitch;
 
+import org.objectweb.asm.Type;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +26,10 @@ public class Clazz {
 
     public String getName() {
         return name;
+    }
+
+    public String getInternalName() {
+        return name.replace('.', '/');
     }
 
     public Map<Method, Monitor> getTime() {

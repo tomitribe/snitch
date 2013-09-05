@@ -6,12 +6,15 @@
  */
 package org.tomitribe.snitch.agent;
 
+import org.tomitribe.snitch.Enhancer;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
+import java.lang.reflect.InvocationTargetException;
 import java.security.ProtectionDomain;
 
 /**
@@ -61,7 +64,7 @@ public class Agent {
                 return;
             }
 
-            instrumentation.addTransformer(new Tracker(file, instrumentation));
+            instrumentation.addTransformer(new Tracker(Enhancer.create(file), instrumentation));
 
             out("Initialized. Logging to '%s'", file.getAbsolutePath());
         } catch (Throwable e) {
@@ -80,58 +83,25 @@ public class Agent {
 
     public static class Tracker implements ClassFileTransformer {
 
-        private final File output;
+        private Enhancer enhancer;
 
-        public Tracker(File output) {
-            this.output = output;
+        public Tracker(final Enhancer enhancer) {
+            this.enhancer = enhancer;
         }
 
-        public Tracker(File output, Instrumentation instrumentation) {
-            this(output);
-
-            for (Class clazz : instrumentation.getAllLoadedClasses()) {
-                clazz = unwrap(clazz);
-                if (clazz.isPrimitive()) continue;
-                track(clazz.getName());
-            }
-        }
-
-        private static Class unwrap(Class a) {
-            if (a.isArray()) return unwrap(a.getComponentType());
-            return a;
+        public Tracker(final Enhancer enhancer, Instrumentation instrumentation) {
+            this.enhancer = enhancer;
         }
 
         public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-            track(className.replace('/', '.'));
-            return classfileBuffer;
-        }
-
-        public void track(String className) {
-            if (!isInteresting(className)) return;
-
             try {
-                final File file = new File(output, className);
-
-                if (file.exists() || file.createNewFile() || file.exists()) {
-                    if (!file.setLastModified(System.currentTimeMillis())) {
-                        err("Cannot set last-modified time on class '%s'", className);
-                    }
-                    return;
-                }
-
-                err("Cannot track class '%s'", className);
-            } catch (IOException e) {
-                err("Cannot track class '%s'", className);
+                return enhancer.enhance(className, classfileBuffer);
+            } catch (Throwable e) {
+                err("Enhance Failed for '%s' : %s %s", className, e.getClass().getName(), e.getMessage());
                 e.printStackTrace();
+                return classfileBuffer;
             }
         }
 
-        private boolean isInteresting(String className) {
-            if (className.startsWith("sun.reflect")) return false;
-            if (className.startsWith("sun.nio")) return false;
-            if (className.startsWith("$Proxy")) return false;
-            if (className.contains("$JaxbAccessor")) return false;
-            return true;
-        }
     }
 }

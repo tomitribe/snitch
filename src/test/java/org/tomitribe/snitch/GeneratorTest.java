@@ -15,10 +15,18 @@ import org.tomitribe.snitch.gen.BlueAfter;
 import org.tomitribe.snitch.gen.BlueBefore;
 import org.tomitribe.snitch.gen.GreenAfter;
 import org.tomitribe.snitch.gen.GreenBefore;
+import org.tomitribe.snitch.gen.MagentaAfter;
+import org.tomitribe.snitch.gen.MagentaBefore;
 import org.tomitribe.snitch.gen.OrangeAfter;
 import org.tomitribe.snitch.gen.OrangeBefore;
+import org.tomitribe.snitch.gen.PinkAfter;
+import org.tomitribe.snitch.gen.PinkBefore;
+import org.tomitribe.snitch.gen.PurpleAfter;
+import org.tomitribe.snitch.gen.PurpleBefore;
 import org.tomitribe.snitch.gen.RedAfter;
-import org.tomitribe.snitch.gen.*;
+import org.tomitribe.snitch.gen.RedBefore;
+import org.tomitribe.snitch.gen.YellowAfter;
+import org.tomitribe.snitch.gen.YellowBefore;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -68,7 +76,10 @@ public class GeneratorTest extends Assert {
         assertBytecode(MagentaBefore.class, MagentaAfter.class);
     }
 
-    private void assertBytecode(Class<?> beforeClass, Class<?> afterClass) throws IOException {
+    public static void assertBytecode(Class<?> beforeClass, Class<?> afterClass) throws Exception {
+        final String tag = "idea";
+        Asmifier.asmify(beforeClass, "before." + tag);
+        Asmifier.asmify(afterClass, "after." + tag);
         final byte[] bytes = Bytecode.readClassFile(beforeClass);
 
         final ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
@@ -86,13 +97,22 @@ public class GeneratorTest extends Assert {
         final byte[] actualBytes = cw.toByteArray();
         final byte[] expectedBytes = Bytecode.readClassFile(afterClass);
 
-        final String actual = asmify(actualBytes).replaceAll("Before", "");
-        final String expected = asmify(expectedBytes).replaceAll("After", "");
+        final String expected;
+        final String actual;
+        try {
+            expected = asmify(expectedBytes).replaceAll("After", "");
+            actual = asmify(actualBytes).replaceAll("Before", "");
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertArrayEquals(expectedBytes, actualBytes);
+            throw e;
+        }
+
 
         assertEquals(expected, actual);
     }
 
-    private String asmify(byte[] actualBytes) throws IOException {
+    public static String asmify(byte[] actualBytes) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         Asmifier.write(new ClassReader(actualBytes), byteArrayOutputStream);
         return new String(byteArrayOutputStream.toByteArray());
