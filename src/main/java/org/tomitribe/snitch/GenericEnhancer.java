@@ -6,6 +6,7 @@
  */
 package org.tomitribe.snitch;
 
+import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -53,14 +54,42 @@ public class GenericEnhancer extends ClassVisitor implements Opcodes {
             final Method method = Method.fromDescriptor(name, desc, classInternalName);
             final String monitor = filter.accept(method);
             if (monitor != null) {
-                Enhance.enhance(cv, monitor, classInternalName, version, access, name, desc, signature, exceptions, track);
-                return super.visitMethod(access, Enhance.target(name), desc, signature, exceptions);
+                final MethodVisitor newMethod = Enhance.visit(cv, monitor, classInternalName, version, access, name, desc, signature, exceptions, track);
+                final MethodVisitor movedMethod = super.visitMethod(access, Enhance.target(name), desc, signature, exceptions);
+
+                return new MoveAnnotationsVisitor(movedMethod, newMethod);
             } else {
                 return super.visitMethod(access, name, desc, signature, exceptions);
             }
         } catch (RuntimeException e) {
             Log.err("Enhance failed %s %s %s", classInternalName, name, desc);
             throw e;
+        }
+    }
+
+    public static class MoveAnnotationsVisitor extends MethodVisitor {
+
+        private MethodVisitor newMethod;
+
+        public MoveAnnotationsVisitor(MethodVisitor movedMethod, MethodVisitor newMethod) {
+            super(Opcodes.ASM4, movedMethod);
+            this.newMethod = newMethod;
+        }
+
+        @Override
+        public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+            return newMethod.visitAnnotation(desc, visible);
+        }
+
+        @Override
+        public AnnotationVisitor visitParameterAnnotation(int parameter, String desc, boolean visible) {
+            return newMethod.visitParameterAnnotation(parameter, desc, visible);
+        }
+
+        @Override
+        public void visitEnd() {
+            newMethod.visitEnd();
+            super.visitEnd();
         }
     }
 

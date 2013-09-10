@@ -89,6 +89,12 @@ public class Enhance {
     }
 
     public static void enhance(ClassVisitor cw, String monitorName, final String internalName, final int version, int access, String name, String desc, String signature, String[] exceptions, final boolean track) {
+        final MethodVisitor mv = visit(cw, monitorName, internalName, version, access, name, desc, signature, exceptions, track);
+
+        mv.visitEnd();
+    }
+
+    public static MethodVisitor visit(ClassVisitor cw, String monitorName, String internalName, int version, int access, String name, String desc, String signature, String[] exceptions, boolean track) {
         // Remove Synchronization from wrapper method so we
         if (AsmModifiers.isSynchronized(access)) {
             access -= Opcodes.ACC_SYNCHRONIZED;
@@ -204,7 +210,7 @@ public class Enhance {
             }
         }
         mv.visitMaxs(-1, -1);
-        mv.visitEnd();
+        return mv;
     }
 
     private static boolean isJava6orHigher(int version) {
