@@ -4,11 +4,14 @@ import org.tomitribe.snitch.util.Join;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * @version $Revision$ $Date$
  */
 public class Tracker {
+
+    private static final Logger log = Logger.getLogger(Tracker.class.getName());
 
     private final Map<String, Operation> stats = new LinkedHashMap<String, Tracker.Operation>();
 
@@ -48,7 +51,7 @@ public class Tracker {
     }
 
     private void report() {
-        Log.log("TRACK: %s", Join.join(" - ", stats.values()));
+        log.info("TRACK: " + Join.join(" - ", stats.values()));
     }
 
     public final class Operation {
