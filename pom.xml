@@ -4,7 +4,7 @@
 
   <groupId>org.tomitribe</groupId>
   <artifactId>tomitribe-snitch</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 
   <build>
     <plugins>
@@ -66,5 +66,19 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <distributionManagement>
+    <repository>
+      <id>www_releases</id>
+      <name>S3 Release Repository</name>
+      <url>http://gec-maven-nexus.walmart.com/nexus/content/repositories/www_releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>maven-s3-snapshot-repo</id>
+      <name>S3 Snapshot Repository</name>
+      <url>s3://tomitribe-private-repository/snapshot</url>
+    </snapshotRepository>
+  </distributionManagement>
+
 
 </project>

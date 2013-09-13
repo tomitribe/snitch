@@ -51,7 +51,9 @@ public class Tracker {
     }
 
     private void report() {
-        log.info("TRACK: " + Join.join(" - ", stats.values()));
+        if (stats.size() > 1) {
+            log.info("TRACK: " + Join.join(" - ", stats.values()));
+        }
     }
 
     public final class Operation {
