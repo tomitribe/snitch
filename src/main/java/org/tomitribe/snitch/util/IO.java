@@ -76,6 +76,18 @@ public class IO {
         return properties;
     }
 
+    public static void writeProperties(final Properties properties, final File dest) throws IOException {
+        if (properties == null) throw new NullPointerException("Properties is null");
+
+        final OutputStream outputStream = write(dest);
+
+        try {
+            properties.store(outputStream, "");
+        } finally {
+            close(outputStream);
+        }
+    }
+
     public static String readString(final URL url) throws IOException {
         final InputStream in = url.openStream();
         try {

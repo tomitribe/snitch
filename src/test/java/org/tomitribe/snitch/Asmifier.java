@@ -11,10 +11,18 @@ import org.objectweb.asm.util.ASMifier;
 import org.objectweb.asm.util.TraceClassVisitor;
 import org.tomitribe.snitch.util.IO;
 
+import javax.annotation.security.RolesAllowed;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.*;
+import java.lang.reflect.Method;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 
