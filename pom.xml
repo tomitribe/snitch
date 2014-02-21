@@ -1,27 +1,33 @@
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.tomitribe</groupId>
+  <parent>
+    <groupId>org.tomitribe</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>1-SNAPSHOT</version>
+  </parent>
+
   <artifactId>tomitribe-snitch</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4-SNAPSHOT</version>
+
+  <repositories>
+    <repository>
+      <id>snapshots</id>
+      <url>http://repository.tomitribe.com/content/repositories/snapshots</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-        </configuration>
-      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
         <configuration>
           <archive>
             <manifestEntries>
@@ -37,7 +43,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>2.1</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -55,15 +60,24 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <failOnViolation>false</failOnViolation>
+          <logViolationsToConsole>true</logViolationsToConsole>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
 
   <dependencies>
     <!--<dependency>-->
-      <!--<groupId>org.ow2.asm</groupId>-->
-      <!--<artifactId>asm-debug-all</artifactId>-->
-      <!--<version>4.1</version>-->
+    <!--<groupId>org.ow2.asm</groupId>-->
+    <!--<artifactId>asm-debug-all</artifactId>-->
+    <!--<version>4.1</version>-->
     <!--</dependency>-->
     <dependency>
       <groupId>org.ow2.asm</groupId>
@@ -77,19 +91,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <distributionManagement>
-    <repository>
-      <id>www_releases</id>
-      <name>S3 Release Repository</name>
-      <url>http://gec-maven-nexus.walmart.com/nexus/content/repositories/www_releases</url>
-    </repository>
-    <snapshotRepository>
-      <id>maven-s3-snapshot-repo</id>
-      <name>S3 Snapshot Repository</name>
-      <url>s3://tomitribe-private-repository/snapshot</url>
-    </snapshotRepository>
-  </distributionManagement>
-
 
 </project>
