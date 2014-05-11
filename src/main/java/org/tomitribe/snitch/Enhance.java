@@ -1,8 +1,18 @@
-/* =====================================================================
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- * Copyright (c) 2011 David Blevins.  All rights reserved.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * =====================================================================
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tomitribe.snitch;
 
@@ -25,6 +35,10 @@ import static org.objectweb.asm.Type.VOID_TYPE;
  */
 public class Enhance {
 
+    private Enhance() {
+        // no-op
+    }
+
     private static void load(List<Type> invocationStack, MethodVisitor mv) {
         int slot = 0;
         for (Type type : invocationStack) {
@@ -34,14 +48,14 @@ public class Enhance {
     }
 
     private static Object internalName(Type type) {
-        if (Type.BYTE_TYPE.equals(type)) return Opcodes.INTEGER;
-        if (Type.BOOLEAN_TYPE.equals(type)) return Opcodes.INTEGER;
-        if (Type.CHAR_TYPE.equals(type)) return Opcodes.INTEGER;
-        if (Type.SHORT_TYPE.equals(type)) return Opcodes.INTEGER;
-        if (Type.INT_TYPE.equals(type)) return Opcodes.INTEGER;
-        if (LONG_TYPE.equals(type)) return Opcodes.LONG;
-        if (Type.FLOAT_TYPE.equals(type)) return Opcodes.FLOAT;
-        if (Type.DOUBLE_TYPE.equals(type)) return Opcodes.DOUBLE;
+        if (Type.BYTE_TYPE.equals(type)) { return Opcodes.INTEGER; }
+        if (Type.BOOLEAN_TYPE.equals(type)) { return Opcodes.INTEGER; }
+        if (Type.CHAR_TYPE.equals(type)) { return Opcodes.INTEGER; }
+        if (Type.SHORT_TYPE.equals(type)) { return Opcodes.INTEGER; }
+        if (Type.INT_TYPE.equals(type)) { return Opcodes.INTEGER; }
+        if (LONG_TYPE.equals(type)) { return Opcodes.LONG; }
+        if (Type.FLOAT_TYPE.equals(type)) { return Opcodes.FLOAT; }
+        if (Type.DOUBLE_TYPE.equals(type)) { return Opcodes.DOUBLE; }
 
         return type.getInternalName();
     }
@@ -64,8 +78,8 @@ public class Enhance {
     }
 
     public static int size(Type type) {
-        if (VOID_TYPE.equals(type)) return 0;
-        if (LONG_TYPE.equals(type) || Type.DOUBLE_TYPE.equals(type)) return 2;
+        if (VOID_TYPE.equals(type)) { return 0; }
+        if (LONG_TYPE.equals(type) || Type.DOUBLE_TYPE.equals(type)) { return 2; }
         return 1;
     }
 
@@ -73,7 +87,7 @@ public class Enhance {
         final List<Object> objects = new ArrayList<Object>(types.size());
 
         for (Type type : types) {
-            if (VOID_TYPE.equals(type)) continue;
+            if (VOID_TYPE.equals(type)) { continue; }
             objects.add(internalName(type));
         }
 
@@ -84,17 +98,23 @@ public class Enhance {
         return "track$" + name;
     }
 
-    public static void enhance(ClassVisitor cw, String monitorName, final String internalName, final int version, int access, String name, String desc, String signature, String[] exceptions) {
+    public static void enhance(ClassVisitor cw, String monitorName, final String internalName, final int version, int access,
+                               String name, String desc, String signature, String[] exceptions)
+    {
         enhance(cw, monitorName, internalName, version, access, name, desc, signature, exceptions, false);
     }
 
-    public static void enhance(ClassVisitor cw, String monitorName, final String internalName, final int version, int access, String name, String desc, String signature, String[] exceptions, final boolean track) {
+    public static void enhance(ClassVisitor cw, String monitorName, final String internalName, final int version, int access,
+                               String name, String desc, String signature, String[] exceptions, final boolean track)
+    {
         final MethodVisitor mv = visit(cw, monitorName, internalName, version, access, name, desc, signature, exceptions, track);
 
         mv.visitEnd();
     }
 
-    public static MethodVisitor visit(ClassVisitor cw, String monitorName, String internalName, int version, int access, String name, String desc, String signature, String[] exceptions, boolean track) {
+    public static MethodVisitor visit(ClassVisitor cw, String monitorName, String internalName, int version, int access,
+                                      String name, String desc, String signature, String[] exceptions, boolean track)
+    {
         // Remove Synchronization from wrapper method so we
         if (AsmModifiers.isSynchronized(access)) {
             access -= Opcodes.ACC_SYNCHRONIZED;
@@ -185,7 +205,7 @@ public class Enhance {
                 newLocals.remove(newLocals.size() - 1); // remove the throwable
                 newLocals.remove(newLocals.size() - 1); // remove the return type
                 final Object[] objects = toInternalNames(newLocals);
-                mv.visitFrame(Opcodes.F_FULL, objects.length, objects, 1, new Object[]{"java/lang/Throwable"});
+                mv.visitFrame(Opcodes.F_FULL, objects.length, objects, 1, new Object[]{ "java/lang/Throwable" });
             }
             mv.visitVarInsn(Opcodes.ASTORE, throwableVariable);
         }

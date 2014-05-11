@@ -1,8 +1,18 @@
-/* =====================================================================
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- * Copyright (c) 2011 David Blevins.  All rights reserved.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * =====================================================================
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tomitribe.snitch.agent;
 
@@ -27,8 +37,12 @@ public class Agent {
 
     private static Instrumentation instrumentation;
 
+    private Agent() {
+        // no-op
+    }
+
     public static void premain(String agentArgs, Instrumentation instrumentation) {
-        if (Agent.instrumentation != null) return;
+        if (Agent.instrumentation != null) { return; }
 
         initialize(agentArgs, instrumentation);
 
@@ -36,7 +50,7 @@ public class Agent {
     }
 
     public static void agentmain(String agentArgs, Instrumentation instrumentation) {
-        if (Agent.instrumentation != null) return;
+        if (Agent.instrumentation != null) { return; }
 
         initialize(agentArgs, instrumentation);
 
@@ -92,7 +106,7 @@ public class Agent {
             }
 
             instrumentation.addTransformer(new Tracker(Enhancer.create(properties), instrumentation));
-            out("Tracker installed.  Configuration files '%s'", Join.join(",", new Join.NameCallback<File>(){
+            out("Tracker installed.  Configuration files '%s'", Join.join(",", new Join.NameCallback<File>() {
                 @Override
                 public String getName(File object) {
                     return object.getAbsolutePath();
@@ -125,7 +139,9 @@ public class Agent {
             this.enhancer = enhancer;
         }
 
-        public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
+        public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain,
+                                byte[] classfileBuffer) throws IllegalClassFormatException
+        {
             try {
                 return enhancer.enhance(className, classfileBuffer);
             } catch (Throwable e) {

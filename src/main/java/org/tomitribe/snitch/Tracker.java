@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.tomitribe.snitch;
 
 import org.tomitribe.snitch.util.Join;
@@ -15,10 +32,10 @@ public class Tracker {
 
     private final Map<String, Operation> stats = new LinkedHashMap<String, Tracker.Operation>();
 
-    private final static ThreadLocal<Tracker> trackers = new ThreadLocal<Tracker>();
+    private final static ThreadLocal<Tracker> TRACKER_THREAD_LOCAL = new ThreadLocal<Tracker>();
 
     public static void start() {
-        trackers.set(new Tracker());
+        TRACKER_THREAD_LOCAL.set(new Tracker());
     }
 
     public static void stop() {
@@ -26,15 +43,15 @@ public class Tracker {
     }
 
     public static Tracker end() {
-        final Tracker tracker = trackers.get();
-        trackers.remove();
+        final Tracker tracker = TRACKER_THREAD_LOCAL.get();
+        TRACKER_THREAD_LOCAL.remove();
         tracker.report();
         return tracker;
     }
 
     public static void track(String name, long start) {
-        final Tracker tracker = trackers.get();
-        if (tracker == null) return;
+        final Tracker tracker = TRACKER_THREAD_LOCAL.get();
+        if (tracker == null) { return; }
 
         tracker.operation(name).time(start);
     }
@@ -42,7 +59,7 @@ public class Tracker {
     public Operation operation(String name) {
         {
             final Operation operation = stats.get(name);
-            if (operation != null) return operation;
+            if (operation != null) { return operation; }
         }
 
         final Operation operation = new Operation(name);

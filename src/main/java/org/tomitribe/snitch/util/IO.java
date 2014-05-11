@@ -1,9 +1,20 @@
-/* =====================================================================
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- * Copyright (c) 2011 David Blevins.  All rights reserved.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * =====================================================================
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.tomitribe.snitch.util;
 
 import java.io.BufferedInputStream;
@@ -41,6 +52,10 @@ import java.util.zip.ZipOutputStream;
  */
 public class IO {
 
+    private IO() {
+        // no-op
+    }
+
     public static Properties readProperties(final URL resource) throws IOException {
         return readProperties(resource, new Properties());
     }
@@ -66,8 +81,8 @@ public class IO {
      * @throws java.io.IOException
      */
     public static Properties readProperties(final InputStream in, final Properties properties) throws IOException {
-        if (in == null) throw new NullPointerException("InputStream is null");
-        if (properties == null) throw new NullPointerException("Properties is null");
+        if (in == null) { throw new NullPointerException("InputStream is null"); }
+        if (properties == null) { throw new NullPointerException("Properties is null"); }
         try {
             properties.load(in);
         } finally {
@@ -77,7 +92,7 @@ public class IO {
     }
 
     public static void writeProperties(final Properties properties, final File dest) throws IOException {
-        if (properties == null) throw new NullPointerException("Properties is null");
+        if (properties == null) { throw new NullPointerException("Properties is null"); }
 
         final OutputStream outputStream = write(dest);
 
@@ -298,7 +313,7 @@ public class IO {
     }
 
     public static void close(final Closeable closeable) {
-        if (closeable == null) return;
+        if (closeable == null) { return; }
         try {
             if (Flushable.class.isInstance(closeable)) {
                 ((Flushable) closeable).flush();
@@ -314,7 +329,7 @@ public class IO {
     }
 
     public static boolean delete(final File file) {
-        if (file == null) return false;
+        if (file == null) { return false; }
         if (!file.delete()) {
             Logger.getLogger(IO.class.getName()).log(Level.WARNING, "Delete failed on: " + file.getAbsolutePath());
             return false;
@@ -398,7 +413,7 @@ public class IO {
             public boolean hasNext() {
                 try {
                     final boolean hasNext = (line = reader.readLine()) != null;
-                    if (!hasNext) close(reader);
+                    if (!hasNext) { close(reader); }
                     return hasNext;
                 } catch (IOException e) {
                     throw new IllegalStateException(e);

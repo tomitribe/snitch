@@ -1,8 +1,18 @@
-/* =====================================================================
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- * Copyright (c) 2011 David Blevins.  All rights reserved.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * =====================================================================
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.tomitribe.snitch;
 
@@ -54,7 +64,7 @@ public class Method {
 
         final String[] split = toStringValue.split("[()]");
 
-        if (split.length < 1) throw new IllegalArgumentException("Invalid toString format: " + toStringValue);
+        if (split.length < 1) { throw new IllegalArgumentException("Invalid toString format: " + toStringValue); }
 
         if (toStringValue.contains("()") || toStringValue.length() == 1) {
             rawName = split[0];
@@ -93,26 +103,26 @@ public class Method {
     }
 
     private static String type(String raw) {
-        if ("byte".equals(raw)) return "B";
-        if ("boolean".equals(raw)) return "Z";
-        if ("char".equals(raw)) return "C";
-        if ("short".equals(raw)) return "S";
-        if ("int".equals(raw)) return "I";
-        if ("long".equals(raw)) return "J";
-        if ("float".equals(raw)) return "F";
-        if ("double".equals(raw)) return "D";
+        if ("byte".equals(raw)) { return "B"; }
+        if ("boolean".equals(raw)) { return "Z"; }
+        if ("char".equals(raw)) { return "C"; }
+        if ("short".equals(raw)) { return "S"; }
+        if ("int".equals(raw)) { return "I"; }
+        if ("long".equals(raw)) { return "J"; }
+        if ("float".equals(raw)) { return "F"; }
+        if ("double".equals(raw)) { return "D"; }
         return "L" + raw.replace('.', '/') + ";";
     }
 
     public static String type(Type type) {
-        if (Type.BYTE_TYPE.equals(type)) return "byte";
-        if (Type.BOOLEAN_TYPE.equals(type)) return "boolean";
-        if (Type.CHAR_TYPE.equals(type)) return "char";
-        if (Type.SHORT_TYPE.equals(type)) return "short";
-        if (Type.INT_TYPE.equals(type)) return "int";
-        if (Type.LONG_TYPE.equals(type)) return "long";
-        if (Type.FLOAT_TYPE.equals(type)) return "float";
-        if (Type.DOUBLE_TYPE.equals(type)) return "double";
+        if (Type.BYTE_TYPE.equals(type)) { return "byte"; }
+        if (Type.BOOLEAN_TYPE.equals(type)) { return "boolean"; }
+        if (Type.CHAR_TYPE.equals(type)) { return "char"; }
+        if (Type.SHORT_TYPE.equals(type)) { return "short"; }
+        if (Type.INT_TYPE.equals(type)) { return "int"; }
+        if (Type.LONG_TYPE.equals(type)) { return "long"; }
+        if (Type.FLOAT_TYPE.equals(type)) { return "float"; }
+        if (Type.DOUBLE_TYPE.equals(type)) { return "double"; }
         return type.getClassName();
     }
 
@@ -133,13 +143,13 @@ public class Method {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
 
         Method method = (Method) o;
 
-        if (!Arrays.equals(arguments, method.arguments)) return false;
-        if (!methodName.equals(method.methodName)) return false;
+        if (!Arrays.equals(arguments, method.arguments)) { return false; }
+        if (!methodName.equals(method.methodName)) { return false; }
 
         return true;
     }
