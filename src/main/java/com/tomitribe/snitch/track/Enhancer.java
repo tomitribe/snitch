@@ -16,6 +16,7 @@
  */
 package com.tomitribe.snitch.track;
 
+import com.tomitribe.snitch.Method;
 import com.tomitribe.snitch.util.IO;
 
 import java.io.File;

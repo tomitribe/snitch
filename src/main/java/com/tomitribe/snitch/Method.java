@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tomitribe.snitch.track;
+package com.tomitribe.snitch;
 
 import org.objectweb.asm.Type;
 import com.tomitribe.snitch.util.Join;

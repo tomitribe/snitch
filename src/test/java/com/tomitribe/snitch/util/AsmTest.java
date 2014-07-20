@@ -28,7 +28,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Date;
 
-import static com.tomitribe.snitch.track.Method.fromToString;
+import static com.tomitribe.snitch.Method.fromToString;
 
 /**
  * @version $Revision$ $Date$

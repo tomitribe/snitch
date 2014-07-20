@@ -14,13 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tomitribe.snitch.track;
+package com.tomitribe.snitch;
 
 /**
  * @version $Revision$ $Date$
  */
-public interface Filter {
-    public String accept(Method method);
+public interface Filter<T> {
+    public T accept(Method method);
 
     public void end();
 }

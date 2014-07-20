@@ -16,6 +16,7 @@
  */
 package com.tomitribe.snitch.track;
 
+import com.tomitribe.snitch.Method;
 import org.junit.Assert;
 import org.junit.Test;
 import org.objectweb.asm.Type;

@@ -9,8 +9,11 @@
  */
 package com.tomitribe.snitch.listen;
 
+import com.tomitribe.snitch.Filter;
+import com.tomitribe.snitch.Method;
 import com.tomitribe.snitch.listen.gen.BlueAfter;
 import com.tomitribe.snitch.listen.gen.BlueBefore;
+import com.tomitribe.snitch.listen.gen.BlueListener;
 import com.tomitribe.snitch.track.Asmifier;
 import com.tomitribe.snitch.track.Bytecode;
 import org.junit.Assert;
@@ -18,6 +21,7 @@ import org.junit.Test;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Type;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -39,7 +43,20 @@ public class GeneratorTest extends Assert {
 
         final ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 
-        final ClassVisitor classAdapter = new InsertListenerEnhancer(cw);
+        final ClassVisitor classAdapter = new InsertListenerEnhancer(cw, new Filter<Type>() {
+            @Override
+            public Type accept(Method method) {
+                if (method.getMethodName().startsWith("doIt")) {
+                    return Type.getType(BlueListener.class);
+                } else {
+                    return null;
+                }
+            }
+
+            @Override
+            public void end() {
+            }
+        });
 
         Bytecode.read(bytes, classAdapter);
 

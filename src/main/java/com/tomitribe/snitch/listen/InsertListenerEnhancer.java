@@ -16,6 +16,8 @@
  */
 package com.tomitribe.snitch.listen;
 
+import com.tomitribe.snitch.Filter;
+import com.tomitribe.snitch.Method;
 import com.tomitribe.snitch.track.Enhance;
 import com.tomitribe.snitch.util.AsmModifiers;
 import org.objectweb.asm.ClassVisitor;
@@ -31,12 +33,13 @@ import java.util.List;
  * @version $Revision$ $Date$
  */
 public class InsertListenerEnhancer extends ClassVisitor implements Opcodes {
-    private final Type listener;
+
+    private final Filter<Type> filter;
     private String classInternalName;
 
-    public InsertListenerEnhancer(ClassVisitor classVisitor) {
+    public InsertListenerEnhancer(ClassVisitor classVisitor, final Filter<Type> filter) {
         super(Opcodes.ASM4, classVisitor);
-        listener = Type.getObjectType("com/tomitribe/snitch/listen/gen/BlueListener");
+        this.filter = filter;
     }
 
     @Override
@@ -46,10 +49,24 @@ public class InsertListenerEnhancer extends ClassVisitor implements Opcodes {
     }
 
     @Override
+    public void visitEnd() {
+        filter.end();
+        super.visitEnd();
+    }
+
+    @Override
     public MethodVisitor visitMethod(final int access, final String name, final String desc, final String signature, final String[] exceptions) {
         final MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
 
-        if ("doIt".equals(name) || "doItStatic".equals(name)) {
+        final Method method = Method.fromDescriptor(name, desc, classInternalName);
+        final Type listener = filter.accept(method);
+
+        if (listener == null) {
+
+            return methodVisitor;
+
+        } else {
+
             return new MethodVisitor(Opcodes.ASM4, methodVisitor) {
                 @Override
                 public void visitCode() {
@@ -101,8 +118,6 @@ public class InsertListenerEnhancer extends ClassVisitor implements Opcodes {
                     return expanded;
                 }
             };
-        } else {
-            return methodVisitor;
         }
     }
 }

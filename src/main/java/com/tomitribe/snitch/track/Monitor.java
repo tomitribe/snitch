@@ -16,6 +16,8 @@
  */
 package com.tomitribe.snitch.track;
 
+import com.tomitribe.snitch.Method;
+
 /**
  * @version $Revision$ $Date$
  */

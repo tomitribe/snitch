@@ -16,6 +16,8 @@
  */
 package com.tomitribe.snitch.track;
 
+import com.tomitribe.snitch.Filter;
+import com.tomitribe.snitch.Method;
 import com.tomitribe.snitch.track.gen.BlueAfter;
 import com.tomitribe.snitch.track.gen.BlueBefore;
 import com.tomitribe.snitch.track.gen.GreenAfter;
@@ -94,7 +96,7 @@ public class GeneratorTest extends Assert {
 
         final ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 
-        final ClassVisitor classAdapter = new GenericEnhancer(cw, new Filter() {
+        final ClassVisitor classAdapter = new GenericEnhancer(cw, new Filter<String>() {
             @Override
             public String accept(Method method) {
                 if (method.getMethodName().contains("<")) return null;
