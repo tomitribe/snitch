@@ -16,6 +16,7 @@
  */
 package com.tomitribe.snitch.listen;
 
+import com.tomitribe.snitch.track.Enhance;
 import com.tomitribe.snitch.util.AsmModifiers;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -24,17 +25,18 @@ import org.objectweb.asm.Type;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * @version $Revision$ $Date$
  */
 public class InsertListenerEnhancer extends ClassVisitor implements Opcodes {
+    private final Type listener;
     private String classInternalName;
 
     public InsertListenerEnhancer(ClassVisitor classVisitor) {
         super(Opcodes.ASM4, classVisitor);
+        listener = Type.getObjectType("com/tomitribe/snitch/listen/gen/BlueListener");
     }
 
     @Override
@@ -54,26 +56,49 @@ public class InsertListenerEnhancer extends ClassVisitor implements Opcodes {
 
                     final boolean isStatic = AsmModifiers.isStatic(access);
 
+                    final Type[] argumentTypes = getArgumentTypes();
+                    final List<Type> variables = new ArrayList<Type>(Arrays.asList(argumentTypes));
+
                     if (isStatic) {
+                        /**
+                         * When the method being watched is static, pass a null instead of
+                         * a "this" reference.
+                         */
+                        variables.remove(0);
                         this.visitInsn(ACONST_NULL);
-                        this.visitVarInsn(ALOAD, 0);
-                        this.visitVarInsn(ALOAD, 1);
-                        this.visitMethodInsn(INVOKESTATIC, "com/tomitribe/snitch/listen/gen/BlueListener", name, getDescriptor());
-                    } else {
-                        this.visitVarInsn(ALOAD, 0);
-                        this.visitVarInsn(ALOAD, 1);
-                        this.visitVarInsn(ALOAD, 2);
-                        this.visitMethodInsn(INVOKESTATIC, "com/tomitribe/snitch/listen/gen/BlueListener", name, getDescriptor());
                     }
+
+                    Enhance.load(variables, this);
+
+                    final String methodDescriptor = Type.getMethodDescriptor(Type.VOID_TYPE, argumentTypes);
+
+                    this.visitMethodInsn(INVOKESTATIC, listener.getInternalName(), name, methodDescriptor);
                     super.visitCode();
                 }
 
-                private String getDescriptor() {
-                    final List<Type> args = new ArrayList<Type>();
-                    args.add(Type.getObjectType(classInternalName));
-                    args.addAll(Arrays.asList(Type.getArgumentTypes(desc)));
+                /**
+                 * Listener method signature will be identical to the method being intercepted,
+                 * but with the object instance prefixed to the arguments.
+                 *
+                 * For example, Blue has a method being watched and AnyListener is doing the watching.
+                 *
+                 * Blue.class:
+                 *
+                 *  - public void doSomething(int, boolean, URI);
+                 *
+                 * AnyListener.class:
+                 *
+                 *  - public static void doSomething(Blue, int, boolean, URI);
+                 *
+                 */
+                private Type[] getArgumentTypes() {
+                    final Type[] original = Type.getArgumentTypes(desc);
+                    final Type[] expanded = new Type[original.length + 1];
 
-                    return Type.getMethodDescriptor(Type.VOID_TYPE, args.toArray(new Type[args.size()]));
+                    expanded[0] = Type.getObjectType(classInternalName);
+                    System.arraycopy(original, 0, expanded, 1, original.length);
+
+                    return expanded;
                 }
             };
         } else {

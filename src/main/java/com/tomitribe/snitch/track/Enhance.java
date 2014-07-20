@@ -39,7 +39,7 @@ public class Enhance {
         // no-op
     }
 
-    private static void load(List<Type> invocationStack, MethodVisitor mv) {
+    public static void load(List<Type> invocationStack, MethodVisitor mv) {
         int slot = 0;
         for (Type type : invocationStack) {
             mv.visitVarInsn(type.getOpcode(Opcodes.ILOAD), slot);
