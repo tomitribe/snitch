@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.tomitribe.snitch.gen;
+package com.tomitribe.snitch.track.gen;
 
 public class PurpleBefore {
     // void return type
