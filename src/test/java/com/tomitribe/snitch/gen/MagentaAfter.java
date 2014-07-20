@@ -17,7 +17,7 @@
 
 package com.tomitribe.snitch.gen;
 
-import com.tomitribe.snitch.Tracker;
+import com.tomitribe.snitch.track.Tracker;
 
 public class MagentaAfter {
     // void return type

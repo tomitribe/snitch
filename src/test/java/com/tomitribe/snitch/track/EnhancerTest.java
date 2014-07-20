@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tomitribe.snitch;
+package com.tomitribe.snitch.track;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import static com.tomitribe.snitch.GeneratorTest.asmify;
+import static com.tomitribe.snitch.track.GeneratorTest.asmify;
 import static com.tomitribe.snitch.util.Join.join;
 
 /**

@@ -16,8 +16,8 @@
  */
 package com.tomitribe.snitch.agent;
 
-import com.tomitribe.snitch.Enhancer;
-import com.tomitribe.snitch.Log;
+import com.tomitribe.snitch.track.Enhancer;
+import com.tomitribe.snitch.track.Log;
 import com.tomitribe.snitch.util.IO;
 import com.tomitribe.snitch.util.Join;
 

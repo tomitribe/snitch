@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.tomitribe.snitch;
+package com.tomitribe.snitch.track;
 
 import com.tomitribe.snitch.util.Join;
 

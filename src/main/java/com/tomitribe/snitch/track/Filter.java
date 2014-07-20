@@ -14,15 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tomitribe.snitch;
-
-import org.objectweb.asm.ClassVisitor;
+package com.tomitribe.snitch.track;
 
 /**
  * @version $Revision$ $Date$
  */
-public class TimingEnhancer extends GenericEnhancer {
-    public TimingEnhancer(ClassVisitor classVisitor, Clazz clazz) {
-        super(classVisitor, new MethodFilter(clazz.getTime()));
-    }
+public interface Filter {
+    public String accept(Method method);
+
+    public void end();
 }

@@ -16,19 +16,19 @@
  */
 package com.tomitribe.snitch.util;
 
-import com.tomitribe.snitch.Asmifier;
-import com.tomitribe.snitch.Bytecode;
-import com.tomitribe.snitch.TimingEnhancer;
-import com.tomitribe.snitch.TrackEnhancer;
-import com.tomitribe.snitch.Tracker;
-import com.tomitribe.snitch.Clazz;
+import com.tomitribe.snitch.track.Asmifier;
+import com.tomitribe.snitch.track.Bytecode;
+import com.tomitribe.snitch.track.TimingEnhancer;
+import com.tomitribe.snitch.track.TrackEnhancer;
+import com.tomitribe.snitch.track.Tracker;
+import com.tomitribe.snitch.track.Clazz;
 
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Date;
 
-import static com.tomitribe.snitch.Method.fromToString;
+import static com.tomitribe.snitch.track.Method.fromToString;
 
 /**
  * @version $Revision$ $Date$
