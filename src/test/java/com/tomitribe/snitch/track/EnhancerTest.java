@@ -16,6 +16,7 @@
  */
 package com.tomitribe.snitch.track;
 
+import com.tomitribe.snitch.Asmifier;
 import com.tomitribe.snitch.Method;
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,7 +31,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import static com.tomitribe.snitch.track.GeneratorTest.asmify;
-import static com.tomitribe.snitch.util.Join.join;
 
 /**
  * @version $Revision$ $Date$
@@ -171,11 +171,12 @@ public class EnhancerTest extends Assert {
         public int[][] purple(String[] s, long[][] l, Date[][][] d) throws IOException {
             final long start = System.nanoTime();
             try {
-                return purple2(s,l,d);
+                return purple2(s, l, d);
             } finally {
                 Tracker.track("theTag", start);
             }
         }
+
         public int[][] purple2(String[] s, long[][] l, Date[][][] d) throws IOException {
 
             return null;
@@ -189,7 +190,7 @@ public class EnhancerTest extends Assert {
         }
 
 
-        private void primitives(byte b, boolean z, char c, short s, int i, long l, float f, double d){
+        private void primitives(byte b, boolean z, char c, short s, int i, long l, float f, double d) {
             final long start = System.nanoTime();
             try {
                 primitives1(b, z, c, s, i, l, f, d);
@@ -198,7 +199,7 @@ public class EnhancerTest extends Assert {
             }
         }
 
-        private void primitives(byte[] b, boolean[] z, char[] c, short[] s, int[] i, long[] l, float[] f, double[] d){
+        private void primitives(byte[] b, boolean[] z, char[] c, short[] s, int[] i, long[] l, float[] f, double[] d) {
             final long start = System.nanoTime();
             try {
                 primitives1(b, z, c, s, i, l, f, d);
@@ -207,10 +208,11 @@ public class EnhancerTest extends Assert {
             }
         }
 
-        private void primitives1(byte b, boolean z, char c, short s, int i, long l, float f, double d){
+        private void primitives1(byte b, boolean z, char c, short s, int i, long l, float f, double d) {
 
         }
-        private void primitives1(byte[] b, boolean[] z, char[] c, short[] s, int[] i, long[] l, float[] f, double[] d){
+
+        private void primitives1(byte[] b, boolean[] z, char[] c, short[] s, int[] i, long[] l, float[] f, double[] d) {
 
         }
 

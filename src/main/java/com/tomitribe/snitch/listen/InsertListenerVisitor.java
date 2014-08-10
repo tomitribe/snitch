@@ -32,12 +32,12 @@ import java.util.List;
 /**
  * @version $Revision$ $Date$
  */
-public class InsertListenerEnhancer extends ClassVisitor implements Opcodes {
+public class InsertListenerVisitor extends ClassVisitor implements Opcodes {
 
     private final Filter<Type> filter;
     private String classInternalName;
 
-    public InsertListenerEnhancer(ClassVisitor classVisitor, final Filter<Type> filter) {
+    public InsertListenerVisitor(ClassVisitor classVisitor, final Filter<Type> filter) {
         super(Opcodes.ASM4, classVisitor);
         this.filter = filter;
     }

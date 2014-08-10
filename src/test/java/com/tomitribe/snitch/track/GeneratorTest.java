@@ -16,6 +16,7 @@
  */
 package com.tomitribe.snitch.track;
 
+import com.tomitribe.snitch.Asmifier;
 import com.tomitribe.snitch.Filter;
 import com.tomitribe.snitch.Method;
 import com.tomitribe.snitch.track.gen.BlueAfter;
@@ -32,13 +33,13 @@ import com.tomitribe.snitch.track.gen.PurpleAfter;
 import com.tomitribe.snitch.track.gen.PurpleBefore;
 import com.tomitribe.snitch.track.gen.RedAfter;
 import com.tomitribe.snitch.track.gen.RedBefore;
+import com.tomitribe.snitch.track.gen.YellowAfter;
 import com.tomitribe.snitch.track.gen.YellowBefore;
 import org.junit.Assert;
 import org.junit.Test;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
-import com.tomitribe.snitch.track.gen.YellowAfter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

@@ -16,7 +16,7 @@
  */
 package com.tomitribe.snitch.util;
 
-import com.tomitribe.snitch.track.Asmifier;
+import com.tomitribe.snitch.Asmifier;
 import com.tomitribe.snitch.track.Bytecode;
 import com.tomitribe.snitch.track.TimingEnhancer;
 import com.tomitribe.snitch.track.TrackEnhancer;

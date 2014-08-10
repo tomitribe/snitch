@@ -14,13 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tomitribe.snitch.track;
+package com.tomitribe.snitch;
 
+import com.tomitribe.snitch.track.Bytecode;
 import com.tomitribe.snitch.util.IO;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.util.ASMifier;
 import org.objectweb.asm.util.TraceClassVisitor;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -73,5 +75,11 @@ public class Asmifier {
         final File file = new File("/tmp/" + className + "." + suffix);
 
         write(reader, file);
+    }
+
+    public static String asmify(byte[] actualBytes) throws IOException {
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        write(new ClassReader(actualBytes), byteArrayOutputStream);
+        return new String(byteArrayOutputStream.toByteArray());
     }
 }

@@ -16,6 +16,7 @@
  */
 package com.tomitribe.snitch.track;
 
+import com.tomitribe.snitch.Asmifier;
 import org.junit.Assert;
 import org.junit.Test;
 

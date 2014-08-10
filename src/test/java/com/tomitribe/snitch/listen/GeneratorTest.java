@@ -14,17 +14,13 @@ import com.tomitribe.snitch.Method;
 import com.tomitribe.snitch.listen.gen.BlueAfter;
 import com.tomitribe.snitch.listen.gen.BlueBefore;
 import com.tomitribe.snitch.listen.gen.BlueListener;
-import com.tomitribe.snitch.track.Asmifier;
+import com.tomitribe.snitch.Asmifier;
 import com.tomitribe.snitch.track.Bytecode;
 import org.junit.Assert;
 import org.junit.Test;
-import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Type;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 public class GeneratorTest extends Assert {
 
@@ -43,7 +39,7 @@ public class GeneratorTest extends Assert {
 
         final ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 
-        final ClassVisitor classAdapter = new InsertListenerEnhancer(cw, new Filter<Type>() {
+        final ClassVisitor classAdapter = new InsertListenerVisitor(cw, new Filter<Type>() {
             @Override
             public Type accept(Method method) {
                 if (method.getMethodName().startsWith("doIt")) {
@@ -66,8 +62,8 @@ public class GeneratorTest extends Assert {
         final String expected;
         final String actual;
         try {
-            expected = asmify(expectedBytes).replaceAll("After", "");
-            actual = asmify(actualBytes).replaceAll("Before", "");
+            expected = Asmifier.asmify(expectedBytes).replaceAll("After", "");
+            actual = Asmifier.asmify(actualBytes).replaceAll("Before", "");
         } catch (Exception e) {
             e.printStackTrace();
             assertArrayEquals(expectedBytes, actualBytes);
@@ -76,12 +72,6 @@ public class GeneratorTest extends Assert {
 
 
         assertEquals(expected, actual);
-    }
-
-    public static String asmify(byte[] actualBytes) throws IOException {
-        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        Asmifier.write(new ClassReader(actualBytes), byteArrayOutputStream);
-        return new String(byteArrayOutputStream.toByteArray());
     }
 
 }
