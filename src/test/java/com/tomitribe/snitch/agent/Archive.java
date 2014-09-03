@@ -49,17 +49,17 @@ public class Archive {
         return new Archive();
     }
 
-    public Archive manifest(String key, Object value) {
+    public Archive manifest(final String key, final Object value) {
         manifest.put(key, value.toString());
         return this;
     }
 
-    public Archive manifest(String key, Class value) {
+    public Archive manifest(final String key, final Class value) {
         manifest.put(key, value.getName());
         return this;
     }
 
-    public Archive add(Class<?> clazz) {
+    public Archive add(final Class<?> clazz) {
         try {
             final String name = clazz.getName().replace('.', '/') + ".class";
 
@@ -76,27 +76,27 @@ public class Archive {
             to.flush();
 
             entries.put(name, to.toByteArray());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IllegalStateException(e);
         }
 
         return this;
     }
 
-    public Archive addDir(File dir) {
+    public Archive addDir(final File dir) {
         try {
 
             addDir(null, dir);
 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IllegalStateException(e);
         }
 
         return this;
     }
 
-    private void addDir(String path, File dir) throws IOException {
-        for (File file : dir.listFiles()) {
+    private void addDir(final String path, final File dir) throws IOException {
+        for (final File file : dir.listFiles()) {
 
             final String childPath = (path != null) ? path + "/" + file.getName() : file.getName();
 
@@ -115,7 +115,7 @@ public class Archive {
         // Create the ZIP file
         final ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
 
-        for (Map.Entry<String, byte[]> entry : entries().entrySet()) {
+        for (final Map.Entry<String, byte[]> entry : entries().entrySet()) {
             out.putNextEntry(new ZipEntry(entry.getKey()));
             out.write(entry.getValue());
         }
@@ -128,26 +128,26 @@ public class Archive {
     public File asJar() {
         try {
             return toJar();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     public File toDir() throws IOException {
 
-        File classpath = Files.tmpdir();
+        final File classpath = Files.tmpdir();
 
-        for (Map.Entry<String, byte[]> entry : entries().entrySet()) {
+        for (final Map.Entry<String, byte[]> entry : entries().entrySet()) {
 
             final String key = entry.getKey().replace('/', File.separatorChar);
 
             final File file = new File(classpath, key);
 
-            File d = file.getParentFile();
+            final File d = file.getParentFile();
 
             if (!d.exists()) assertTrue(d.getAbsolutePath(), d.mkdirs());
 
-            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+            final BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
 
             out.write(entry.getValue());
 
@@ -160,7 +160,7 @@ public class Archive {
     public File asDir() {
         try {
             return toDir();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -174,13 +174,13 @@ public class Archive {
     private String buildManifest() {
         return Join.join("\r\n", new Join.NameCallback<Map.Entry<String, String>>() {
             @Override
-            public String getName(Map.Entry<String, String> entry) {
+            public String getName(final Map.Entry<String, String> entry) {
                 return entry.getKey() + ": " + entry.getValue();
             }
         }, manifest.entrySet());
     }
 
-    public Archive addJar(File file) {
+    public Archive addJar(final File file) {
         try {
             final JarFile jarFile = new JarFile(file);
 
@@ -191,7 +191,7 @@ public class Archive {
             }
 
             return this;
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException(e);
         }
     }

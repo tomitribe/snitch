@@ -30,7 +30,7 @@ public class Clazz {
     private final String name;
     private final Map<Method, Type> listeners = new HashMap<Method, Type>();
 
-    public Clazz(String name) {
+    public Clazz(final String name) {
         this.name = name;
     }
 
@@ -46,11 +46,11 @@ public class Clazz {
         return new HashMap<Method, Type>(listeners);
     }
 
-    public Type getListener(Method method) {
+    public Type getListener(final Method method) {
         return listeners.get(method);
     }
 
-    public Type setListener(Method method, Type listener) {
+    public Type setListener(final Method method, final Type listener) {
         return listeners.put(method, listener);
     }
 

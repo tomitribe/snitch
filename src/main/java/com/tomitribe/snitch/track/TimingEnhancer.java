@@ -22,7 +22,7 @@ import org.objectweb.asm.ClassVisitor;
  * @version $Revision$ $Date$
  */
 public class TimingEnhancer extends GenericEnhancer {
-    public TimingEnhancer(ClassVisitor classVisitor, Clazz clazz) {
+    public TimingEnhancer(final ClassVisitor classVisitor, final Clazz clazz) {
         super(classVisitor, new MethodFilter(clazz.getTime()));
     }
 }

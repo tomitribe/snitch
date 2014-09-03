@@ -16,11 +16,11 @@ import java.util.Set;
 
 public class BlueListener {
 
-    public static <T> void doIt(BlueAfter blue, URI uri, List<T> list) {
+    public static <T> void doIt(final BlueAfter blue, final URI uri, final List<T> list) {
         System.out.println("Listen doIt: " + blue);
     }
 
-    public static void doItStatic(BlueAfter blue, URL uri, Set list) {
+    public static void doItStatic(final BlueAfter blue, final URL uri, final Set list) {
         System.out.println("Listen doItStatic: " + blue);
     }
 }

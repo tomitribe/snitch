@@ -26,7 +26,7 @@ public class Main {
     private static final Red[][] r2 = new Red[0][0];
     private static final Red[][][] r3 = new Red[0][0][0];
 
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(final String[] args) throws ClassNotFoundException {
         final Red red = new Red();
         final Green green = new Green();
         final Blue blue = new Blue();

@@ -30,7 +30,7 @@ public class Clazz {
     private final Map<Method, Monitor> time = new HashMap<Method, Monitor>();
     private final Map<Method, Monitor> track = new HashMap<Method, Monitor>();
 
-    public Clazz(String name) {
+    public Clazz(final String name) {
         this.name = name;
     }
 
@@ -50,19 +50,19 @@ public class Clazz {
         return new HashMap<Method, Monitor>(track);
     }
 
-    public Monitor time(Method method) {
+    public Monitor time(final Method method) {
         return time.get(method);
     }
 
-    public Monitor time(Method method, String monitor) {
+    public Monitor time(final Method method, final String monitor) {
         return time.put(method, new Monitor(monitor, method));
     }
 
-    public Monitor track(Method method) {
+    public Monitor track(final Method method) {
         return track.get(method);
     }
 
-    public Monitor track(Method method, String monitor) {
+    public Monitor track(final Method method, final String monitor) {
         return track.put(method, new Monitor(monitor, method));
     }
 

@@ -34,15 +34,20 @@ import java.util.concurrent.FutureTask;
  */
 public class Java {
 
-    public static Result java(String... args) throws IOException, ExecutionException, InterruptedException {
+    public static Result java(final String... args) throws IOException, ExecutionException, InterruptedException {
         final ProcessBuilder java = javaProcess();
         java.command().addAll(Arrays.asList(args));
         return new Result(java.start());
     }
 
     private static ProcessBuilder javaProcess() {
-        final File javaHome = new File(System.getProperty("java.home"));
-        final File java = new File(new File(javaHome, "bin"), "java");
+        final File javaHome = new File(System.getenv("JAVA_HOME"));
+        File java = new File(new File(javaHome, "bin"), "java");
+
+        if(!java.exists()){
+            java = new File(new File(javaHome, "bin"), "java.exe");
+        }
+
         Assert.assertTrue(java.exists());
         Assert.assertTrue(java.canExecute());
 
@@ -57,7 +62,7 @@ public class Java {
         private final String err;
         private final int exitCode;
 
-        public Result(Process process) throws InterruptedException, ExecutionException {
+        public Result(final Process process) throws InterruptedException, ExecutionException {
             final Future<Pipe> stout = Pipe.pipe(process.getInputStream(), System.out);
             final Future<Pipe> sterr = Pipe.pipe(process.getErrorStream(), System.err);
 
@@ -109,15 +114,15 @@ public class Java {
             try {
                 int i = -1;
 
-                byte[] buf = new byte[1024];
+                final byte[] buf = new byte[1024];
 
                 while ((i = in.read(buf)) != -1) {
                     out.write(buf, 0, i);
-                    for (OutputStream stream : cc) {
+                    for (final OutputStream stream : cc) {
                         stream.write(buf, 0, i);
                     }
                 }
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
         }

@@ -26,7 +26,7 @@ public class Monitor {
     private final String name;
     private final Method method;
 
-    public Monitor(String name, Method method) {
+    public Monitor(final String name, final Method method) {
         this.name = name;
         this.method = method;
     }
@@ -42,8 +42,8 @@ public class Monitor {
     @Override
     public String toString() {
         return "Monitor{" +
-                "name='" + name + '\'' +
-                '}' +
-                method.toString();
+            "name='" + name + '\'' +
+            '}' +
+            method.toString();
     }
 }

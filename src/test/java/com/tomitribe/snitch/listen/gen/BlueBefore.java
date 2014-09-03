@@ -16,7 +16,7 @@ import java.util.Set;
 
 public class BlueBefore<T> {
 
-    public void doIt(URI uri, List<T> list) {
+    public void doIt(final URI uri, final List<T> list) {
 
         System.out.println("DoIt: Printing list");
 
@@ -25,7 +25,7 @@ public class BlueBefore<T> {
         }
     }
 
-    public static void doItStatic(URL uri, Set list) {
+    public static void doItStatic(final URL uri, final Set list) {
 
         System.out.println("DoItStatic: Printing list");
 

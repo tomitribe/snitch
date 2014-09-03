@@ -27,47 +27,47 @@ public class AsmModifiers implements Opcodes {
         // no-op
     }
 
-    public static boolean isPublic(int mod) {
+    public static boolean isPublic(final int mod) {
         return (mod & ACC_PUBLIC) != 0;
     }
 
-    public static boolean isPrivate(int mod) {
+    public static boolean isPrivate(final int mod) {
         return (mod & ACC_PRIVATE) != 0;
     }
 
-    public static boolean isProtected(int mod) {
+    public static boolean isProtected(final int mod) {
         return (mod & ACC_PROTECTED) != 0;
     }
 
-    public static boolean isStatic(int mod) {
+    public static boolean isStatic(final int mod) {
         return (mod & ACC_STATIC) != 0;
     }
 
-    public static boolean isFinal(int mod) {
+    public static boolean isFinal(final int mod) {
         return (mod & ACC_FINAL) != 0;
     }
 
-    public static boolean isSynchronized(int mod) {
+    public static boolean isSynchronized(final int mod) {
         return (mod & ACC_SYNCHRONIZED) != 0;
     }
 
-    public static boolean isVolatile(int mod) {
+    public static boolean isVolatile(final int mod) {
         return (mod & ACC_VOLATILE) != 0;
     }
 
-    public static boolean isTransient(int mod) {
+    public static boolean isTransient(final int mod) {
         return (mod & ACC_TRANSIENT) != 0;
     }
 
-    public static boolean isNative(int mod) {
+    public static boolean isNative(final int mod) {
         return (mod & ACC_NATIVE) != 0;
     }
 
-    public static boolean isInterface(int mod) {
+    public static boolean isInterface(final int mod) {
         return (mod & ACC_INTERFACE) != 0;
     }
 
-    public static boolean isAbstract(int mod) {
+    public static boolean isAbstract(final int mod) {
         return (mod & ACC_ABSTRACT) != 0;
     }
 }

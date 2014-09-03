@@ -49,17 +49,21 @@ public class Tracker {
         return tracker;
     }
 
-    public static void track(String name, long start) {
+    public static void track(final String name, final long start) {
         final Tracker tracker = TRACKER_THREAD_LOCAL.get();
-        if (tracker == null) { return; }
+        if (tracker == null) {
+            return;
+        }
 
         tracker.operation(name).time(start);
     }
 
-    public Operation operation(String name) {
+    public Operation operation(final String name) {
         {
             final Operation operation = stats.get(name);
-            if (operation != null) { return operation; }
+            if (operation != null) {
+                return operation;
+            }
         }
 
         final Operation operation = new Operation(name);
@@ -79,11 +83,11 @@ public class Tracker {
         private long count;
         private long time;
 
-        private Operation(String name) {
+        private Operation(final String name) {
             this.name = name;
         }
 
-        public void time(long start) {
+        public void time(final long start) {
             count++;
             time += System.nanoTime() - start;
         }
@@ -103,9 +107,9 @@ public class Tracker {
         @Override
         public String toString() {
             return name + "{" +
-                    "count=" + count +
-                    ", time=" + time +
-                    '}';
+                "count=" + count +
+                ", time=" + time +
+                '}';
         }
     }
 }

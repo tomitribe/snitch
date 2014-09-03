@@ -45,7 +45,7 @@ public class BlueAfter {
         }
     }
 
-    public byte track$byteMethodTime0()  throws IllegalStateException{
+    public byte track$byteMethodTime0() throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
@@ -89,7 +89,7 @@ public class BlueAfter {
         }
     }
 
-    public boolean track$booleanMethodTime1()  throws IllegalStateException{
+    public boolean track$booleanMethodTime1() throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
@@ -133,7 +133,7 @@ public class BlueAfter {
         }
     }
 
-    public char track$charMethodTime2()  throws IllegalStateException{
+    public char track$charMethodTime2() throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
@@ -177,7 +177,7 @@ public class BlueAfter {
         }
     }
 
-    public short track$shortMethodTime3()  throws IllegalStateException{
+    public short track$shortMethodTime3() throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
@@ -221,7 +221,7 @@ public class BlueAfter {
         }
     }
 
-    public int track$intMethodTime4()  throws IllegalStateException{
+    public int track$intMethodTime4() throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
@@ -265,7 +265,7 @@ public class BlueAfter {
         }
     }
 
-    public long track$longMethodTime5()  throws IllegalStateException{
+    public long track$longMethodTime5() throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
@@ -309,7 +309,7 @@ public class BlueAfter {
         }
     }
 
-    public float track$floatMethodTime6()  throws IllegalStateException{
+    public float track$floatMethodTime6() throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
@@ -353,7 +353,7 @@ public class BlueAfter {
         }
     }
 
-    public double track$doubleMethodTime7()  throws IllegalStateException{
+    public double track$doubleMethodTime7() throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
@@ -397,7 +397,7 @@ public class BlueAfter {
         }
     }
 
-    public java.util.Date track$DateMethodTime8()  throws IllegalStateException{
+    public java.util.Date track$DateMethodTime8() throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
@@ -441,7 +441,7 @@ public class BlueAfter {
         }
     }
 
-    public java.net.URI track$URIMethodTime9()  throws IllegalStateException{
+    public java.net.URI track$URIMethodTime9() throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 

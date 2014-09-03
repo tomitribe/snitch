@@ -18,10 +18,10 @@ package com.tomitribe.snitch.track;
 
 
 import com.tomitribe.snitch.util.IO;
+import com.tomitribe.snitch.util.Unsafe;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
-import com.tomitribe.snitch.util.Unsafe;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -38,9 +38,8 @@ public class Bytecode {
         // no-op
     }
 
-    public static Class modify(URLClassLoader classLoader, final Class<? extends ClassVisitor> adapterClass, final Clazz clazz)
-            throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
-    {
+    public static Class modify(final URLClassLoader classLoader, final Class<? extends ClassVisitor> adapterClass, final Clazz clazz)
+        throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 
         final byte[] originalBytes = readClassFile(classLoader, clazz.getName());
 
@@ -49,38 +48,36 @@ public class Bytecode {
         return defineClass(modifiedBytes, clazz.getName(), classLoader);
     }
 
-    public static byte[] readClassFile(Class clazz) throws IOException {
+    public static byte[] readClassFile(final Class clazz) throws IOException {
         return readClassFile(clazz.getClassLoader(), clazz);
     }
 
-    public static byte[] readClassFile(ClassLoader classLoader, Class clazz) throws IOException {
+    public static byte[] readClassFile(final ClassLoader classLoader, final Class clazz) throws IOException {
         final String internalName = clazz.getName().replace('.', '/') + ".class";
         final URL resource = classLoader.getResource(internalName);
         return IO.readBytes(resource);
     }
 
-    public static byte[] readClassFile(ClassLoader classLoader, String className) throws IOException {
+    public static byte[] readClassFile(final ClassLoader classLoader, final String className) throws IOException {
         final String internalName = className.replace('.', '/') + ".class";
         final URL resource = classLoader.getResource(internalName);
         return IO.readBytes(resource);
     }
 
-    public static Class defineClass(byte[] bytes, String className, ClassLoader classLoader) {
+    public static Class defineClass(final byte[] bytes, final String className, final ClassLoader classLoader) {
         return Unsafe.defineClass(className, bytes, 0, bytes.length, classLoader, null);
     }
 
-    public static byte[] modify(byte[] bytes, final Clazz clazz, Class<? extends ClassVisitor>... adapterClasses)
-            throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
-    {
-        for (Class<? extends ClassVisitor> adapterClass : adapterClasses) {
+    public static byte[] modify(byte[] bytes, final Clazz clazz, final Class<? extends ClassVisitor>... adapterClasses)
+        throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        for (final Class<? extends ClassVisitor> adapterClass : adapterClasses) {
             bytes = modify(bytes, adapterClass, clazz);
         }
         return bytes;
     }
 
-    public static byte[] modify(byte[] originalBytes, Class<? extends ClassVisitor> adapterClass, final Clazz clazz)
-            throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
-    {
+    public static byte[] modify(final byte[] originalBytes, final Class<? extends ClassVisitor> adapterClass, final Clazz clazz)
+        throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         final ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 
         final Constructor<? extends ClassVisitor> constructor = adapterClass.getConstructor(ClassVisitor.class, Clazz.class);
@@ -91,14 +88,13 @@ public class Bytecode {
         return cw.toByteArray();
     }
 
-    public static void read(byte[] originalBytes, ClassVisitor classAdapter) {
+    public static void read(final byte[] originalBytes, final ClassVisitor classAdapter) {
         final ClassReader cr = new ClassReader(originalBytes);
         cr.accept(classAdapter, ClassReader.EXPAND_FRAMES);
     }
 
-    public static void modifyAndDefine(ClassLoader loader, final Clazz clazz, final Class<? extends ClassVisitor>... classes)
-            throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
-    {
+    public static void modifyAndDefine(final ClassLoader loader, final Clazz clazz, final Class<? extends ClassVisitor>... classes)
+        throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         byte[] bytes = readClassFile(loader, clazz.getName());
         bytes = modify(bytes, clazz, classes);
         defineClass(bytes, clazz.getName(), loader);

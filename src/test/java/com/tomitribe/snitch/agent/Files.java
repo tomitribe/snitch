@@ -49,7 +49,7 @@ public class Files {
             File file = null;
             try {
                 file = File.createTempFile("temp", "dir");
-            } catch (Throwable e) {
+            } catch (final Throwable e) {
                 //Use a local tmp directory
                 final File tmp = new File("tmp");
                 if (!tmp.exists() && !tmp.mkdirs()) {
@@ -68,7 +68,7 @@ public class Files {
 
             return file;
 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -92,7 +92,7 @@ public class Files {
                     for (final String path : delete) {
                         try {
                             remove(new File(path));
-                        } catch (Throwable e) {
+                        } catch (final Throwable e) {
                             System.err.println(e.getMessage());
                         }
                     }
@@ -100,7 +100,7 @@ public class Files {
             };
             try {
                 Runtime.getRuntime().addShutdownHook(deleteShutdownHook);
-            } catch (Throwable e) {
+            } catch (final Throwable e) {
                 //Ignore
             }
         } finally {

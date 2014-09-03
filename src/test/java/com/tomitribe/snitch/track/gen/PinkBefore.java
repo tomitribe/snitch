@@ -37,154 +37,154 @@ public class PinkBefore {
 
     // void return type
 
-    protected void voidMethodTime1(byte a0) throws IllegalStateException {
+    protected void voidMethodTime1(final byte a0) throws IllegalStateException {
     }
 
     // object or primitive return type
 
-    protected boolean booleanMethodTime1(byte a0) throws IllegalStateException {
+    protected boolean booleanMethodTime1(final byte a0) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
     // array object or primitive return type
 
-    protected boolean[] booleanArrayMethodTime1(byte a0) throws IllegalStateException {
+    protected boolean[] booleanArrayMethodTime1(final byte a0) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
     // void return type
 
-    protected void voidMethodTime2(byte a0, boolean a1) throws IllegalStateException {
+    protected void voidMethodTime2(final byte a0, final boolean a1) throws IllegalStateException {
     }
 
     // object or primitive return type
 
-    protected char charMethodTime2(byte a0, boolean a1) throws IllegalStateException {
+    protected char charMethodTime2(final byte a0, final boolean a1) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
     // array object or primitive return type
 
-    protected char[] charArrayMethodTime2(byte a0, boolean a1) throws IllegalStateException {
+    protected char[] charArrayMethodTime2(final byte a0, final boolean a1) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
     // void return type
 
-    protected void voidMethodTime3(byte a0, boolean a1, char a2) throws IllegalStateException {
+    protected void voidMethodTime3(final byte a0, final boolean a1, final char a2) throws IllegalStateException {
     }
 
     // object or primitive return type
 
-    protected short shortMethodTime3(byte a0, boolean a1, char a2) throws IllegalStateException {
+    protected short shortMethodTime3(final byte a0, final boolean a1, final char a2) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
     // array object or primitive return type
 
-    protected short[] shortArrayMethodTime3(byte a0, boolean a1, char a2) throws IllegalStateException {
+    protected short[] shortArrayMethodTime3(final byte a0, final boolean a1, final char a2) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
     // void return type
 
-    protected void voidMethodTime4(byte a0, boolean a1, char a2, short a3) throws IllegalStateException {
+    protected void voidMethodTime4(final byte a0, final boolean a1, final char a2, final short a3) throws IllegalStateException {
     }
 
     // object or primitive return type
 
-    protected int intMethodTime4(byte a0, boolean a1, char a2, short a3) throws IllegalStateException {
+    protected int intMethodTime4(final byte a0, final boolean a1, final char a2, final short a3) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
     // array object or primitive return type
 
-    protected int[] intArrayMethodTime4(byte a0, boolean a1, char a2, short a3) throws IllegalStateException {
+    protected int[] intArrayMethodTime4(final byte a0, final boolean a1, final char a2, final short a3) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
     // void return type
 
-    protected void voidMethodTime5(byte a0, boolean a1, char a2, short a3, int a4) throws IllegalStateException {
+    protected void voidMethodTime5(final byte a0, final boolean a1, final char a2, final short a3, final int a4) throws IllegalStateException {
     }
 
     // object or primitive return type
 
-    protected long longMethodTime5(byte a0, boolean a1, char a2, short a3, int a4) throws IllegalStateException {
+    protected long longMethodTime5(final byte a0, final boolean a1, final char a2, final short a3, final int a4) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
     // array object or primitive return type
 
-    protected long[] longArrayMethodTime5(byte a0, boolean a1, char a2, short a3, int a4) throws IllegalStateException {
+    protected long[] longArrayMethodTime5(final byte a0, final boolean a1, final char a2, final short a3, final int a4) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
     // void return type
 
-    protected void voidMethodTime6(byte a0, boolean a1, char a2, short a3, int a4, long a5) throws IllegalStateException {
+    protected void voidMethodTime6(final byte a0, final boolean a1, final char a2, final short a3, final int a4, final long a5) throws IllegalStateException {
     }
 
     // object or primitive return type
 
-    protected float floatMethodTime6(byte a0, boolean a1, char a2, short a3, int a4, long a5) throws IllegalStateException {
+    protected float floatMethodTime6(final byte a0, final boolean a1, final char a2, final short a3, final int a4, final long a5) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
     // array object or primitive return type
 
-    protected float[] floatArrayMethodTime6(byte a0, boolean a1, char a2, short a3, int a4, long a5) throws IllegalStateException {
+    protected float[] floatArrayMethodTime6(final byte a0, final boolean a1, final char a2, final short a3, final int a4, final long a5) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
     // void return type
 
-    protected void voidMethodTime7(byte a0, boolean a1, char a2, short a3, int a4, long a5, float a6) throws IllegalStateException {
+    protected void voidMethodTime7(final byte a0, final boolean a1, final char a2, final short a3, final int a4, final long a5, final float a6) throws IllegalStateException {
     }
 
     // object or primitive return type
 
-    protected double doubleMethodTime7(byte a0, boolean a1, char a2, short a3, int a4, long a5, float a6) throws IllegalStateException {
+    protected double doubleMethodTime7(final byte a0, final boolean a1, final char a2, final short a3, final int a4, final long a5, final float a6) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
     // array object or primitive return type
 
-    protected double[] doubleArrayMethodTime7(byte a0, boolean a1, char a2, short a3, int a4, long a5, float a6) throws IllegalStateException {
+    protected double[] doubleArrayMethodTime7(final byte a0, final boolean a1, final char a2, final short a3, final int a4, final long a5, final float a6) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
     // void return type
 
-    protected void voidMethodTime8(byte a0, boolean a1, char a2, short a3, int a4, long a5, float a6, double a7) throws IllegalStateException {
+    protected void voidMethodTime8(final byte a0, final boolean a1, final char a2, final short a3, final int a4, final long a5, final float a6, final double a7) throws IllegalStateException {
     }
 
     // object or primitive return type
 
-    protected java.util.Date DateMethodTime8(byte a0, boolean a1, char a2, short a3, int a4, long a5, float a6, double a7) throws IllegalStateException {
+    protected java.util.Date DateMethodTime8(final byte a0, final boolean a1, final char a2, final short a3, final int a4, final long a5, final float a6, final double a7) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
     // array object or primitive return type
 
-    protected java.util.Date[] DateArrayMethodTime8(byte a0, boolean a1, char a2, short a3, int a4, long a5, float a6, double a7) throws IllegalStateException {
+    protected java.util.Date[] DateArrayMethodTime8(final byte a0, final boolean a1, final char a2, final short a3, final int a4, final long a5, final float a6, final double a7) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
     // void return type
 
-    protected void voidMethodTime9(byte a0, boolean a1, char a2, short a3, int a4, long a5, float a6, double a7, java.util.Date a8) throws IllegalStateException {
+    protected void voidMethodTime9(final byte a0, final boolean a1, final char a2, final short a3, final int a4, final long a5, final float a6, final double a7, final java.util.Date a8) throws IllegalStateException {
     }
 
     // object or primitive return type
 
-    protected java.net.URI URIMethodTime9(byte a0, boolean a1, char a2, short a3, int a4, long a5, float a6, double a7, java.util.Date a8) throws IllegalStateException {
+    protected java.net.URI URIMethodTime9(final byte a0, final boolean a1, final char a2, final short a3, final int a4, final long a5, final float a6, final double a7, final java.util.Date a8) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 
     // array object or primitive return type
 
-    protected java.net.URI[] URIArrayMethodTime9(byte a0, boolean a1, char a2, short a3, int a4, long a5, float a6, double a7, java.util.Date a8) throws IllegalStateException {
+    protected java.net.URI[] URIArrayMethodTime9(final byte a0, final boolean a1, final char a2, final short a3, final int a4, final long a5, final float a6, final double a7, final java.util.Date a8) throws IllegalStateException {
         throw new UnsupportedOperationException();
     }
 

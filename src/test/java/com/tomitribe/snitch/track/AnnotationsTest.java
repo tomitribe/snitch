@@ -43,7 +43,7 @@ public class AnnotationsTest extends Assert {
         }
 
         @Square(size = 5)
-        public void yellow(@Circle("perfect") String foo) {
+        public void yellow(@Circle("perfect") final String foo) {
 
         }
     }
@@ -65,7 +65,7 @@ public class AnnotationsTest extends Assert {
 
 
         @Square(size = 5)
-        public void yellow(@Circle("perfect") String foo) {
+        public void yellow(@Circle("perfect") final String foo) {
             final long start = System.nanoTime();
             try {
                 track$yellow(foo);
@@ -74,7 +74,7 @@ public class AnnotationsTest extends Assert {
             }
         }
 
-        public void track$yellow(String foo) {
+        public void track$yellow(final String foo) {
         }
     }
 

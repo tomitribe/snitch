@@ -21,7 +21,7 @@ package com.tomitribe.snitch;
  */
 public class Hello {
 
-    public static void main(String[] args) throws NoSuchMethodException {
+    public static void main(final String[] args) throws NoSuchMethodException {
         System.out.println(Hello.class.getMethod("main", String[].class).toString());
         hello();
         hello();

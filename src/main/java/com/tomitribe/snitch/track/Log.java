@@ -25,12 +25,12 @@ public class Log {
         // no-op
     }
 
-    public static void log(final String format, Object... details) {
+    public static void log(final String format, final Object... details) {
         final String message = String.format(format, details);
         System.out.printf("%tF %<tT - SNITCH: %s%n", System.currentTimeMillis(), message);
     }
 
-    public static void err(final String format, Object... details) {
+    public static void err(final String format, final Object... details) {
         final String message = String.format(format, details);
         System.err.printf("%tF %<tT - SNITCH: %s%n", System.currentTimeMillis(), message);
     }

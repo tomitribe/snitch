@@ -18,10 +18,10 @@ package com.tomitribe.snitch.util;
 
 import com.tomitribe.snitch.Asmifier;
 import com.tomitribe.snitch.track.Bytecode;
+import com.tomitribe.snitch.track.Clazz;
 import com.tomitribe.snitch.track.TimingEnhancer;
 import com.tomitribe.snitch.track.TrackEnhancer;
 import com.tomitribe.snitch.track.Tracker;
-import com.tomitribe.snitch.track.Clazz;
 
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -64,7 +64,7 @@ public class AsmTest {
 
     public static class Green {
 
-        public Date run(String[] doSomething) throws IllegalStateException {
+        public Date run(final String[] doSomething) throws IllegalStateException {
             final Orange<Object> orange = new Orange<Object>();
             orange.dowithreturn();
             orange.dowithreturn();
@@ -77,7 +77,7 @@ public class AsmTest {
 
     public static class Green2 {
 
-        public Date run(String[] doSomething) throws IllegalStateException {
+        public Date run(final String[] doSomething) throws IllegalStateException {
             Tracker.start();
             final long doit$start = System.nanoTime();
             try {
@@ -88,7 +88,7 @@ public class AsmTest {
             }
         }
 
-        public Date track$run(String[] doSomething) throws IllegalStateException {
+        public Date track$run(final String[] doSomething) throws IllegalStateException {
             final Orange2<Object> orange = new Orange2<Object>();
             orange.dowithreturn();
             orange.dowithreturn();
@@ -98,7 +98,7 @@ public class AsmTest {
             return null;
         }
 
-        public void run2(String[] doSomething) throws IllegalStateException {
+        public void run2(final String[] doSomething) throws IllegalStateException {
             Tracker.start();
             final long doit$start = System.nanoTime();
             try {
@@ -109,7 +109,7 @@ public class AsmTest {
             }
         }
 
-        public void track$run2(String[] doSomething) throws IllegalStateException {
+        public void track$run2(final String[] doSomething) throws IllegalStateException {
             final Orange2<Object> orange = new Orange2<Object>();
             orange.dowithreturn();
             orange.dowithreturn();
@@ -136,7 +136,7 @@ public class AsmTest {
         public synchronized T $dowithreturn() {
             try {
                 Thread.sleep(100);
-            } catch (InterruptedException e) {
+            } catch (final InterruptedException e) {
                 Thread.interrupted();
             }
 
@@ -155,7 +155,7 @@ public class AsmTest {
         public void $dowithvoid() {
             try {
                 Thread.sleep(20);
-            } catch (InterruptedException e) {
+            } catch (final InterruptedException e) {
                 Thread.interrupted();
             }
         }

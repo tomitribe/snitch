@@ -22,7 +22,7 @@ import org.objectweb.asm.ClassVisitor;
  * @version $Revision$ $Date$
  */
 public class TrackEnhancer extends GenericEnhancer {
-    public TrackEnhancer(ClassVisitor classVisitor, Clazz clazz) {
+    public TrackEnhancer(final ClassVisitor classVisitor, final Clazz clazz) {
         super(classVisitor, new MethodFilter(clazz.getTrack()), true);
     }
 }

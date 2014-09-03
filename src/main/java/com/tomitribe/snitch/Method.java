@@ -16,8 +16,8 @@
  */
 package com.tomitribe.snitch;
 
-import org.objectweb.asm.Type;
 import com.tomitribe.snitch.util.Join;
+import org.objectweb.asm.Type;
 
 import java.util.Arrays;
 
@@ -30,19 +30,19 @@ public class Method {
     private final String methodName;
     private final Type[] arguments;
 
-    public Method(java.lang.reflect.Method method) {
+    public Method(final java.lang.reflect.Method method) {
         this.className = method.getDeclaringClass().getName();
         this.methodName = method.getName();
         this.arguments = Type.getArgumentTypes(method);
     }
 
-    public Method(String className, String methodName, Type[] arguments) {
+    public Method(final String className, final String methodName, final Type[] arguments) {
         this.className = className;
         this.methodName = methodName;
         this.arguments = arguments;
     }
 
-    public static Method fromDescriptor(String name, String desc, final String className) {
+    public static Method fromDescriptor(final String name, final String desc, final String className) {
         return new Method(className, name, Type.getArgumentTypes(desc));
     }
 
@@ -58,13 +58,15 @@ public class Method {
         return arguments;
     }
 
-    public static Method fromToString(String toStringValue) {
+    public static Method fromToString(final String toStringValue) {
         String rawName = null;
         String rawArgs = null;
 
         final String[] split = toStringValue.split("[()]");
 
-        if (split.length < 1) { throw new IllegalArgumentException("Invalid toString format: " + toStringValue); }
+        if (split.length < 1) {
+            throw new IllegalArgumentException("Invalid toString format: " + toStringValue);
+        }
 
         if (toStringValue.contains("()") || toStringValue.length() == 1) {
             rawName = split[0];
@@ -102,27 +104,59 @@ public class Method {
         return new Method(className, methodName, types);
     }
 
-    private static String type(String raw) {
-        if ("byte".equals(raw)) { return "B"; }
-        if ("boolean".equals(raw)) { return "Z"; }
-        if ("char".equals(raw)) { return "C"; }
-        if ("short".equals(raw)) { return "S"; }
-        if ("int".equals(raw)) { return "I"; }
-        if ("long".equals(raw)) { return "J"; }
-        if ("float".equals(raw)) { return "F"; }
-        if ("double".equals(raw)) { return "D"; }
+    private static String type(final String raw) {
+        if ("byte".equals(raw)) {
+            return "B";
+        }
+        if ("boolean".equals(raw)) {
+            return "Z";
+        }
+        if ("char".equals(raw)) {
+            return "C";
+        }
+        if ("short".equals(raw)) {
+            return "S";
+        }
+        if ("int".equals(raw)) {
+            return "I";
+        }
+        if ("long".equals(raw)) {
+            return "J";
+        }
+        if ("float".equals(raw)) {
+            return "F";
+        }
+        if ("double".equals(raw)) {
+            return "D";
+        }
         return "L" + raw.replace('.', '/') + ";";
     }
 
-    public static String type(Type type) {
-        if (Type.BYTE_TYPE.equals(type)) { return "byte"; }
-        if (Type.BOOLEAN_TYPE.equals(type)) { return "boolean"; }
-        if (Type.CHAR_TYPE.equals(type)) { return "char"; }
-        if (Type.SHORT_TYPE.equals(type)) { return "short"; }
-        if (Type.INT_TYPE.equals(type)) { return "int"; }
-        if (Type.LONG_TYPE.equals(type)) { return "long"; }
-        if (Type.FLOAT_TYPE.equals(type)) { return "float"; }
-        if (Type.DOUBLE_TYPE.equals(type)) { return "double"; }
+    public static String type(final Type type) {
+        if (Type.BYTE_TYPE.equals(type)) {
+            return "byte";
+        }
+        if (Type.BOOLEAN_TYPE.equals(type)) {
+            return "boolean";
+        }
+        if (Type.CHAR_TYPE.equals(type)) {
+            return "char";
+        }
+        if (Type.SHORT_TYPE.equals(type)) {
+            return "short";
+        }
+        if (Type.INT_TYPE.equals(type)) {
+            return "int";
+        }
+        if (Type.LONG_TYPE.equals(type)) {
+            return "long";
+        }
+        if (Type.FLOAT_TYPE.equals(type)) {
+            return "float";
+        }
+        if (Type.DOUBLE_TYPE.equals(type)) {
+            return "double";
+        }
         return type.getClassName();
     }
 
@@ -133,7 +167,7 @@ public class Method {
         sb.append(methodName).append("(");
         sb.append(Join.join(",", new Join.NameCallback<Type>() {
             @Override
-            public String getName(Type type) {
+            public String getName(final Type type) {
                 return type(type);
             }
         }, arguments));
@@ -142,14 +176,22 @@ public class Method {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) { return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
-        Method method = (Method) o;
+        final Method method = (Method) o;
 
-        if (!Arrays.equals(arguments, method.arguments)) { return false; }
-        if (!methodName.equals(method.methodName)) { return false; }
+        if (!Arrays.equals(arguments, method.arguments)) {
+            return false;
+        }
+        if (!methodName.equals(method.methodName)) {
+            return false;
+        }
 
         return true;
     }

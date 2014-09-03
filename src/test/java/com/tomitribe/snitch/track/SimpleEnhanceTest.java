@@ -58,19 +58,18 @@ public class SimpleEnhanceTest extends Assert {
         orange.invoke(colors, null, null, null, null);
     }
 
-    private void modify(Enhancer enhancer, ClassLoader loader, final Class<?> clazz) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException, IOException {
+    private void modify(final Enhancer enhancer, final ClassLoader loader, final Class<?> clazz) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException, IOException {
         final byte[] enhance = enhancer.enhance(clazz.getName(), Bytecode.readClassFile(clazz));
         Asmifier.asmify(clazz.getName(), enhance, "modified");
         Bytecode.defineClass(enhance, clazz.getName(), loader);
     }
 
 
-
     public static class Colors {
 
         private final Shapes shapes = new Shapes();
 
-        public Boolean orange(String s, Long l, Date d, Object foo) throws IOException {
+        public Boolean orange(final String s, final Long l, final Date d, final Object foo) throws IOException {
             green(0, false);
             green(0, false);
             green(0, false);
@@ -88,13 +87,13 @@ public class SimpleEnhanceTest extends Assert {
             return null;
         }
 
-        public void green(int s, boolean b) throws IOException {
+        public void green(final int s, final boolean b) throws IOException {
         }
 
-        public void red(String s, Long l, Date d) throws IOException {
+        public void red(final String s, final Long l, final Date d) throws IOException {
         }
 
-        public int blue(int s, boolean b) throws IOException {
+        public int blue(final int s, final boolean b) throws IOException {
             return -1;
         }
 
@@ -103,15 +102,15 @@ public class SimpleEnhanceTest extends Assert {
     }
 
     public static class Shapes {
-        public void circle(int i) {
+        public void circle(final int i) {
 
         }
 
-        public void square(int i, int ii) {
+        public void square(final int i, final int ii) {
 
         }
 
-        public void triangle(int i) {
+        public void triangle(final int i) {
 
         }
     }

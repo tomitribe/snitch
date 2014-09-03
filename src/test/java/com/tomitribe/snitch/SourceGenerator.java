@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public class SourceGenerator {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception {
         final SourceGenerator generator = new SourceGenerator();
         generator.testGenerateBlue();
         generator.testGenerateGreen();
@@ -50,7 +50,7 @@ public class SourceGenerator {
     public void testGenerateBlue() throws Exception {
         generate("Blue", new Processor() {
             @Override
-            public Map<String, String> process(List<String> parameters, Class type) {
+            public Map<String, String> process(final List<String> parameters, final Class type) {
                 final Map<String, String> data = new HashMap<String, String>();
                 data.put("keywords", "public");
                 data.put("keywordsAfter", "public");
@@ -68,7 +68,7 @@ public class SourceGenerator {
     public void testGenerateGreen() throws Exception {
         generate("Green", new Processor() {
             @Override
-            public Map<String, String> process(List<String> parameters, Class type) {
+            public Map<String, String> process(final List<String> parameters, final Class type) {
                 final Map<String, String> data = new HashMap<String, String>();
                 data.put("keywords", "public");
                 data.put("keywordsAfter", "public");
@@ -85,7 +85,7 @@ public class SourceGenerator {
     public void testGenerateYellow() throws Exception {
         generate("Yellow", new Processor() {
             @Override
-            public Map<String, String> process(List<String> parameters, Class type) {
+            public Map<String, String> process(final List<String> parameters, final Class type) {
                 final Map<String, String> data = new HashMap<String, String>();
                 data.put("keywords", "public synchronized");
                 data.put("keywordsAfter", "public");
@@ -102,7 +102,7 @@ public class SourceGenerator {
     public void testGeneratePurple() throws Exception {
         generate("Purple", new Processor() {
             @Override
-            public Map<String, String> process(List<String> parameters, Class type) {
+            public Map<String, String> process(final List<String> parameters, final Class type) {
                 final Map<String, String> data = new HashMap<String, String>();
                 data.put("keywords", "private");
                 data.put("keywordsAfter", "private");
@@ -119,7 +119,7 @@ public class SourceGenerator {
     public void testGeneratePink() throws Exception {
         generate("Pink", new Processor() {
             @Override
-            public Map<String, String> process(List<String> parameters, Class type) {
+            public Map<String, String> process(final List<String> parameters, final Class type) {
                 final Map<String, String> data = new HashMap<String, String>();
                 data.put("keywords", "protected");
                 data.put("keywordsAfter", "protected");
@@ -136,7 +136,7 @@ public class SourceGenerator {
     public void testGenerateMagenta() throws Exception {
         generate("Magenta", new Processor() {
             @Override
-            public Map<String, String> process(List<String> parameters, Class type) {
+            public Map<String, String> process(final List<String> parameters, final Class type) {
                 final Map<String, String> data = new HashMap<String, String>();
                 data.put("keywords", "");
                 data.put("keywordsAfter", "");
@@ -153,7 +153,7 @@ public class SourceGenerator {
     public void testGenerateRed() throws Exception {
         generate("Red", new Processor() {
             @Override
-            public Map<String, String> process(List<String> parameters, Class type) {
+            public Map<String, String> process(final List<String> parameters, final Class type) {
                 final Map<String, String> data = new HashMap<String, String>();
                 data.put("keywords", "public");
                 data.put("keywordsAfter", "public");
@@ -170,7 +170,7 @@ public class SourceGenerator {
     public void testGenerateOrange() throws Exception {
         generate("Orange", new Processor() {
             @Override
-            public Map<String, String> process(List<String> parameters, Class type) {
+            public Map<String, String> process(final List<String> parameters, final Class type) {
                 final Map<String, String> data = new HashMap<String, String>();
                 data.put("keywords", "public static");
                 data.put("keywordsAfter", "public static");
@@ -184,7 +184,7 @@ public class SourceGenerator {
         });
     }
 
-    private void generate(String name, Processor processor) throws IOException {
+    private void generate(final String name, final Processor processor) throws IOException {
         final PrintStream before = start(name + "Before");
         final PrintStream after = start(name + "After");
 
@@ -196,7 +196,7 @@ public class SourceGenerator {
         final String afterTemplate = IO.slurp(this.getClass().getResource("/after.txt"));
 
         int count = 0;
-        for (Class type : types) {
+        for (final Class type : types) {
             final Map<String, String> data = processor.process(parameters, type);
             data.put("number", (count++) + "");
 
@@ -217,7 +217,7 @@ public class SourceGenerator {
         Map<String, String> process(List<String> parameters, Class type);
     }
 
-    private PrintStream start(String name) throws FileNotFoundException {
+    private PrintStream start(final String name) throws FileNotFoundException {
         final PrintStream out = IO.print(new File("/Users/dblevins/work/tomitribe/snitch/src/test/java/org/tomitribe/snitch/gen/" + name + ".java"));
         out.println("package org.tomitribe.snitch.gen;");
         out.println();
@@ -231,7 +231,7 @@ public class SourceGenerator {
         int i;
 
         @Override
-        public String getName(String object) {
+        public String getName(final String object) {
             return "a" + (i++);
         }
     }
@@ -240,7 +240,7 @@ public class SourceGenerator {
         int i;
 
         @Override
-        public String getName(String object) {
+        public String getName(final String object) {
             return object + " a" + (i++);
         }
     }
@@ -249,7 +249,7 @@ public class SourceGenerator {
         int i;
 
         @Override
-        public String getName(String object) {
+        public String getName(final String object) {
             return object + "[] a" + (i++);
         }
     }

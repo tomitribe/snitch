@@ -29,23 +29,23 @@ import java.util.regex.Pattern;
 public class Substitution {
     private static final Pattern PATTERN = Pattern.compile("(\\$\\{)([\\w.]+)(})");
 
-    public static String format(String input, Map<String, String> data) {
+    public static String format(final String input, final Map<String, String> data) {
         return format(input, data, new HashSet<String>());
     }
 
-    private static String format(String input, Map<String, String> data, Set<String> seen) {
+    private static String format(final String input, final Map<String, String> data, final Set<String> seen) {
 //        if (!seen.add(input)) throw new IllegalStateException("Circular reference in " + input);
 
-        Matcher matcher = PATTERN.matcher(input);
-        StringBuffer buf = new StringBuffer();
+        final Matcher matcher = PATTERN.matcher(input);
+        final StringBuffer buf = new StringBuffer();
         while (matcher.find()) {
-            String key = matcher.group(2);
+            final String key = matcher.group(2);
             String value = data.get(key);
             if (value != null) {
                 value = format(value, data, seen);
                 try {
                     matcher.appendReplacement(buf, value.toString());
-                } catch (Exception e) {
+                } catch (final Exception e) {
                 }
             }
         }
@@ -55,7 +55,7 @@ public class Substitution {
 
     public static Map<String, String> getSystemProperties() {
         final Map<String, String> map = new HashMap<String, String>();
-        for (Map.Entry<Object, Object> entry : System.getProperties().entrySet()) {
+        for (final Map.Entry<Object, Object> entry : System.getProperties().entrySet()) {
             final String key = entry.getKey().toString();
             final String value = entry.getValue().toString();
             map.put(key, value);

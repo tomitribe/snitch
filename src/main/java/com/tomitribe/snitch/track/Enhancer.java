@@ -33,7 +33,7 @@ public class Enhancer {
 
     private final Map<String, Clazz> classes = new HashMap<String, Clazz>();
 
-    public static Enhancer create(File file) throws IOException {
+    public static Enhancer create(final File file) throws IOException {
         final Properties properties = IO.readProperties(file);
 
         return create(properties);
@@ -44,10 +44,10 @@ public class Enhancer {
         return classes.get(name);
     }
 
-    public static Enhancer create(Properties properties) {
+    public static Enhancer create(final Properties properties) {
         final Enhancer configuration = new Enhancer();
 
-        for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+        for (final Map.Entry<Object, Object> entry : properties.entrySet()) {
 
             final String key = (String) entry.getKey();
             final String value = (String) entry.getValue();
@@ -68,7 +68,9 @@ public class Enhancer {
         name = normalize(name);
         {
             final Clazz clazz = classes.get(name);
-            if (clazz != null) { return clazz; }
+            if (clazz != null) {
+                return clazz;
+            }
         }
 
         {
@@ -85,9 +87,11 @@ public class Enhancer {
         return name;
     }
 
-    public byte[] enhance(String className, byte[] bytecode) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException {
+    public byte[] enhance(final String className, byte[] bytecode) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException {
         final Clazz clazz = getClazz(className);
-        if (clazz == null) { return bytecode; }
+        if (clazz == null) {
+            return bytecode;
+        }
 
         Log.log("Tracking %s", className);
 

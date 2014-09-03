@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package asm.org.tomitribe.snitch.gen;
+package asm.org.tomitribe.gen;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -28,7 +28,7 @@ public class BlueAfterDump implements Opcodes {
 
     public static byte[] dump() throws Exception {
 
-        ClassWriter cw = new ClassWriter(0);
+        final ClassWriter cw = new ClassWriter(0);
         FieldVisitor fv;
         MethodVisitor mv;
         AnnotationVisitor av0;
@@ -47,11 +47,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "voidMethodTime0", "()V", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -62,7 +62,7 @@ public class BlueAfterDump implements Opcodes {
             mv.visitLdcInsn("theTag");
             mv.visitVarInsn(LLOAD, 1);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            Label l4 = new Label();
+            final Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
             mv.visitVarInsn(ASTORE, 3);
@@ -87,11 +87,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "byteMethodTime0", "()B", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -129,11 +129,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "byteArrayMethodTime0", "()[B", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -171,11 +171,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "voidMethodTime1", "()V", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -186,7 +186,7 @@ public class BlueAfterDump implements Opcodes {
             mv.visitLdcInsn("theTag");
             mv.visitVarInsn(LLOAD, 1);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            Label l4 = new Label();
+            final Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
             mv.visitVarInsn(ASTORE, 3);
@@ -211,11 +211,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "booleanMethodTime1", "()Z", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -253,11 +253,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "booleanArrayMethodTime1", "()[Z", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -295,11 +295,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "voidMethodTime2", "()V", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -310,7 +310,7 @@ public class BlueAfterDump implements Opcodes {
             mv.visitLdcInsn("theTag");
             mv.visitVarInsn(LLOAD, 1);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            Label l4 = new Label();
+            final Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
             mv.visitVarInsn(ASTORE, 3);
@@ -335,11 +335,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "charMethodTime2", "()C", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -377,11 +377,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "charArrayMethodTime2", "()[C", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -419,11 +419,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "voidMethodTime3", "()V", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -434,7 +434,7 @@ public class BlueAfterDump implements Opcodes {
             mv.visitLdcInsn("theTag");
             mv.visitVarInsn(LLOAD, 1);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            Label l4 = new Label();
+            final Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
             mv.visitVarInsn(ASTORE, 3);
@@ -459,11 +459,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "shortMethodTime3", "()S", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -501,11 +501,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "shortArrayMethodTime3", "()[S", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -543,11 +543,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "voidMethodTime4", "()V", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -558,7 +558,7 @@ public class BlueAfterDump implements Opcodes {
             mv.visitLdcInsn("theTag");
             mv.visitVarInsn(LLOAD, 1);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            Label l4 = new Label();
+            final Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
             mv.visitVarInsn(ASTORE, 3);
@@ -583,11 +583,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "intMethodTime4", "()I", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -625,11 +625,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "intArrayMethodTime4", "()[I", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -667,11 +667,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "voidMethodTime5", "()V", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -682,7 +682,7 @@ public class BlueAfterDump implements Opcodes {
             mv.visitLdcInsn("theTag");
             mv.visitVarInsn(LLOAD, 1);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            Label l4 = new Label();
+            final Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
             mv.visitVarInsn(ASTORE, 3);
@@ -707,11 +707,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "longMethodTime5", "()J", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -749,11 +749,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "longArrayMethodTime5", "()[J", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -791,11 +791,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "voidMethodTime6", "()V", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -806,7 +806,7 @@ public class BlueAfterDump implements Opcodes {
             mv.visitLdcInsn("theTag");
             mv.visitVarInsn(LLOAD, 1);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            Label l4 = new Label();
+            final Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
             mv.visitVarInsn(ASTORE, 3);
@@ -831,11 +831,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "floatMethodTime6", "()F", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -873,11 +873,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "floatArrayMethodTime6", "()[F", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -915,11 +915,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "voidMethodTime7", "()V", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -930,7 +930,7 @@ public class BlueAfterDump implements Opcodes {
             mv.visitLdcInsn("theTag");
             mv.visitVarInsn(LLOAD, 1);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            Label l4 = new Label();
+            final Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
             mv.visitVarInsn(ASTORE, 3);
@@ -955,11 +955,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "doubleMethodTime7", "()D", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -997,11 +997,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "doubleArrayMethodTime7", "()[D", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -1039,11 +1039,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "voidMethodTime8", "()V", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -1054,7 +1054,7 @@ public class BlueAfterDump implements Opcodes {
             mv.visitLdcInsn("theTag");
             mv.visitVarInsn(LLOAD, 1);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            Label l4 = new Label();
+            final Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
             mv.visitVarInsn(ASTORE, 3);
@@ -1079,11 +1079,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "DateMethodTime8", "()Ljava/util/Date;", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -1121,11 +1121,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "DateArrayMethodTime8", "()[Ljava/util/Date;", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -1163,11 +1163,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "voidMethodTime9", "()V", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -1178,7 +1178,7 @@ public class BlueAfterDump implements Opcodes {
             mv.visitLdcInsn("theTag");
             mv.visitVarInsn(LLOAD, 1);
             mv.visitMethodInsn(INVOKESTATIC, "org/tomitribe/snitch/Tracker", "track", "(Ljava/lang/String;J)V");
-            Label l4 = new Label();
+            final Label l4 = new Label();
             mv.visitJumpInsn(GOTO, l4);
             mv.visitLabel(l2);
             mv.visitVarInsn(ASTORE, 3);
@@ -1203,11 +1203,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "URIMethodTime9", "()Ljava/net/URI;", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);
@@ -1245,11 +1245,11 @@ public class BlueAfterDump implements Opcodes {
         {
             mv = cw.visitMethod(ACC_PUBLIC, "URIArrayMethodTime9", "()[Ljava/net/URI;", null, new String[]{"java/lang/IllegalStateException"});
             mv.visitCode();
-            Label l0 = new Label();
-            Label l1 = new Label();
-            Label l2 = new Label();
+            final Label l0 = new Label();
+            final Label l1 = new Label();
+            final Label l2 = new Label();
             mv.visitTryCatchBlock(l0, l1, l2, null);
-            Label l3 = new Label();
+            final Label l3 = new Label();
             mv.visitTryCatchBlock(l2, l3, l2, null);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
             mv.visitVarInsn(LSTORE, 1);

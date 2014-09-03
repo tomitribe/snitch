@@ -41,23 +41,27 @@ public class Agent {
         // no-op
     }
 
-    public static void premain(String agentArgs, Instrumentation instrumentation) {
-        if (Agent.instrumentation != null) { return; }
+    public static void premain(final String agentArgs, final Instrumentation instrumentation) {
+        if (Agent.instrumentation != null) {
+            return;
+        }
 
         initialize(agentArgs, instrumentation);
 
         Agent.instrumentation = instrumentation;
     }
 
-    public static void agentmain(String agentArgs, Instrumentation instrumentation) {
-        if (Agent.instrumentation != null) { return; }
+    public static void agentmain(final String agentArgs, final Instrumentation instrumentation) {
+        if (Agent.instrumentation != null) {
+            return;
+        }
 
         initialize(agentArgs, instrumentation);
 
         Agent.instrumentation = instrumentation;
     }
 
-    private static void initialize(String agentArgs, Instrumentation instrumentation) {
+    private static void initialize(final String agentArgs, final Instrumentation instrumentation) {
         try {
             if (agentArgs == null) {
                 err("Tracker not installed.  No properties file specified");
@@ -73,7 +77,7 @@ public class Agent {
 
             final List<File> files = new ArrayList<File>();
 
-            for (String path : split) {
+            for (final String path : split) {
                 final File file = new File(path);
 
                 if (!file.isFile()) {
@@ -101,29 +105,29 @@ public class Agent {
 
             final Properties properties = new Properties();
 
-            for (File file : files) {
+            for (final File file : files) {
                 IO.readProperties(file, properties);
             }
 
             instrumentation.addTransformer(new Tracker(Enhancer.create(properties), instrumentation));
             out("Tracker installed.  Configuration files '%s'", Join.join(",", new Join.NameCallback<File>() {
                 @Override
-                public String getName(File object) {
+                public String getName(final File object) {
                     return object.getAbsolutePath();
                 }
             }, files));
 
-        } catch (Throwable e) {
+        } catch (final Throwable e) {
             err("Failed %s", e.getMessage());
             e.printStackTrace();
         }
     }
 
-    private static void out(String format, Object... details) {
+    private static void out(final String format, final Object... details) {
         Log.log("Agent:: %s%n", String.format(format, details));
     }
 
-    private static void err(String format, Object... details) {
+    private static void err(final String format, final Object... details) {
         Log.err("Agent:: %s%n", String.format(format, details));
     }
 
@@ -135,16 +139,15 @@ public class Agent {
             this.enhancer = enhancer;
         }
 
-        public Tracker(final Enhancer enhancer, Instrumentation instrumentation) {
+        public Tracker(final Enhancer enhancer, final Instrumentation instrumentation) {
             this.enhancer = enhancer;
         }
 
-        public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain,
-                                byte[] classfileBuffer) throws IllegalClassFormatException
-        {
+        public byte[] transform(final ClassLoader loader, final String className, final Class<?> classBeingRedefined, final ProtectionDomain protectionDomain,
+                                final byte[] classfileBuffer) throws IllegalClassFormatException {
             try {
                 return enhancer.enhance(className, classfileBuffer);
-            } catch (Throwable e) {
+            } catch (final Throwable e) {
                 err("Enhance Failed for '%s' : %s %s", className, e.getClass().getName(), e.getMessage());
                 e.printStackTrace();
                 return classfileBuffer;

@@ -36,7 +36,7 @@ public class MethodTest extends Assert {
 
         final Method unexpected = new Method(MethodTest.class.getMethod("test"));
 
-        for (java.lang.reflect.Method method : Colors.class.getMethods()) {
+        for (final java.lang.reflect.Method method : Colors.class.getMethods()) {
             final Method a = new Method(method);
 
             final Method b = Method.fromDescriptor(method.getName(), Type.getMethodDescriptor(method), "");

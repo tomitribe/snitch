@@ -37,13 +37,13 @@ public class InsertListenerVisitor extends ClassVisitor implements Opcodes {
     private final Filter<Type> filter;
     private String classInternalName;
 
-    public InsertListenerVisitor(ClassVisitor classVisitor, final Filter<Type> filter) {
-        super(Opcodes.ASM4, classVisitor);
+    public InsertListenerVisitor(final ClassVisitor classVisitor, final Filter<Type> filter) {
+        super(Opcodes.ASM5, classVisitor);
         this.filter = filter;
     }
 
     @Override
-    public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+    public void visit(final int version, final int access, final String name, final String signature, final String superName, final String[] interfaces) {
         this.classInternalName = name;
         super.visit(version, access, name, signature, superName, interfaces);
     }
@@ -67,7 +67,7 @@ public class InsertListenerVisitor extends ClassVisitor implements Opcodes {
 
         } else {
 
-            return new MethodVisitor(Opcodes.ASM4, methodVisitor) {
+            return new MethodVisitor(Opcodes.ASM5, methodVisitor) {
                 @Override
                 public void visitCode() {
 

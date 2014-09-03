@@ -28,21 +28,41 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @version $Revision$ $Date$
  */
 public class Asmifier {
 
-    public static void main(String[] args) throws IOException {
+    private static final AtomicReference<File> tmpDir = new AtomicReference<File>(null);
+
+    static {
+        try {
+            final File asmifier = File.createTempFile("Asmifier", null);
+            tmpDir.set(asmifier.getParentFile());
+            if (!asmifier.delete()) {
+                asmifier.deleteOnExit();
+            }
+        } catch (final IOException e) {
+            throw new RuntimeException("Asmifier failed to locate a temporary directory");
+        }
+    }
+
+    public static void main(final String[] args) throws IOException {
         Asmifier.print(Asmifier.class.getClassLoader(), "org.tomitribe.snitch.Blue");
         Asmifier.print(Asmifier.class.getClassLoader(), "org.tomitribe.snitch.Green");
         Asmifier.print(Asmifier.class.getClassLoader(), "org.tomitribe.snitch.Red");
     }
 
-    public static void print(ClassLoader classLoader, final String className) throws IOException {
+    public static void print(final ClassLoader classLoader, final String className) throws IOException {
         final String internalName = className.replace('.', '/') + ".class";
         final URL resource = classLoader.getResource(internalName);
+
+        if (null == resource) {
+            throw new IOException("Failed to find resource: " + internalName);
+        }
+
         final org.objectweb.asm.ClassReader reader = new org.objectweb.asm.ClassReader(resource.openStream());
 
 
@@ -51,33 +71,33 @@ public class Asmifier {
         write(reader, file);
     }
 
-    private static void write(ClassReader reader, File file) throws IOException {
+    private static void write(final ClassReader reader, final File file) throws IOException {
         final OutputStream write = IO.write(file);
         write(reader, write);
     }
 
-    public static void write(ClassReader reader, OutputStream write) throws IOException {
+    public static void write(final ClassReader reader, final OutputStream write) throws IOException {
         final TraceClassVisitor visitor = new TraceClassVisitor(null, new ASMifier(), new PrintWriter(write));
         reader.accept(visitor, ClassReader.SKIP_DEBUG);
         write.close();
     }
 
-    public static void asmify(Class clazz, String suffix) throws IOException {
+    public static void asmify(final Class clazz, final String suffix) throws IOException {
         asmify(clazz.getName(), Bytecode.readClassFile(clazz.getClassLoader(), clazz), suffix);
     }
 
-    public static void asmify(ClassLoader loader, String className, String suffix) throws IOException {
+    public static void asmify(final ClassLoader loader, final String className, final String suffix) throws IOException {
         asmify(className, Bytecode.readClassFile(loader, className), suffix);
     }
 
-    public static void asmify(String className, byte[] bytes, final String suffix) throws IOException {
+    public static void asmify(final String className, final byte[] bytes, final String suffix) throws IOException {
         final org.objectweb.asm.ClassReader reader = new org.objectweb.asm.ClassReader(bytes);
-        final File file = new File("/tmp/" + className + "." + suffix);
+        final File file = new File(tmpDir.get(), className + "." + suffix);
 
         write(reader, file);
     }
 
-    public static String asmify(byte[] actualBytes) throws IOException {
+    public static String asmify(final byte[] actualBytes) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         write(new ClassReader(actualBytes), byteArrayOutputStream);
         return new String(byteArrayOutputStream.toByteArray());

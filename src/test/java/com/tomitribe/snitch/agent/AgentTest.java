@@ -16,15 +16,15 @@
  */
 package com.tomitribe.snitch.agent;
 
+import com.tomitribe.snitch.agent.colors.Blue;
 import com.tomitribe.snitch.agent.colors.Color;
 import com.tomitribe.snitch.agent.colors.Green;
+import com.tomitribe.snitch.agent.colors.Main;
+import com.tomitribe.snitch.agent.colors.Red;
 import com.tomitribe.snitch.util.IO;
 import org.junit.Assert;
 import org.junit.Test;
 import org.objectweb.asm.util.ASMifier;
-import com.tomitribe.snitch.agent.colors.Blue;
-import com.tomitribe.snitch.agent.colors.Main;
-import com.tomitribe.snitch.agent.colors.Red;
 
 import java.io.File;
 import java.util.Properties;
@@ -35,29 +35,29 @@ import java.util.Properties;
 public class AgentTest extends Assert {
 
     final File agentJar = Archive.archive()
-            .manifest("Premain-Class", Agent.class)
-            .manifest("Agent-Class", Agent.class)
-            .manifest("Can-Redefine-Classes", true)
-            .manifest("Can-Retransform-Classes", true)
-            .addDir(JarLocation.jarLocation(Agent.class))
-            .addJar(JarLocation.jarLocation(ASMifier.class))
-            .asJar();
+        .manifest("Premain-Class", Agent.class)
+        .manifest("Agent-Class", Agent.class)
+        .manifest("Can-Redefine-Classes", true)
+        .manifest("Can-Retransform-Classes", true)
+        .addDir(JarLocation.jarLocation(Agent.class))
+        .addJar(JarLocation.jarLocation(ASMifier.class))
+        .asJar();
 
     final File testJar = Archive.archive()
-            .add(Main.class)
-            .add(Color.class)
-            .add(Red.class)
-            .add(Green.class)
-            .add(Blue.class).asJar();
+        .add(Main.class)
+        .add(Color.class)
+        .add(Red.class)
+        .add(Green.class)
+        .add(Blue.class).asJar();
 
     @Test
     public void failNoConfigFiles() throws Exception {
 
         final Java.Result result = Java.java(
-                "-javaagent:" + agentJar.getAbsolutePath(),
-                "-classpath",
-                testJar.getAbsolutePath(),
-                Main.class.getName()
+            "-javaagent:" + agentJar.getAbsolutePath(),
+            "-classpath",
+            testJar.getAbsolutePath(),
+            Main.class.getName()
         );
 
         assertEquals(0, result.getExitCode());
@@ -70,10 +70,10 @@ public class AgentTest extends Assert {
     public void failInvalidConfFile() throws Exception {
 
         final Java.Result result = Java.java(
-                "-javaagent:" + agentJar.getAbsolutePath()+"=foo.properties",
-                "-classpath",
-                testJar.getAbsolutePath(),
-                Main.class.getName()
+            "-javaagent:" + agentJar.getAbsolutePath() + "=foo.properties",
+            "-classpath",
+            testJar.getAbsolutePath(),
+            Main.class.getName()
         );
 
         assertEquals(0, result.getExitCode());
@@ -96,10 +96,10 @@ public class AgentTest extends Assert {
         IO.writeProperties(properties, file);
 
         final Java.Result result = Java.java(
-                "-javaagent:" + agentJar.getAbsolutePath() + "=" + file.getAbsolutePath(),
-                "-classpath",
-                testJar.getAbsolutePath(),
-                Main.class.getName()
+            "-javaagent:" + agentJar.getAbsolutePath() + "=" + file.getAbsolutePath(),
+            "-classpath",
+            testJar.getAbsolutePath(),
+            Main.class.getName()
         );
 
         assertEquals(0, result.getExitCode());
@@ -138,10 +138,10 @@ public class AgentTest extends Assert {
         }
 
         final Java.Result result = Java.java(
-                "-javaagent:" + agentJar.getAbsolutePath() + "=" + fileA.getAbsolutePath() + "," + fileB.getAbsolutePath(),
-                "-classpath",
-                testJar.getAbsolutePath(),
-                Main.class.getName()
+            "-javaagent:" + agentJar.getAbsolutePath() + "=" + fileA.getAbsolutePath() + "," + fileB.getAbsolutePath(),
+            "-classpath",
+            testJar.getAbsolutePath(),
+            Main.class.getName()
         );
 
         assertEquals(0, result.getExitCode());

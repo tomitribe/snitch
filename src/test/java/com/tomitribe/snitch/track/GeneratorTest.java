@@ -89,7 +89,7 @@ public class GeneratorTest extends Assert {
         assertBytecode(MagentaBefore.class, MagentaAfter.class);
     }
 
-    public static void assertBytecode(Class<?> beforeClass, Class<?> afterClass) throws Exception {
+    public static void assertBytecode(final Class<?> beforeClass, final Class<?> afterClass) throws Exception {
         final String tag = "idea";
         Asmifier.asmify(beforeClass, "before." + tag);
         Asmifier.asmify(afterClass, "after." + tag);
@@ -99,7 +99,7 @@ public class GeneratorTest extends Assert {
 
         final ClassVisitor classAdapter = new GenericEnhancer(cw, new Filter<String>() {
             @Override
-            public String accept(Method method) {
+            public String accept(final Method method) {
                 if (method.getMethodName().contains("<")) return null;
                 return "theTag";
             }
@@ -119,7 +119,7 @@ public class GeneratorTest extends Assert {
         try {
             expected = asmify(expectedBytes).replaceAll("After", "");
             actual = asmify(actualBytes).replaceAll("Before", "");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
             assertArrayEquals(expectedBytes, actualBytes);
             throw e;
@@ -129,7 +129,7 @@ public class GeneratorTest extends Assert {
         assertEquals(expected, actual);
     }
 
-    public static String asmify(byte[] actualBytes) throws IOException {
+    public static String asmify(final byte[] actualBytes) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         Asmifier.write(new ClassReader(actualBytes), byteArrayOutputStream);
         return new String(byteArrayOutputStream.toByteArray());
