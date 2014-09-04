@@ -44,7 +44,7 @@ public class Java {
         final File javaHome = new File(System.getenv("JAVA_HOME"));
         File java = new File(new File(javaHome, "bin"), "java");
 
-        if(!java.exists()){
+        if (!java.exists()) {
             java = new File(new File(javaHome, "bin"), "java.exe");
         }
 

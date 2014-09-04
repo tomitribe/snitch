@@ -80,7 +80,7 @@ public class Agent {
             for (final String path : split) {
                 final File file = new File(path);
 
-                if (!file.isFile()) {
+                if (!file.exists()) {
                     err("Configuration file does not exist '%s'", file.getAbsolutePath());
                     continue;
                 }
@@ -133,7 +133,7 @@ public class Agent {
 
     public static class Tracker implements ClassFileTransformer {
 
-        private Enhancer enhancer;
+        private final Enhancer enhancer;
 
         public Tracker(final Enhancer enhancer) {
             this.enhancer = enhancer;

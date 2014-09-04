@@ -16,6 +16,8 @@
  */
 package com.tomitribe.snitch.util;
 
+import sun.reflect.CallerSensitive;
+
 import java.lang.reflect.Field;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -24,6 +26,7 @@ import java.security.ProtectionDomain;
 /**
  * @version $Revision$ $Date$
  */
+@SuppressWarnings("deprecation")
 public class Unsafe {
 
     private static final sun.misc.Unsafe UNSAFE;
@@ -45,6 +48,171 @@ public class Unsafe {
 
     private Unsafe() {
         // no-op
+    }
+
+    @CallerSensitive
+    public static sun.misc.Unsafe getUnsafe() {
+        return sun.misc.Unsafe.getUnsafe();
+    }
+
+    @Deprecated
+    public static void putBoolean(final Object o, final int i, final boolean b) {
+        UNSAFE.putBoolean(o, i, b);
+    }
+
+    @Deprecated
+    public static void putObject(final Object o, final int i, final Object o2) {
+        UNSAFE.putObject(o, i, o2);
+    }
+
+    @Deprecated
+    public static void putInt(final Object o, final int i, final int i2) {
+        UNSAFE.putInt(o, i, i2);
+    }
+
+    public static long getAndAddLong(final Object o, final long l, final long l2) {
+        return UNSAFE.getAndAddLong(o, l, l2);
+    }
+
+    @Deprecated
+    public static double getDouble(final Object o, final int i) {
+        return UNSAFE.getDouble(o, i);
+    }
+
+    @Deprecated
+    public static void putChar(final Object o, final int i, final char c) {
+        UNSAFE.putChar(o, i, c);
+    }
+
+    public static int getAndSetInt(final Object o, final long l, final int i) {
+        return UNSAFE.getAndSetInt(o, l, i);
+    }
+
+    @Deprecated
+    public static void putLong(final Object o, final int i, final long l) {
+        UNSAFE.putLong(o, i, l);
+    }
+
+    public static void setMemory(final Object o, final long l, final long l2, final byte b) {
+        UNSAFE.setMemory(o, l, l2, b);
+    }
+
+    public static Class<?> defineAnonymousClass(final Class<?> aClass, final byte[] bytes, final Object[] objects) {
+        return UNSAFE.defineAnonymousClass(aClass, bytes, objects);
+    }
+
+    @Deprecated
+    public static Object getObject(final Object o, final int i) {
+        return UNSAFE.getObject(o, i);
+    }
+
+    @Deprecated
+    public static short getShort(final Object o, final int i) {
+        return UNSAFE.getShort(o, i);
+    }
+
+    @Deprecated
+    public static void putFloat(final Object o, final int i, final float v) {
+        UNSAFE.putFloat(o, i, v);
+    }
+
+    public static int getAndAddInt(final Object o, final long l, final int i) {
+        return UNSAFE.getAndAddInt(o, l, i);
+    }
+
+    @Deprecated
+    public static void putDouble(final Object o, final int i, final double v) {
+        UNSAFE.putDouble(o, i, v);
+    }
+
+    public static void loadFence() {
+        UNSAFE.loadFence();
+    }
+
+    public static int arrayIndexScale(final Class<?> aClass) {
+        return UNSAFE.arrayIndexScale(aClass);
+    }
+
+    @Deprecated
+    public static Object staticFieldBase(final Class<?> aClass) {
+        return UNSAFE.staticFieldBase(aClass);
+    }
+
+    public static void ensureClassInitialized(final Class<?> aClass) {
+        UNSAFE.ensureClassInitialized(aClass);
+    }
+
+    public static Object getAndSetObject(final Object o, final long l, final Object o2) {
+        return UNSAFE.getAndSetObject(o, l, o2);
+    }
+
+    @Deprecated
+    public static int fieldOffset(final Field field) {
+        return UNSAFE.fieldOffset(field);
+    }
+
+    @Deprecated
+    public static long getLong(final Object o, final int i) {
+        return UNSAFE.getLong(o, i);
+    }
+
+    public static boolean shouldBeInitialized(final Class<?> aClass) {
+        return UNSAFE.shouldBeInitialized(aClass);
+    }
+
+    public static int arrayBaseOffset(final Class<?> aClass) {
+        return UNSAFE.arrayBaseOffset(aClass);
+    }
+
+    @Deprecated
+    public static int getInt(final Object o, final int i) {
+        return UNSAFE.getInt(o, i);
+    }
+
+    public static Object allocateInstance(final Class<?> aClass) throws InstantiationException {
+        return UNSAFE.allocateInstance(aClass);
+    }
+
+    public static long getAndSetLong(final Object o, final long l, final long l2) {
+        return UNSAFE.getAndSetLong(o, l, l2);
+    }
+
+    @Deprecated
+    public static float getFloat(final Object o, final int i) {
+        return UNSAFE.getFloat(o, i);
+    }
+
+    @Deprecated
+    public static boolean getBoolean(final Object o, final int i) {
+        return UNSAFE.getBoolean(o, i);
+    }
+
+    public static void fullFence() {
+        UNSAFE.fullFence();
+    }
+
+    @Deprecated
+    public static char getChar(final Object o, final int i) {
+        return UNSAFE.getChar(o, i);
+    }
+
+    public static void storeFence() {
+        UNSAFE.storeFence();
+    }
+
+    @Deprecated
+    public static byte getByte(final Object o, final int i) {
+        return UNSAFE.getByte(o, i);
+    }
+
+    @Deprecated
+    public static void putShort(final Object o, final int i, final short i2) {
+        UNSAFE.putShort(o, i, i2);
+    }
+
+    @Deprecated
+    public static void putByte(final Object o, final int i, final byte b) {
+        UNSAFE.putByte(o, i, b);
     }
 
     public static sun.misc.Unsafe get() {
@@ -113,10 +281,6 @@ public class Unsafe {
 
     public static void putChar(final long address, final char x) {
         UNSAFE.putChar(address, x);
-    }
-
-    public static int arrayBaseOffset(final Class arrayClass) {
-        return UNSAFE.arrayBaseOffset(arrayClass);
     }
 
     public static char getCharVolatile(final Object o, final long offset) {
@@ -255,10 +419,6 @@ public class Unsafe {
         return UNSAFE.getInt(o, offset);
     }
 
-    public static void ensureClassInitialized(final Class c) {
-        UNSAFE.ensureClassInitialized(c);
-    }
-
     public static void monitorExit(final Object o) {
         UNSAFE.monitorExit(o);
     }
@@ -273,10 +433,6 @@ public class Unsafe {
 
     public static double getDoubleVolatile(final Object o, final long offset) {
         return UNSAFE.getDoubleVolatile(o, offset);
-    }
-
-    public static Object allocateInstance(final Class cls) throws InstantiationException {
-        return UNSAFE.allocateInstance(cls);
     }
 
     public static void putFloatVolatile(final Object o, final long offset, final float x) {
@@ -301,10 +457,6 @@ public class Unsafe {
 
     public static void putFloat(final long address, final float x) {
         UNSAFE.putFloat(address, x);
-    }
-
-    public static int arrayIndexScale(final Class arrayClass) {
-        return UNSAFE.arrayIndexScale(arrayClass);
     }
 
     public static long staticFieldOffset(final Field f) {

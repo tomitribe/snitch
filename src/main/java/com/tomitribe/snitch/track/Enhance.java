@@ -139,115 +139,171 @@ public class Enhance {
             access -= Opcodes.ACC_SYNCHRONIZED;
         }
 
-        final boolean enableFrames = isJava6orHigher(version);
-
         final MethodVisitor mv = cw.visitMethod(access, name, desc, signature, exceptions);
         mv.visitCode();
 
-        final Type thisType = Type.getObjectType(internalName);
         final Type returnType = Type.getReturnType(desc);
-        final Type throwableType = Type.getType(Throwable.class);
+        final boolean isVoid = VOID_TYPE.equals(returnType);
         final Type[] argumentTypes = Type.getArgumentTypes(desc);
 
-        // local variable stack
-        final List<Type> locals = new ArrayList<Type>();
-        final List<Type> invocationStack = new ArrayList<Type>();
 
-        final boolean isStatic = AsmModifiers.isStatic(access);
-        final boolean isVoid = VOID_TYPE.equals(returnType);
+        if (isVoid && argumentTypes.length < 1) {
+            return getMethodVisitorVoid(new VisitorMetaData(monitorName, access, name, desc, track, mv, returnType, true, version, argumentTypes, internalName));
+        } else {
+            return getMethodVisitor(new VisitorMetaData(monitorName, access, name, desc, track, mv, returnType, isVoid, version, argumentTypes, internalName));
+        }
+    }
 
-        if (!isStatic) {
-            locals.add(thisType);
+    private static MethodVisitor getMethodVisitor(final VisitorMetaData vmd) {
+
+        final MethodVisitor mv = vmd.getMv();
+        final Label l0 = new Label();
+        final Label l1 = new Label();
+        final Label l2 = new Label();
+
+        mv.visitTryCatchBlock(l0, l1, l2, null);
+
+        final Label l3 = new Label();
+        mv.visitTryCatchBlock(l2, l3, l2, null);
+
+        if (vmd.isTrack()) {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "start", "()V", vmd.isInterface());
+        }
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "nanoTime", "()J", vmd.isInterface());
+        mv.visitVarInsn(Opcodes.LSTORE, vmd.getNanotimeVariable());
+
+        mv.visitLabel(l0);
+
+        // fill the stack for delegating to the right method
+        load(vmd.getInvocationStack(), mv);
+        mv.visitMethodInsn(invoke(vmd.getAccess()), vmd.getThisType().getInternalName(), target(vmd.getName()), vmd.getDesc(), vmd.isInterface());
+
+        if (!vmd.isVoid()) {
+            mv.visitVarInsn(vmd.getReturnType().getOpcode(Opcodes.ISTORE), vmd.getReturnVariable());
         }
 
-        locals.addAll(Arrays.asList(argumentTypes));
+        mv.visitLabel(l1);
+        Label l4 = null;
 
-        invocationStack.addAll(locals);
+        mv.visitLdcInsn(vmd.getMonitorName());
+        mv.visitVarInsn(Opcodes.LLOAD, vmd.getNanotimeVariable());
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "track", "(Ljava/lang/String;J)V", vmd.isInterface());
 
-        final int nanotimeVariable = size(locals);
-        locals.add(LONG_TYPE);
-
-        final int returnVariable = size(locals);
-        locals.add(returnType);
-
-        final int throwableVariable = size((locals));
-        locals.add(throwableType);
-
-        final int variablesSize = size(locals);
-
-        final Label tryBlock = new Label();
-        final Label successBlock = new Label();
-        final Label failureBlock = new Label();
-        final Label finallyBlock = new Label();
-        final Label endBlock = new Label();
-
-        mv.visitTryCatchBlock(tryBlock, successBlock, failureBlock, null);
-        mv.visitTryCatchBlock(failureBlock, finallyBlock, failureBlock, null);
-
-        if (track) {
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "start", "()V");
+        if (vmd.isTrack()) {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "stop", "()V", vmd.isInterface());
         }
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "nanoTime", "()J");
-        mv.visitVarInsn(Opcodes.LSTORE, nanotimeVariable);
 
-        mv.visitLabel(tryBlock);
-        {
-            // fill the stack for delegating to the right method
-            load(invocationStack, mv);
+        if (vmd.isVoid()) {
+            l4 = new Label();
+            mv.visitJumpInsn(Opcodes.GOTO, l4);
+        } else {
+            mv.visitVarInsn(vmd.getReturnType().getOpcode(Opcodes.ILOAD), vmd.getReturnVariable());
+            mv.visitInsn(vmd.getReturnType().getOpcode(Opcodes.IRETURN));
+        }
 
-            mv.visitMethodInsn(invoke(access), thisType.getInternalName(), target(name), desc, false);
+        mv.visitLabel(l2);
 
-            if (!isVoid) {
-                mv.visitVarInsn(returnType.getOpcode(Opcodes.ISTORE), returnVariable);
-            }
+        if (vmd.isEnableFrames()) {
+            final List<Type> newLocals = new ArrayList<Type>(vmd.getLocals());
+            newLocals.remove(newLocals.size() - 1); // remove the throwable
+            newLocals.remove(newLocals.size() - 1); // remove the return type
+            final Object[] objects = toInternalNames(newLocals);
+            mv.visitFrame(Opcodes.F_FULL, objects.length, objects, 1, new Object[]{"java/lang/Throwable"});
         }
-        mv.visitLabel(successBlock);
-        {
-            mv.visitLdcInsn(monitorName);
-            mv.visitVarInsn(Opcodes.LLOAD, nanotimeVariable);
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "track", "(Ljava/lang/String;J)V", false);
-            if (track) {
-                mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "stop", "()V");
-            }
 
-            if (isVoid) {
-                mv.visitJumpInsn(Opcodes.GOTO, endBlock);
-            } else {
-                mv.visitVarInsn(returnType.getOpcode(Opcodes.ILOAD), returnVariable);
-                mv.visitInsn(returnType.getOpcode(Opcodes.IRETURN));
-            }
+        mv.visitVarInsn(Opcodes.ASTORE, vmd.getThrowableVariable());
+        mv.visitLabel(l3);
+        mv.visitLdcInsn(vmd.getMonitorName());
+        mv.visitVarInsn(Opcodes.LLOAD, vmd.getNanotimeVariable());
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "track", "(Ljava/lang/String;J)V", vmd.isInterface());
+
+        if (vmd.isTrack()) {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "stop", "()V", vmd.isInterface());
         }
-        mv.visitLabel(failureBlock);
-        {
-            if (enableFrames) {
-                final List<Type> newLocals = new ArrayList<Type>(locals);
-                newLocals.remove(newLocals.size() - 1); // remove the throwable
-                newLocals.remove(newLocals.size() - 1); // remove the return type
-                final Object[] objects = toInternalNames(newLocals);
-                mv.visitFrame(Opcodes.F_FULL, objects.length, objects, 1, new Object[]{"java/lang/Throwable"});
-            }
-            mv.visitVarInsn(Opcodes.ASTORE, throwableVariable);
-        }
-        mv.visitLabel(finallyBlock);
-        {
-            mv.visitLdcInsn(monitorName);
-            mv.visitVarInsn(Opcodes.LLOAD, nanotimeVariable);
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "track", "(Ljava/lang/String;J)V");
-            if (track) {
-                mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "stop", "()V");
-            }
-            mv.visitVarInsn(Opcodes.ALOAD, throwableVariable);
-            mv.visitInsn(Opcodes.ATHROW);
-        }
-        if (isVoid) {
-            mv.visitLabel(endBlock);
+
+        mv.visitVarInsn(Opcodes.ALOAD, vmd.getThrowableVariable());
+        mv.visitInsn(Opcodes.ATHROW);
+
+        if (vmd.isVoid()) {
+            mv.visitLabel(l4);
             {
-                if (enableFrames) {
+                if (vmd.isEnableFrames()) {
                     mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
                 }
                 mv.visitInsn(Opcodes.RETURN);
             }
         }
+
+        mv.visitMaxs(-1, -1);
+        return mv;
+    }
+
+    /**
+     * For a parameterless void method
+     *
+     * @param vmd VisitorMetaData
+     * @return MethodVisitor
+     */
+    private static MethodVisitor getMethodVisitorVoid(final VisitorMetaData vmd) {
+
+        final MethodVisitor mv = vmd.getMv();
+        final Label l0 = new Label();
+        final Label l1 = new Label();
+        final Label l2 = new Label();
+
+        mv.visitTryCatchBlock(l0, l1, l2, null);
+
+        if (vmd.isTrack()) {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "start", "()V", vmd.isInterface());
+        }
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "nanoTime", "()J", vmd.isInterface());
+        mv.visitVarInsn(Opcodes.LSTORE, vmd.getNanotimeVariable());
+
+        mv.visitLabel(l0);
+
+        // fill the stack for delegating to the right method
+        load(vmd.getInvocationStack(), mv);
+        mv.visitMethodInsn(invoke(vmd.getAccess()), vmd.getThisType().getInternalName(), target(vmd.getName()), vmd.getDesc(), vmd.isInterface());
+        mv.visitLabel(l1);
+        mv.visitLdcInsn(vmd.getMonitorName());
+        mv.visitVarInsn(Opcodes.LLOAD, vmd.getNanotimeVariable());
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "track", "(Ljava/lang/String;J)V", vmd.isInterface());
+
+        if (vmd.isTrack()) {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "stop", "()V", vmd.isInterface());
+        }
+
+        final Label l3 = new Label();
+        mv.visitJumpInsn(Opcodes.GOTO, l3);
+        mv.visitLabel(l2);
+
+        if (vmd.isEnableFrames()) {
+            final List<Type> newLocals = new ArrayList<Type>(vmd.getLocals());
+            newLocals.remove(newLocals.size() - 1); // remove the throwable
+            newLocals.remove(newLocals.size() - 1); // remove the return type
+            final Object[] objects = toInternalNames(newLocals);
+            mv.visitFrame(Opcodes.F_FULL, objects.length, objects, 1, new Object[]{"java/lang/Throwable"});
+        }
+
+        mv.visitVarInsn(Opcodes.ASTORE, vmd.getThrowableVariable());
+
+        mv.visitLdcInsn(vmd.getMonitorName());
+        mv.visitVarInsn(Opcodes.LLOAD, vmd.getNanotimeVariable());
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "track", "(Ljava/lang/String;J)V", vmd.isInterface());
+
+        if (vmd.isTrack()) {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "stop", "()V", vmd.isInterface());
+        }
+
+        mv.visitVarInsn(Opcodes.ALOAD, vmd.getThrowableVariable());
+        mv.visitInsn(Opcodes.ATHROW);
+        mv.visitLabel(l3);
+
+        if (vmd.isEnableFrames()) {
+            mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+        }
+
+        mv.visitInsn(Opcodes.RETURN);
         mv.visitMaxs(-1, -1);
         return mv;
     }
@@ -269,5 +325,143 @@ public class Enhance {
         }
 
         return Opcodes.INVOKEVIRTUAL;
+    }
+
+    private static class VisitorMetaData {
+        private final String monitorName;
+        private final int access;
+        private final String name;
+        private final String desc;
+        private final boolean track;
+        private final boolean enableFrames;
+        private final MethodVisitor mv;
+        private final Type thisType;
+        private final Type returnType;
+        private final List<Type> locals;
+        private final List<Type> invocationStack;
+        private final boolean isInterface;
+        private final boolean isVoid;
+        private final int nanotimeVariable;
+        private final int returnVariable;
+        private final int throwableVariable;
+        private final int variablesSize;
+        private final Type throwableType;
+
+        private VisitorMetaData(final String monitorName,
+                                final int access,
+                                final String name,
+                                final String desc,
+                                final boolean track,
+                                final MethodVisitor mv,
+                                final Type returnType,
+                                final boolean isVoid,
+                                final int version,
+                                final Type[] argumentTypes,
+                                final String internalName) {
+
+            this.monitorName = monitorName;
+            this.access = access;
+            this.name = name;
+            this.desc = desc;
+            this.track = track;
+            this.mv = mv;
+            this.returnType = returnType;
+            this.isVoid = isVoid;
+
+            this.enableFrames = isJava6orHigher(version);
+            this.thisType = Type.getObjectType(internalName);
+            this.throwableType = Type.getType(Throwable.class);
+
+            // local variable stack
+            this.locals = new ArrayList<Type>();
+            this.invocationStack = new ArrayList<Type>();
+
+            final boolean isStatic = AsmModifiers.isStatic(access);
+            this.isInterface = AsmModifiers.isInterface(access);
+
+
+            if (!isStatic) {
+                locals.add(thisType);
+            }
+
+            locals.addAll(Arrays.asList(argumentTypes));
+
+            invocationStack.addAll(locals);
+
+            this.nanotimeVariable = size(locals);
+            locals.add(LONG_TYPE);
+
+            this.returnVariable = size(locals);
+            locals.add(returnType);
+
+            this.throwableVariable = size((locals));
+            locals.add(throwableType);
+
+            this.variablesSize = size(locals);
+        }
+
+        public String getMonitorName() {
+            return monitorName;
+        }
+
+        public int getAccess() {
+            return access;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public boolean isTrack() {
+            return track;
+        }
+
+        public boolean isEnableFrames() {
+            return enableFrames;
+        }
+
+        public MethodVisitor getMv() {
+            return mv;
+        }
+
+        public Type getThisType() {
+            return thisType;
+        }
+
+        public Type getReturnType() {
+            return returnType;
+        }
+
+        public List<Type> getLocals() {
+            return locals;
+        }
+
+        public List<Type> getInvocationStack() {
+            return invocationStack;
+        }
+
+        public boolean isInterface() {
+            return isInterface;
+        }
+
+        public boolean isVoid() {
+            return isVoid;
+        }
+
+        public int getNanotimeVariable() {
+            return nanotimeVariable;
+        }
+
+        public int getReturnVariable() {
+            return returnVariable;
+        }
+
+        public int getThrowableVariable() {
+            return throwableVariable;
+        }
     }
 }

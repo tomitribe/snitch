@@ -349,13 +349,11 @@ public class IO {
     }
 
     public static OutputStream write(final File destination) throws FileNotFoundException {
-        final OutputStream out = new FileOutputStream(destination);
-        return new BufferedOutputStream(out, 32768);
+        return new BufferedOutputStream(new FileOutputStream(destination), 32768);
     }
 
     public static OutputStream write(final File destination, final boolean append) throws FileNotFoundException {
-        final OutputStream out = new FileOutputStream(destination, append);
-        return new BufferedOutputStream(out, 32768);
+        return new BufferedOutputStream(new FileOutputStream(destination, append), 32768);
     }
 
     public static PrintStream print(final File destination, final boolean append) throws FileNotFoundException {
@@ -371,8 +369,7 @@ public class IO {
     }
 
     public static InputStream read(final File source) throws FileNotFoundException {
-        final InputStream in = new FileInputStream(source);
-        return new BufferedInputStream(in, 32768);
+        return new BufferedInputStream(new FileInputStream(source), 32768);
     }
 
     public static InputStream read(final String content) {

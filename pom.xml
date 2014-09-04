@@ -97,6 +97,39 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>verify-style</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <logViolationsToConsole>true</logViolationsToConsole>
+          <checkstyleRules>
+            <module name="Checker">
+
+              <module name="TreeWalker">
+
+                <module name="LineLength">
+                  <property name="max" value="190" />
+                  <property name="ignorePattern" value="@version|@see" />
+                </module>
+                <module name="ParameterNumber">
+                  <property name="max" value="15" />
+                </module>
+              </module>
+
+            </module>
+          </checkstyleRules>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 

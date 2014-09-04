@@ -94,6 +94,7 @@ public class GeneratorTest extends Assert {
         Asmifier.asmify(beforeClass, "before." + tag);
         Asmifier.asmify(afterClass, "after." + tag);
         final byte[] bytes = Bytecode.readClassFile(beforeClass);
+        final boolean isInterface = beforeClass.isInterface();
 
         final ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 
