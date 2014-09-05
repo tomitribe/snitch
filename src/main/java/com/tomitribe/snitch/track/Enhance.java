@@ -142,15 +142,12 @@ public class Enhance {
         final MethodVisitor mv = cw.visitMethod(access, name, desc, signature, exceptions);
         mv.visitCode();
 
-        final Type returnType = Type.getReturnType(desc);
-        final boolean isVoid = VOID_TYPE.equals(returnType);
-        final Type[] argumentTypes = Type.getArgumentTypes(desc);
+        final VisitorMetaData vmd = new VisitorMetaData(monitorName, access, name, desc, track, mv, version, internalName);
 
-
-        if (isVoid && argumentTypes.length < 1) {
-            return getMethodVisitorVoid(new VisitorMetaData(monitorName, access, name, desc, track, mv, returnType, true, version, argumentTypes, internalName));
+        if (vmd.isVoid() && vmd.getArgumentTypes().length < 1) {
+            return getMethodVisitorVoid(vmd);
         } else {
-            return getMethodVisitor(new VisitorMetaData(monitorName, access, name, desc, track, mv, returnType, isVoid, version, argumentTypes, internalName));
+            return getMethodVisitor(vmd);
         }
     }
 
@@ -346,6 +343,8 @@ public class Enhance {
         private final int throwableVariable;
         private final int variablesSize;
         private final Type throwableType;
+        private final Type[] argumentTypes;
+        private final boolean isStatic;
 
         private VisitorMetaData(final String monitorName,
                                 final int access,
@@ -353,10 +352,7 @@ public class Enhance {
                                 final String desc,
                                 final boolean track,
                                 final MethodVisitor mv,
-                                final Type returnType,
-                                final boolean isVoid,
                                 final int version,
-                                final Type[] argumentTypes,
                                 final String internalName) {
 
             this.monitorName = monitorName;
@@ -365,8 +361,10 @@ public class Enhance {
             this.desc = desc;
             this.track = track;
             this.mv = mv;
-            this.returnType = returnType;
-            this.isVoid = isVoid;
+
+            this.returnType = Type.getReturnType(desc);
+            this.isVoid = VOID_TYPE.equals(returnType);
+            this.argumentTypes = Type.getArgumentTypes(desc);
 
             this.enableFrames = isJava6orHigher(version);
             this.thisType = Type.getObjectType(internalName);
@@ -376,7 +374,7 @@ public class Enhance {
             this.locals = new ArrayList<Type>();
             this.invocationStack = new ArrayList<Type>();
 
-            final boolean isStatic = AsmModifiers.isStatic(access);
+            isStatic = AsmModifiers.isStatic(access);
             this.isInterface = AsmModifiers.isInterface(access);
 
 
@@ -418,6 +416,22 @@ public class Enhance {
 
         public boolean isTrack() {
             return track;
+        }
+
+        public boolean isStatic() {
+            return isStatic;
+        }
+
+        public int getVariablesSize() {
+            return variablesSize;
+        }
+
+        public Type getThrowableType() {
+            return throwableType;
+        }
+
+        public Type[] getArgumentTypes() {
+            return argumentTypes;
         }
 
         public boolean isEnableFrames() {
