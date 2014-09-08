@@ -39,7 +39,7 @@
     </repository>
     <repository>
       <id>tomitribe.snapshots.https</id>
-      <url>https://repository.tomitribe.com/content/repositories/snapshots-tomitribe</url>
+      <url>http://repository.tomitribe.com/content/repositories/snapshots-tomitribe</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
