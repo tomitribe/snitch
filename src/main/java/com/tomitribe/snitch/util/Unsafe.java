@@ -70,10 +70,6 @@ public class Unsafe {
         UNSAFE.putInt(o, i, i2);
     }
 
-    public static long getAndAddLong(final Object o, final long l, final long l2) {
-        return UNSAFE.getAndAddLong(o, l, l2);
-    }
-
     @Deprecated
     public static double getDouble(final Object o, final int i) {
         return UNSAFE.getDouble(o, i);
@@ -82,10 +78,6 @@ public class Unsafe {
     @Deprecated
     public static void putChar(final Object o, final int i, final char c) {
         UNSAFE.putChar(o, i, c);
-    }
-
-    public static int getAndSetInt(final Object o, final long l, final int i) {
-        return UNSAFE.getAndSetInt(o, l, i);
     }
 
     @Deprecated
@@ -116,17 +108,9 @@ public class Unsafe {
         UNSAFE.putFloat(o, i, v);
     }
 
-    public static int getAndAddInt(final Object o, final long l, final int i) {
-        return UNSAFE.getAndAddInt(o, l, i);
-    }
-
     @Deprecated
     public static void putDouble(final Object o, final int i, final double v) {
         UNSAFE.putDouble(o, i, v);
-    }
-
-    public static void loadFence() {
-        UNSAFE.loadFence();
     }
 
     public static int arrayIndexScale(final Class<?> aClass) {
@@ -140,10 +124,6 @@ public class Unsafe {
 
     public static void ensureClassInitialized(final Class<?> aClass) {
         UNSAFE.ensureClassInitialized(aClass);
-    }
-
-    public static Object getAndSetObject(final Object o, final long l, final Object o2) {
-        return UNSAFE.getAndSetObject(o, l, o2);
     }
 
     @Deprecated
@@ -173,10 +153,6 @@ public class Unsafe {
         return UNSAFE.allocateInstance(aClass);
     }
 
-    public static long getAndSetLong(final Object o, final long l, final long l2) {
-        return UNSAFE.getAndSetLong(o, l, l2);
-    }
-
     @Deprecated
     public static float getFloat(final Object o, final int i) {
         return UNSAFE.getFloat(o, i);
@@ -187,17 +163,9 @@ public class Unsafe {
         return UNSAFE.getBoolean(o, i);
     }
 
-    public static void fullFence() {
-        UNSAFE.fullFence();
-    }
-
     @Deprecated
     public static char getChar(final Object o, final int i) {
         return UNSAFE.getChar(o, i);
-    }
-
-    public static void storeFence() {
-        UNSAFE.storeFence();
     }
 
     @Deprecated
