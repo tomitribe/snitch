@@ -38,8 +38,8 @@
       </snapshots>
     </repository>
     <repository>
-      <id>snapshots-tomitribe</id>
-      <url>http://repository.tomitribe.com/content/repositories/snapshots-tomitribe</url>
+      <id>tomitribe.snapshots.https</id>
+      <url>https://repository.tomitribe.com/content/repositories/snapshots-tomitribe</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
