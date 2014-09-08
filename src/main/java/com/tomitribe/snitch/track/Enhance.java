@@ -35,6 +35,12 @@ import static org.objectweb.asm.Type.VOID_TYPE;
  */
 public class Enhance {
 
+    private static final boolean IS_WIN;
+
+    static {
+        IS_WIN = System.getProperty("os.name").toLowerCase().contains("windows");
+    }
+
     private Enhance() {
         // no-op
     }
@@ -144,7 +150,7 @@ public class Enhance {
 
         final VisitorMetaData vmd = new VisitorMetaData(monitorName, access, name, desc, track, mv, version, internalName);
 
-        if (vmd.isVoid() && vmd.getArgumentTypes().length < 1) {
+        if (IS_WIN && vmd.isVoid() && vmd.getArgumentTypes().length < 1) {
             return getMethodVisitorVoid(vmd);
         } else {
             return getMethodVisitor(vmd);
