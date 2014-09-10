@@ -16,8 +16,6 @@
  */
 package com.tomitribe.snitch.util;
 
-import sun.reflect.CallerSensitive;
-
 import java.lang.reflect.Field;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -50,11 +48,6 @@ public class Unsafe {
         // no-op
     }
 
-    @CallerSensitive
-    public static sun.misc.Unsafe getUnsafe() {
-        return sun.misc.Unsafe.getUnsafe();
-    }
-
     @Deprecated
     public static void putBoolean(final Object o, final int i, final boolean b) {
         UNSAFE.putBoolean(o, i, b);
@@ -83,14 +76,6 @@ public class Unsafe {
     @Deprecated
     public static void putLong(final Object o, final int i, final long l) {
         UNSAFE.putLong(o, i, l);
-    }
-
-    public static void setMemory(final Object o, final long l, final long l2, final byte b) {
-        UNSAFE.setMemory(o, l, l2, b);
-    }
-
-    public static Class<?> defineAnonymousClass(final Class<?> aClass, final byte[] bytes, final Object[] objects) {
-        return UNSAFE.defineAnonymousClass(aClass, bytes, objects);
     }
 
     @Deprecated
@@ -134,10 +119,6 @@ public class Unsafe {
     @Deprecated
     public static long getLong(final Object o, final int i) {
         return UNSAFE.getLong(o, i);
-    }
-
-    public static boolean shouldBeInitialized(final Class<?> aClass) {
-        return UNSAFE.shouldBeInitialized(aClass);
     }
 
     public static int arrayBaseOffset(final Class<?> aClass) {
