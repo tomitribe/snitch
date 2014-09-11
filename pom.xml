@@ -29,6 +29,11 @@
   <artifactId>tomitribe-snitch</artifactId>
   <version>1.0.4-SNAPSHOT</version>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>
+
   <repositories>
     <repository>
       <id>snapshots</id>
@@ -126,11 +131,11 @@
               <module name="TreeWalker">
 
                 <module name="LineLength">
-                  <property name="max" value="190" />
-                  <property name="ignorePattern" value="@version|@see" />
+                  <property name="max" value="190"/>
+                  <property name="ignorePattern" value="@version|@see"/>
                 </module>
                 <module name="ParameterNumber">
-                  <property name="max" value="15" />
+                  <property name="max" value="15"/>
                 </module>
               </module>
 

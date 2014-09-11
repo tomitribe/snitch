@@ -150,8 +150,18 @@ public class Enhance {
 
         final VisitorMetaData vmd = new VisitorMetaData(monitorName, access, name, desc, track, mv, version, internalName);
 
-        if (IS_WIN && vmd.isVoid() && vmd.getArgumentTypes().length < 1) {
-            return getMethodVisitorVoid(vmd);
+        if (IS_WIN) {
+
+            if (vmd.isVoid() && vmd.getArgumentTypes().length < 1) {
+                return getMethodVisitorVoid(vmd);
+            } else {
+
+                if(vmd.isStatic() && vmd.isVoid() && desc.contains("[B")){
+                    System.out.println("static = " + name);
+                }
+
+                return getMethodVisitor(vmd);
+            }
         } else {
             return getMethodVisitor(vmd);
         }
@@ -216,6 +226,90 @@ public class Enhance {
 
         mv.visitVarInsn(Opcodes.ASTORE, vmd.getThrowableVariable());
         mv.visitLabel(l3);
+        mv.visitLdcInsn(vmd.getMonitorName());
+        mv.visitVarInsn(Opcodes.LLOAD, vmd.getNanotimeVariable());
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "track", "(Ljava/lang/String;J)V", vmd.isInterface());
+
+        if (vmd.isTrack()) {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "stop", "()V", vmd.isInterface());
+        }
+
+        mv.visitVarInsn(Opcodes.ALOAD, vmd.getThrowableVariable());
+        mv.visitInsn(Opcodes.ATHROW);
+
+        if (vmd.isVoid()) {
+            mv.visitLabel(l4);
+            {
+                if (vmd.isEnableFrames()) {
+                    mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+                }
+                mv.visitInsn(Opcodes.RETURN);
+            }
+        }
+
+        mv.visitMaxs(-1, -1);
+        return mv;
+    }
+
+    private static MethodVisitor getMethodVisitorB(final VisitorMetaData vmd) {
+
+        final MethodVisitor mv = vmd.getMv();
+        final Label l0 = new Label();
+        final Label l1 = new Label();
+        final Label l2 = new Label();
+
+        mv.visitTryCatchBlock(l0, l1, l2, null);
+
+//        final Label l3 = new Label();
+//        mv.visitTryCatchBlock(l2, l3, l2, null);
+
+        if (vmd.isTrack()) {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "start", "()V", vmd.isInterface());
+        }
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "nanoTime", "()J", vmd.isInterface());
+        mv.visitVarInsn(Opcodes.LSTORE, vmd.getNanotimeVariable());
+
+        mv.visitLabel(l0);
+
+        // fill the stack for delegating to the right method
+        load(vmd.getInvocationStack(), mv);
+        mv.visitMethodInsn(invoke(vmd.getAccess()), vmd.getThisType().getInternalName(), target(vmd.getName()), vmd.getDesc(), vmd.isInterface());
+
+        if (!vmd.isVoid()) {
+            mv.visitVarInsn(vmd.getReturnType().getOpcode(Opcodes.ISTORE), vmd.getReturnVariable());
+        }
+
+        mv.visitLabel(l1);
+        Label l4 = null;
+
+        mv.visitLdcInsn(vmd.getMonitorName());
+        mv.visitVarInsn(Opcodes.LLOAD, vmd.getNanotimeVariable());
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "track", "(Ljava/lang/String;J)V", vmd.isInterface());
+
+        if (vmd.isTrack()) {
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "stop", "()V", vmd.isInterface());
+        }
+
+        if (vmd.isVoid()) {
+            l4 = new Label();
+            mv.visitJumpInsn(Opcodes.GOTO, l4);
+        } else {
+            mv.visitVarInsn(vmd.getReturnType().getOpcode(Opcodes.ILOAD), vmd.getReturnVariable());
+            mv.visitInsn(vmd.getReturnType().getOpcode(Opcodes.IRETURN));
+        }
+
+        mv.visitLabel(l2);
+
+        if (vmd.isEnableFrames()) {
+            final List<Type> newLocals = new ArrayList<Type>(vmd.getLocals());
+            newLocals.remove(newLocals.size() - 1); // remove the throwable
+            newLocals.remove(newLocals.size() - 1); // remove the return type
+            final Object[] objects = toInternalNames(newLocals);
+            mv.visitFrame(Opcodes.F_FULL, objects.length, objects, 1, new Object[]{"java/lang/Throwable"});
+        }
+
+        mv.visitVarInsn(Opcodes.ASTORE, vmd.getThrowableVariable());
+        //mv.visitLabel(l3);
         mv.visitLdcInsn(vmd.getMonitorName());
         mv.visitVarInsn(Opcodes.LLOAD, vmd.getNanotimeVariable());
         mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "track", "(Ljava/lang/String;J)V", vmd.isInterface());
@@ -380,7 +474,7 @@ public class Enhance {
             this.locals = new ArrayList<Type>();
             this.invocationStack = new ArrayList<Type>();
 
-            isStatic = AsmModifiers.isStatic(access);
+            this.isStatic = (Opcodes.INVOKESTATIC == invoke(this.access));
             this.isInterface = AsmModifiers.isInterface(access);
 
 
