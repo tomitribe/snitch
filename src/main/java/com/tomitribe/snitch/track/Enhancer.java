@@ -88,10 +88,11 @@ public class Enhancer {
     }
 
     public byte[] enhance(final String className, byte[] bytecode) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException {
+        if (className == null) return bytecode;
+
         final Clazz clazz = getClazz(className);
-        if (clazz == null) {
-            return bytecode;
-        }
+
+        if (clazz == null) return bytecode;
 
         Log.log("Tracking %s", className);
 
