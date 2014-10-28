@@ -34,6 +34,12 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
+  <scm>
+    <connection>scm:git:git@github.com:tomitribe/snitch.git</connection>
+    <url>scm:git:git@github.com:tomitribe/snitch.git</url>
+    <developerConnection>scm:git:git@github.com:tomitribe/snitch.git</developerConnection>
+  </scm>
+
   <repositories>
     <repository>
       <id>snapshots</id>
