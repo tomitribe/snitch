@@ -23,11 +23,11 @@
   <parent>
     <groupId>com.tomitribe</groupId>
     <artifactId>tomitribe-parent</artifactId>
-    <version>2-SNAPSHOT</version>
+    <version>2</version>
   </parent>
 
   <artifactId>tomitribe-snitch</artifactId>
-  <version>1.0.4-SNAPSHOT</version>
+  <version>0.1-SNAPSHOT</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
