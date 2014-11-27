@@ -31,6 +31,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <sirona.version>0.3-incubating-SNAPSHOT</sirona.version>
   </properties>
 
   <scm>
@@ -147,6 +148,38 @@
 
 
   <dependencies>
+    <dependency>
+      <groupId>org.apache.sirona</groupId>
+      <artifactId>sirona-javaagent</artifactId>
+      <version>${sirona.version}</version>
+      <classifier>shaded</classifier>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.sirona</groupId>
+          <artifactId>sirona-aop</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sirona</groupId>
+      <artifactId>sirona-javaagent</artifactId>
+      <version>${sirona.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.sirona</groupId>
+          <artifactId>sirona-aop</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.3.2</version>
+      <scope>test</scope>
+    </dependency>
+
     <!--<dependency>-->
     <!--<groupId>org.ow2.asm</groupId>-->
     <!--<artifactId>asm-debug-all</artifactId>-->

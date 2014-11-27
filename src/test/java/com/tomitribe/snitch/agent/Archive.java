@@ -111,7 +111,12 @@ public class Archive {
     public File toJar() throws IOException {
         final File file = File.createTempFile("archive-", ".jar");
         file.deleteOnExit();
+        return toJar(file);
 
+
+    }
+
+    public File toJar(File file) throws IOException {
         // Create the ZIP file
         final ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
 
