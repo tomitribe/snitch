@@ -28,8 +28,8 @@ public class SnitchListener extends ConfigurableListener {
     }
 
     @Override
-    public boolean accept(final String key) {
-        return activated && super.accept(key);
+    public boolean accept(final String key, final byte[] buffer) {
+        return activated && super.accept(key, buffer);
     }
 
     @Override
