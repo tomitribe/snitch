@@ -19,6 +19,7 @@ package com.tomitribe.snitch.track;
 
 import com.tomitribe.snitch.util.Join;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -58,6 +59,10 @@ public class Tracker {
         tracker.operation(name).time(start);
     }
 
+    public Collection<Operation> operations() {
+        return stats.values();
+    }
+
     public Operation operation(final String name) {
         {
             final Operation operation = stats.get(name);
@@ -72,7 +77,7 @@ public class Tracker {
     }
 
     private void report() {
-        if (stats.size() > 1) {
+        if (stats.size() > 0) {
             log.info("TRACK: " + Join.join(" - ", stats.values()));
         }
     }
