@@ -19,6 +19,10 @@ package com.tomitribe.snitch.track;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -43,9 +47,23 @@ public class TrackerTest extends Assert {
 
         final Tracker tracker = Tracker.end();
 
+        final Collection<Tracker.Operation> operations = tracker.operations();
+        final Map<String, Tracker.Operation> operationMap = new HashMap<String, Tracker.Operation>();
+        for (Tracker.Operation operation : operations) {
+            operationMap.put(operation.getName(), operation);
+        }
+
+        assertTrue(operationMap.containsKey("one"));
+        assertTrue(operationMap.containsKey("two"));
+        assertTrue(operationMap.containsKey("three"));
+
         final Tracker.Operation one = tracker.operation("one");
         final Tracker.Operation two = tracker.operation("two");
         final Tracker.Operation three = tracker.operation("three");
+
+        assertEquals(one, operationMap.get("one"));
+        assertEquals(two, operationMap.get("two"));
+        assertEquals(three, operationMap.get("three"));
 
         assertEquals(1, one.getCount());
         assertEquals(1, NANOSECONDS.toSeconds(one.getTime()));
