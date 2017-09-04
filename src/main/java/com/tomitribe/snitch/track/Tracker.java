@@ -45,9 +45,17 @@ public class Tracker {
 
     public static Tracker end() {
         final Tracker tracker = TRACKER_THREAD_LOCAL.get();
-        TRACKER_THREAD_LOCAL.remove();
-        tracker.report();
+
+        if (tracker != null) {
+            TRACKER_THREAD_LOCAL.remove();
+            tracker.report();
+        }
+
         return tracker;
+    }
+
+    public static Tracker peek() {
+        return TRACKER_THREAD_LOCAL.get();
     }
 
     public static void track(final String name, final long start) {
