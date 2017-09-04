@@ -26,7 +26,7 @@
   </parent>
 
   <artifactId>tomitribe-snitch</artifactId>
-  <version>0.4</version>
+  <version>0.5-SNAPSHOT</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -37,7 +37,7 @@
     <connection>scm:git:git@github.com:tomitribe/tomitribe-snitch.git</connection>
     <url>scm:git:git@github.com:tomitribe/tomitribe-snitch.git</url>
     <developerConnection>scm:git:git@github.com:tomitribe/tomitribe-snitch.git</developerConnection>
-    <tag>tomitribe-snitch-0.4</tag>
+    <tag>tomitribe-snitch-0.2</tag>
   </scm>
 
   <build>
