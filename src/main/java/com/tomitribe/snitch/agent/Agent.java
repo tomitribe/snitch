@@ -36,6 +36,7 @@ import java.util.Properties;
 public class Agent {
 
     private static Instrumentation instrumentation;
+    private static boolean logEnabled;
 
     private Agent() {
         // no-op
@@ -109,6 +110,8 @@ public class Agent {
                 IO.readProperties(file, properties);
             }
 
+            logEnabled = Boolean.parseBoolean(properties.getProperty("snitch.logging", "true"));
+
             instrumentation.addTransformer(new Tracker(Enhancer.create(properties), instrumentation));
             out("Tracker installed.  Configuration files '%s'", Join.join(",", new Join.NameCallback<File>() {
                 @Override
@@ -154,5 +157,9 @@ public class Agent {
             }
         }
 
+    }
+
+    public static boolean isLogEnabled() {
+        return logEnabled;
     }
 }
