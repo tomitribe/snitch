@@ -185,8 +185,6 @@ public class Enhance {
 //        final List<String> exceptions = Arrays.asList("()V", "()[B", "()[[B", "([B)V");
         final List<String> exceptions = Arrays.asList("()V");
 
-        System.out.println(vmd);
-
         final MethodVisitor mv = vmd.getMv();
         final Label l0 = new Label();
         final Label l1 = new Label();
