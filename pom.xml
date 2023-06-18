@@ -20,12 +20,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.tomitribe</groupId>
-    <artifactId>tomitribe-parent</artifactId>
-    <version>8</version>
+    <groupId>org.tomitribe</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>5</version>
   </parent>
 
-  <artifactId>tomitribe-snitch</artifactId>
+  <artifactId>snitch</artifactId>
   <version>0.5-SNAPSHOT</version>
 
   <properties>
@@ -61,6 +61,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
+        <version>3.5.0</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -137,8 +138,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <optimize>true</optimize>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
 
@@ -154,13 +155,19 @@
     <!--</dependency>-->
     <dependency>
       <groupId>org.ow2.asm</groupId>
-      <artifactId>asm-all</artifactId>
-      <version>5.0.3</version>
+      <artifactId>asm</artifactId>
+      <version>9.5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm-util</artifactId>
+      <version>9.5</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

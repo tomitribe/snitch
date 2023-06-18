@@ -24,6 +24,7 @@ import com.tomitribe.snitch.agent.colors.Red;
 import com.tomitribe.snitch.util.IO;
 import org.junit.Assert;
 import org.junit.Test;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.util.ASMifier;
 
 import java.io.File;
@@ -40,6 +41,7 @@ public class AgentTest extends Assert {
         .manifest("Can-Redefine-Classes", true)
         .manifest("Can-Retransform-Classes", true)
         .addDir(JarLocation.jarLocation(Agent.class))
+        .addJar(JarLocation.jarLocation(Type.class))
         .addJar(JarLocation.jarLocation(ASMifier.class))
         .asJar();
 

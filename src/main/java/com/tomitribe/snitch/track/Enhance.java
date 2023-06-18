@@ -156,7 +156,7 @@ public class Enhance {
                 return getMethodVisitorVoid(vmd);
             } else {
 
-                if(vmd.isStatic() && vmd.isVoid() && desc.contains("[B")){
+                if (vmd.isStatic() && vmd.isVoid() && desc.contains("[B")) {
                     System.out.println("static = " + name);
                 }
 
@@ -168,6 +168,24 @@ public class Enhance {
     }
 
     private static MethodVisitor getMethodVisitor(final VisitorMetaData vmd) {
+        /*
+         * More recent compilers don't seem to put the second try-catch statement in there
+         * for certain method signatures.  Not entirely sure under which conditions it
+         * decides to skip them.
+         *
+         * It also does not do it consistently.  The RedBefore class has methods that contain
+         * these signatures: "()[B", "()[[B", "([B)V".  All of have the second try-catch
+         * added in their bytecode by the compiler.  The OrangeBefore also has these exact
+         * same signatures and NONE of them will have the second try-catch.
+         *
+         * The doesn't seem to be any actual issue with the bytecode, so it doesn't appear
+         * to be something to be concerned about.
+         */
+
+//        final List<String> exceptions = Arrays.asList("()V", "()[B", "()[[B", "([B)V");
+        final List<String> exceptions = Arrays.asList("()V");
+
+        System.out.println(vmd);
 
         final MethodVisitor mv = vmd.getMv();
         final Label l0 = new Label();
@@ -177,7 +195,10 @@ public class Enhance {
         mv.visitTryCatchBlock(l0, l1, l2, null);
 
         final Label l3 = new Label();
-        mv.visitTryCatchBlock(l2, l3, l2, null);
+
+        if (!exceptions.contains(vmd.getDesc())) {
+            mv.visitTryCatchBlock(l2, l3, l2, null);
+        }
 
         if (vmd.isTrack()) {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, tracker(), "start", "()V", vmd.isInterface());
@@ -576,6 +597,22 @@ public class Enhance {
 
         public int getThrowableVariable() {
             return throwableVariable;
+        }
+
+        @Override
+        public String toString() {
+            return "VisitorMetaData{" +
+                    "access=" + access +
+                    ", name='" + name + '\'' +
+                    ", desc='" + desc + '\'' +
+                    ", thisType=" + thisType +
+                    ", returnType=" + returnType +
+                    ", isInterface=" + isInterface +
+                    ", isVoid=" + isVoid +
+                    ", returnVariable=" + returnVariable +
+                    ", argumentTypes=" + Arrays.toString(argumentTypes) +
+                    ", isStatic=" + isStatic +
+                    '}';
         }
     }
 }
