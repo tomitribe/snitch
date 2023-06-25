@@ -9,6 +9,7 @@
  */
 package com.tomitribe.snitch.listen.gen;
 
+
 public class OrangeAfter {
 
     public void start() throws Exception {
@@ -46,7 +47,7 @@ public class OrangeAfter {
         foo(destroy);
     }
 
-    public void foo(final Object o){
+    public void foo(final Object o) {
         System.out.println(o);
     }
 }

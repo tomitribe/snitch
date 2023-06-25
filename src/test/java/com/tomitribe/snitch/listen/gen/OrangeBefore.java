@@ -9,8 +9,6 @@
  */
 package com.tomitribe.snitch.listen.gen;
 
-import java.util.stream.Stream;
-
 public class OrangeBefore {
 
     public void start() throws Exception {
@@ -47,7 +45,7 @@ public class OrangeBefore {
         foo(destroy);
     }
 
-    public void foo(final Object o){
+    public void foo(final Object o) {
         System.out.println(o);
     }
 }
