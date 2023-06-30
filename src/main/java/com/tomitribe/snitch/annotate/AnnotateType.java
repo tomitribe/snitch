@@ -9,6 +9,7 @@
  */
 package com.tomitribe.snitch.annotate;
 
+import com.tomitribe.snitch.ASM;
 import com.tomitribe.snitch.track.Bytecode;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
@@ -126,7 +127,7 @@ public class AnnotateType implements Function<byte[], byte[]> {
     class AnnotateTypeVisitor extends ClassVisitor implements Opcodes {
 
         public AnnotateTypeVisitor(final ClassWriter classVisitor) {
-            super(Opcodes.ASM5, classVisitor);
+            super(ASM.VERSION, classVisitor);
         }
 
         @Override

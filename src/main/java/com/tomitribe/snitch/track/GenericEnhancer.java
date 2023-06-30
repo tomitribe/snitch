@@ -16,6 +16,7 @@
  */
 package com.tomitribe.snitch.track;
 
+import com.tomitribe.snitch.ASM;
 import com.tomitribe.snitch.Filter;
 import com.tomitribe.snitch.Method;
 import org.objectweb.asm.AnnotationVisitor;
@@ -41,7 +42,7 @@ public class GenericEnhancer extends ClassVisitor implements Opcodes {
     }
 
     public GenericEnhancer(final ClassVisitor classVisitor, final Filter<String> filter, final boolean track) {
-        super(Opcodes.ASM5, classVisitor);
+        super(ASM.VERSION, classVisitor);
         this.filter = filter;
         this.track = track;
     }
@@ -84,7 +85,7 @@ public class GenericEnhancer extends ClassVisitor implements Opcodes {
         private final MethodVisitor newMethod;
 
         public MoveAnnotationsVisitor(final MethodVisitor movedMethod, final MethodVisitor newMethod) {
-            super(Opcodes.ASM5, movedMethod);
+            super(ASM.VERSION, movedMethod);
             this.newMethod = newMethod;
         }
 

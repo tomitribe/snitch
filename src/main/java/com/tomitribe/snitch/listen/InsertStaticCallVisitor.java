@@ -16,6 +16,7 @@
  */
 package com.tomitribe.snitch.listen;
 
+import com.tomitribe.snitch.ASM;
 import com.tomitribe.snitch.Method;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -31,7 +32,7 @@ public class InsertStaticCallVisitor extends ClassVisitor implements Opcodes {
     private final Method insert;
 
     public InsertStaticCallVisitor(final ClassWriter classVisitor, final Method find, final Method insert) {
-        super(Opcodes.ASM5, classVisitor);
+        super(ASM.VERSION, classVisitor);
         this.find = find;
         this.insert = insert;
     }
@@ -52,7 +53,7 @@ public class InsertStaticCallVisitor extends ClassVisitor implements Opcodes {
             return methodVisitor;
         }
 
-        return new MethodVisitor(Opcodes.ASM5, methodVisitor) {
+        return new MethodVisitor(ASM.VERSION, methodVisitor) {
             @Override
             public void visitCode() {
                 final String internalName = insert.getClassName().replace('.', '/');

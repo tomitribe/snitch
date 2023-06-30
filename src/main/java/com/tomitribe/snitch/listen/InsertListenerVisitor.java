@@ -16,6 +16,7 @@
  */
 package com.tomitribe.snitch.listen;
 
+import com.tomitribe.snitch.ASM;
 import com.tomitribe.snitch.Filter;
 import com.tomitribe.snitch.Method;
 import com.tomitribe.snitch.track.Enhance;
@@ -38,7 +39,7 @@ public class InsertListenerVisitor extends ClassVisitor implements Opcodes {
     private String classInternalName;
 
     public InsertListenerVisitor(final ClassVisitor classVisitor, final Filter<Type> filter) {
-        super(Opcodes.ASM5, classVisitor);
+        super(ASM.VERSION, classVisitor);
         this.filter = filter;
     }
 
@@ -67,7 +68,7 @@ public class InsertListenerVisitor extends ClassVisitor implements Opcodes {
 
         } else {
 
-            return new MethodVisitor(Opcodes.ASM5, methodVisitor) {
+            return new MethodVisitor(ASM.VERSION, methodVisitor) {
                 @Override
                 public void visitCode() {
 
