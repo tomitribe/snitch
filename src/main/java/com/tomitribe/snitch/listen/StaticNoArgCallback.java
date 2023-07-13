@@ -12,7 +12,6 @@ package com.tomitribe.snitch.listen;
 import com.tomitribe.snitch.Method;
 import com.tomitribe.snitch.track.Bytecode;
 import com.tomitribe.snitch.util.Join;
-import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 
 import java.util.Objects;
@@ -22,8 +21,13 @@ public class StaticNoArgCallback implements Function<byte[], byte[]> {
 
     private final Method find;
     private final Method insert;
+    private final boolean check;
 
     private StaticNoArgCallback(final Method find, final Method insert) {
+        this(find, insert, false);
+    }
+
+    private StaticNoArgCallback(final Method find, final Method insert, final boolean check) {
         Objects.requireNonNull(find);
         Objects.requireNonNull(insert);
 
@@ -33,6 +37,7 @@ public class StaticNoArgCallback implements Function<byte[], byte[]> {
 
         this.find = find;
         this.insert = insert;
+        this.check = check;
     }
 
     @Override
@@ -41,11 +46,9 @@ public class StaticNoArgCallback implements Function<byte[], byte[]> {
         final InsertStaticCallVisitor classAdapter = new InsertStaticCallVisitor(cw, find, insert);
         Bytecode.read(bytes, classAdapter);
 
-        if (classAdapter.getFound() == 0) {
+        if (check && classAdapter.getFound() == 0) {
             throw new IllegalArgumentException(find.toString() + " method was not found");
         }
-
-        System.out.println("Replace " + classAdapter.getFound() + " instances of " + find.toString());
 
         return cw.toByteArray();
     }
@@ -58,6 +61,8 @@ public class StaticNoArgCallback implements Function<byte[], byte[]> {
 
         Method find;
         Method insert;
+
+        boolean check;
 
         public Builder find(final Method method) {
             this.find = method;
@@ -89,8 +94,23 @@ public class StaticNoArgCallback implements Function<byte[], byte[]> {
             return this;
         }
 
+        public Builder check() {
+            this.check = true;
+            return this;
+        }
+
+        public Builder check(final boolean check) {
+            this.check = check;
+            return this;
+        }
+
+        public Builder withoutCheck() {
+            this.check = false;
+            return this;
+        }
+
         public Function<byte[], byte[]> build() {
-            return new StaticNoArgCallback(find, insert);
+            return new StaticNoArgCallback(find, insert, check);
         }
     }
 }
