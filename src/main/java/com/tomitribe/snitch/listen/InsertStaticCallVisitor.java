@@ -31,6 +31,8 @@ public class InsertStaticCallVisitor extends ClassVisitor implements Opcodes {
     private final Method find;
     private final Method insert;
 
+    private int found = 0;
+
     public InsertStaticCallVisitor(final ClassWriter classVisitor, final Method find, final Method insert) {
         super(ASM.VERSION, classVisitor);
         this.find = find;
@@ -53,6 +55,7 @@ public class InsertStaticCallVisitor extends ClassVisitor implements Opcodes {
             return methodVisitor;
         }
 
+        found++;
         return new MethodVisitor(ASM.VERSION, methodVisitor) {
             @Override
             public void visitCode() {
@@ -61,5 +64,9 @@ public class InsertStaticCallVisitor extends ClassVisitor implements Opcodes {
                 super.visitCode();
             }
         };
+    }
+
+    public int getFound() {
+        return found;
     }
 }

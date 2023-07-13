@@ -38,8 +38,15 @@ public class StaticNoArgCallback implements Function<byte[], byte[]> {
     @Override
     public byte[] apply(final byte[] bytes) {
         final ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-        final ClassVisitor classAdapter = new InsertStaticCallVisitor(cw, find, insert);
+        final InsertStaticCallVisitor classAdapter = new InsertStaticCallVisitor(cw, find, insert);
         Bytecode.read(bytes, classAdapter);
+
+        if (classAdapter.getFound() == 0) {
+            throw new IllegalArgumentException(find.toString() + " method was not found");
+        }
+
+        System.out.println("Replace " + classAdapter.getFound() + " instances of " + find.toString());
+
         return cw.toByteArray();
     }
 
