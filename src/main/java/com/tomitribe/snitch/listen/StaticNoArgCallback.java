@@ -14,6 +14,7 @@ import com.tomitribe.snitch.track.Bytecode;
 import com.tomitribe.snitch.util.Join;
 import org.objectweb.asm.ClassWriter;
 
+import java.lang.reflect.Modifier;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -90,6 +91,20 @@ public class StaticNoArgCallback implements Function<byte[], byte[]> {
         }
 
         public Builder insert(final java.lang.reflect.Method method) {
+            // As this is a reflection method, we can check that it is suitable for weaving
+
+            if (! Modifier.isStatic(method.getModifiers())) {
+                throw new IllegalArgumentException("Insert method must be static.");
+            }
+
+            if (Modifier.isPrivate(method.getModifiers())) {
+                throw new IllegalArgumentException("Insert method must not be private");
+            }
+
+            if (method.getParameters().length > 0) {
+                throw new IllegalArgumentException("Insert method must have no arguments.");
+            }
+
             this.insert = new Method(method);
             return this;
         }

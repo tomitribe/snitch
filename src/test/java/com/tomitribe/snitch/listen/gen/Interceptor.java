@@ -19,4 +19,12 @@ public class Interceptor {
         System.out.println(toLog);
     }
 
+    public void doWork() {
+        System.out.println("Doing work");
+    }
+
+    public void doWork(final String toLog) {
+        System.out.println("Doing work: " + toLog);
+    }
+
 }

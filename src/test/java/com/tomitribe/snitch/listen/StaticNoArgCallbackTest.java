@@ -9,6 +9,7 @@
  */
 package com.tomitribe.snitch.listen;
 
+import com.tomitribe.snitch.listen.gen.Interceptor;
 import com.tomitribe.snitch.listen.gen.ProcessorAfter;
 import com.tomitribe.snitch.listen.gen.ProcessorBefore;
 import com.tomitribe.snitch.track.Bytecode;
@@ -50,7 +51,7 @@ public class StaticNoArgCallbackTest {
     }
 
     @Test
-    public void testShouldFailToWeaveAsMethodWithArguments() throws Exception {
+    public void testShouldFailToWeaveAMethodWithArguments() throws Exception {
         try {
 
             final Function<byte[], byte[]> transformer = StaticNoArgCallback.builder()
@@ -67,5 +68,41 @@ public class StaticNoArgCallbackTest {
             Assert.assertEquals("Insert method must have no arguments.  Found: Ljava/lang/String;", e.getMessage());
         }
     }
+
+    @Test
+    public void testShouldFailToWeaveANonStaticMethodWithoutArguments() throws Exception {
+        try {
+            final Function<byte[], byte[]> transformer = StaticNoArgCallback.builder()
+                    .find("void com.tomitribe.snitch.listen.gen.ProcessorBefore.foo()")
+                    .insert(Interceptor.class.getDeclaredMethod("doWork"))
+                    .check()
+                    .build();
+
+            final byte[] bytes = Bytecode.readClassFile(ProcessorBefore.class);
+            final byte[] woven = transformer.apply(bytes);
+
+            Assert.fail("Expected exception not thrown");
+        } catch (IllegalArgumentException e) {
+            Assert.assertEquals("Insert method must be static.", e.getMessage());
+        }
+    }
+    @Test
+    public void testShouldFailToWeaveANonStaticMethodWithArguments() throws Exception {
+        try {
+            final Function<byte[], byte[]> transformer = StaticNoArgCallback.builder()
+                    .find("void com.tomitribe.snitch.listen.gen.ProcessorBefore.foo()")
+                    .insert(Interceptor.class.getDeclaredMethod("doWork", String.class))
+                    .check()
+                    .build();
+
+            final byte[] bytes = Bytecode.readClassFile(ProcessorBefore.class);
+            final byte[] woven = transformer.apply(bytes);
+
+            Assert.fail("Expected exception not thrown");
+        } catch (IllegalArgumentException e) {
+            Assert.assertEquals("Insert method must be static.", e.getMessage());
+        }
+    }
+
 
 }
