@@ -64,7 +64,7 @@ public class StaticCallTest extends Assert {
         assertEnhancement(enhancer, OrangeBefore.class, OrangeAfter.class);
     }
 
-    private static void assertEnhancement(final Function<byte[], byte[]> enhancer, final Class<?> beforeClass, final Class<?> afterClass) throws IOException {
+    public static void assertEnhancement(final Function<byte[], byte[]> enhancer, final Class<?> beforeClass, final Class<?> afterClass) throws IOException {
         final byte[] bytes = Bytecode.readClassFile(beforeClass);
         final byte[] actualBytes = enhancer.apply(bytes);
         final byte[] expectedBytes = Bytecode.readClassFile(afterClass);
