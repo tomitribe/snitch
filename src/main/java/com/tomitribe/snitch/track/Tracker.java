@@ -17,6 +17,7 @@
 
 package com.tomitribe.snitch.track;
 
+import com.tomitribe.snitch.agent.Agent;
 import com.tomitribe.snitch.util.Join;
 
 import java.util.Collection;
@@ -85,6 +86,7 @@ public class Tracker {
     }
 
     private void report() {
+        if (! Agent.isLogEnabled()) return;
         if (stats.size() > 0) {
             log.info("TRACK: " + Join.join(" - ", stats.values()));
         }
