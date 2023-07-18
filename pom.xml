@@ -26,7 +26,7 @@
   </parent>
 
   <artifactId>snitch</artifactId>
-  <version>0.8-SNAPSHOT</version>
+  <version>0.8</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -37,7 +37,7 @@
     <connection>scm:git:git@github.com:tomitribe/snitch.git</connection>
     <url>scm:git:git@github.com:tomitribe/snitch.git</url>
     <developerConnection>scm:git:git@github.com:tomitribe/snitch.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>snitch-0.8</tag>
   </scm>
 
   <build>
