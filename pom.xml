@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.tomitribe</groupId>
     <artifactId>oss-parent</artifactId>
-    <version>5</version>
+    <version>9</version>
   </parent>
 
   <artifactId>snitch</artifactId>
@@ -39,6 +39,16 @@
     <developerConnection>scm:git:git@github.com:tomitribe/snitch.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
+
+  <developers>
+    <developer>
+      <id>chernandez</id>
+      <name>Cesar Hernandez</name>
+      <email>chernandez@tomitribe.com</email>
+      <organization>Tomitribe</organization>
+      <organizationUrl>https://www.tomitribe.com</organizationUrl>
+    </developer>
+  </developers>
 
   <build>
     <plugins>
@@ -103,7 +113,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.12.1</version>
+        <version>3.3.1</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>9.3</version>
+          </dependency>
+        </dependencies>
         <executions>
           <execution>
             <id>verify-style</id>
@@ -117,22 +134,20 @@
           <logViolationsToConsole>true</logViolationsToConsole>
           <checkstyleRules>
             <module name="Checker">
-
+              <module name="LineLength">
+                <property name="max" value="190" />
+                <property name="ignorePattern" value="@version|@see" />
+              </module>
               <module name="TreeWalker">
-
-                <module name="LineLength">
-                  <property name="max" value="190" />
-                  <property name="ignorePattern" value="@version|@see" />
-                </module>
                 <module name="ParameterNumber">
                   <property name="max" value="15" />
                 </module>
               </module>
-
             </module>
           </checkstyleRules>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -140,6 +155,16 @@
           <optimize>true</optimize>
           <source>1.8</source>
           <target>1.8</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.sonatype.central</groupId>
+        <artifactId>central-publishing-maven-plugin</artifactId>
+        <version>0.8.0</version>
+        <extensions>true</extensions>
+        <configuration>
+          <publishingServerId>ossrh</publishingServerId>
         </configuration>
       </plugin>
 
